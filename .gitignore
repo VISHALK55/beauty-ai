@@ -1,0 +1,7 @@
+node_modules/
+target/
+*.jar
+*.msi
+*.zip
+.aws-sam/
+.env

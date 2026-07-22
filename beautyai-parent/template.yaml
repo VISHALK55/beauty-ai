@@ -1,0 +1,152 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Beauty AI Backend - Serverless Microservices
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 1024
+    Runtime: java21
+    Architectures:
+      - x86_64
+    SnapStart:
+      ApplyOn: PublishedVersions
+    Environment:
+      Variables:
+        TABLE_NAME: !Ref BeautyAiTable
+
+Resources:
+  BeautyAiTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: BeautyAiTable
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: PK
+          AttributeType: S
+        - AttributeName: SK
+          AttributeType: S
+      KeySchema:
+        - AttributeName: PK
+          KeyType: HASH
+        - AttributeName: SK
+          KeyType: RANGE
+
+  BeautyAiHttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowOrigins:
+          - "*"
+        AllowMethods:
+          - GET
+          - POST
+          - PUT
+          - DELETE
+          - OPTIONS
+        AllowHeaders:
+          - "*"
+
+  AuthFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: auth-service/target/auth-service-1.0.0-SNAPSHOT.jar
+      Handler: com.beautyai.auth.StreamLambdaHandler::handleRequest
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref BeautyAiHttpApi
+            Path: /api/v1/auth/{proxy+}
+            Method: ANY
+            PayloadFormatVersion: '1.0'
+
+  SalonFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: salon-service/target/salon-service-1.0.0-SNAPSHOT.jar
+      Handler: com.beautyai.salon.StreamLambdaHandler::handleRequest
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref BeautyAiHttpApi
+            Path: /api/v1/salons/{proxy+}
+            Method: ANY
+            PayloadFormatVersion: '1.0'
+
+  BookingFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: booking-service/target/booking-service-1.0.0-SNAPSHOT.jar
+      Handler: com.beautyai.booking.StreamLambdaHandler::handleRequest
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref BeautyAiHttpApi
+            Path: /api/v1/bookings/{proxy+}
+            Method: ANY
+            PayloadFormatVersion: '1.0'
+
+  AiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ai-service/target/ai-service-1.0.0-SNAPSHOT.jar
+      Handler: com.beautyai.ai.StreamLambdaHandler::handleRequest
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref BeautyAiHttpApi
+            Path: /api/v1/ai/{proxy+}
+            Method: ANY
+            PayloadFormatVersion: '1.0'
+
+  NotificationFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: notification-service/target/notification-service-1.0.0-SNAPSHOT.jar
+      Handler: com.beautyai.notification.StreamLambdaHandler::handleRequest
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref BeautyAiHttpApi
+            Path: /api/v1/notifications/{proxy+}
+            Method: ANY
+            PayloadFormatVersion: '1.0'
+
+  PaymentFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: payment-service/target/payment-service-1.0.0-SNAPSHOT.jar
+      Handler: com.beautyai.payment.StreamLambdaHandler::handleRequest
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref BeautyAiHttpApi
+            Path: /api/v1/payments/{proxy+}
+            Method: ANY
+            PayloadFormatVersion: '1.0'
+
+  AnalyticsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: analytics-service/target/analytics-service-1.0.0-SNAPSHOT.jar
+      Handler: com.beautyai.analytics.StreamLambdaHandler::handleRequest
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref BeautyAiHttpApi
+            Path: /api/v1/analytics/{proxy+}
+            Method: ANY
+            PayloadFormatVersion: '1.0'
+
+Outputs:
+  ApiEndpoint:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${BeautyAiHttpApi}.execute-api.${AWS::Region}.amazonaws.com/"

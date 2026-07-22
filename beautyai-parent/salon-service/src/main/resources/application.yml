@@ -1,0 +1,12 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: salon-service
+
+aws:
+  dynamodb:
+    endpoint: https://dynamodb.ap-south-1.amazonaws.com
+    region: ap-south-1
+  # Credentials should be fetched via IAM Roles or AWS Secrets Manager (Skill: aws-secrets-manager)
