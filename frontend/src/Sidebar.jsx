@@ -8,7 +8,8 @@ import {
   MessageSquare, 
   Settings,
   PhoneCall,
-  MapPin
+  MapPin,
+  Store
 } from 'lucide-react';
 
 const Sidebar = () => (
