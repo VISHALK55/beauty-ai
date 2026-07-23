@@ -39,12 +39,10 @@ jobs:
       - name: Setup AWS SAM CLI
         uses: aws-actions/setup-sam@v2
 
-      - name: SAM Build
-        run: sam build --template template.yaml
-
       - name: SAM Deploy
         run: >
           sam deploy 
+          --template-file template.yaml
           --stack-name beauty-ai-backend 
           --resolve-s3 
           --capabilities CAPABILITY_IAM 
