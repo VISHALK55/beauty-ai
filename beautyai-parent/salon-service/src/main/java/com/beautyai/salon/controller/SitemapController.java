@@ -40,7 +40,7 @@ public class SitemapController {
 
         // Mock Database Query: In production, this would be salonRepository.findAll()
         // For MVP, we simulate the two salons we know exist in the system.
-        List<String> salonIds = Arrays.asList("surbhi-gaya", "pihu-makeover");
+        List<String> salonIds = Arrays.asList("surbhi-gaya", "pihu-makeover", "glamour-gaya", "radiance-bodhgaya", "blossom-gaya");
         List<String> services = Arrays.asList("bridal-makeup", "hair-spa");
         List<String> neighborhoods = Arrays.asList("bodhgaya", "ap-colony", "sujata-bypass");
 

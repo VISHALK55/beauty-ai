@@ -34,6 +34,48 @@ const fetchSalonData = (salonId) => {
       rating: "4.9",
       reviews: 87,
       neighborhoods: ["Bodhgaya", "Sujata Bypass", "Kalchakra Maidan"]
+    },
+    'glamour-gaya': {
+      id: 'glamour-gaya',
+      name: "Glamour Studio",
+      phone: "+91 88888 77777",
+      streetAddress: "White House Compound",
+      city: "Gaya",
+      state: "Bihar",
+      zipCode: "823001",
+      latitude: "24.7890",
+      longitude: "84.9920",
+      rating: "4.7",
+      reviews: 210,
+      neighborhoods: ["White House Compound", "Swarajpuri Road"]
+    },
+    'radiance-bodhgaya': {
+      id: 'radiance-bodhgaya',
+      name: "Radiance Beauty Care",
+      phone: "+91 99999 11111",
+      streetAddress: "Temple Street",
+      city: "Bodhgaya",
+      state: "Bihar",
+      zipCode: "824231",
+      latitude: "24.6950",
+      longitude: "84.9900",
+      rating: "4.6",
+      reviews: 145,
+      neighborhoods: ["Bodhgaya", "Mastipur"]
+    },
+    'blossom-gaya': {
+      id: 'blossom-gaya',
+      name: "Blossom Makeover",
+      phone: "+91 77777 22222",
+      streetAddress: "GB Road",
+      city: "Gaya",
+      state: "Bihar",
+      zipCode: "823001",
+      latitude: "24.7910",
+      longitude: "84.9950",
+      rating: "4.9",
+      reviews: 312,
+      neighborhoods: ["GB Road", "Chowk"]
     }
   };
   
