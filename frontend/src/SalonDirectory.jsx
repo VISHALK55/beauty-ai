@@ -20,13 +20,13 @@ export default function SalonDirectory() {
   });
 
   return (
-    <div className="px-10 py-8 min-h-full">
-      <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+    <div className="px-4 py-6 sm:px-6 md:px-10 md:py-8 min-h-full">
+      <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 gap-4">
         <div>
-          <h1 className="text-4xl font-serif tracking-tight flex items-center gap-3">
-            Programmatic SEO Directory <Building2 className="text-gold-500" size={32} />
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif tracking-tight flex items-center gap-3">
+            Programmatic SEO Directory <Building2 className="text-gold-500" size={28} />
           </h1>
-          <p className="text-gray-400 mt-2 text-lg">
+          <p className="text-gray-400 mt-2 text-sm sm:text-base md:text-lg">
             Explore 100+ AI-enabled salons active on the Programmatic SEO & Geo-Rank Engine.
           </p>
         </div>

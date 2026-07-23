@@ -9,21 +9,21 @@ export default function GoogleSearchSimulator() {
   const timeline = calculateAcceleratedTimeline();
 
   return (
-    <div className="px-10 py-8 min-h-full">
-      <header className="mb-8">
+    <div className="px-4 py-6 sm:px-6 md:px-10 md:py-8 min-h-full">
+      <header className="mb-6 md:mb-8">
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
           <Sparkles size={14} /> Real-Time Google SERP Simulator
         </div>
-        <h1 className="text-4xl font-serif tracking-tight">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif tracking-tight">
           How Customers See Pihu Makeover on Google
         </h1>
-        <p className="text-gray-400 mt-2 text-lg">
+        <p className="text-gray-400 mt-2 text-sm sm:text-base md:text-lg">
           Simulate real customer searches on Google Mobile & Desktop for Bodhgaya & Gaya.
         </p>
       </header>
 
       {/* Simulated Google Search Bar */}
-      <div className="bg-white text-gray-900 rounded-2xl p-6 shadow-2xl max-w-4xl mx-auto mb-10 border border-gray-200">
+      <div className="bg-white text-gray-900 rounded-2xl p-4 sm:p-6 shadow-2xl max-w-4xl mx-auto mb-8 md:mb-10 border border-gray-200">
         <div className="flex items-center gap-3 bg-gray-100 px-5 py-3.5 rounded-full border border-gray-300 shadow-inner">
           <svg className="w-5 h-5 text-gray-500" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>

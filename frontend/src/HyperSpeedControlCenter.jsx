@@ -41,13 +41,13 @@ export default function HyperSpeedControlCenter() {
   };
 
   return (
-    <div className="px-10 py-8 min-h-full">
-      <header className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div className="px-4 py-6 sm:px-6 md:px-10 md:py-8 min-h-full">
+      <header className="mb-6 md:mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-gold-500/20 text-gold-400 border border-gold-500/30 rounded-full text-xs font-bold uppercase tracking-wider mb-2">
             <Zap size={14} /> High-Level SEO Acceleration Control Center
           </div>
-          <h1 className="text-4xl font-serif tracking-tight text-white">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif tracking-tight text-white">
             Hyper-Speed Execution Engine
           </h1>
           <p className="text-gray-400 mt-1">
