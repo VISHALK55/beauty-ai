@@ -26,6 +26,8 @@ public class SalonService {
         salon.setAddress(request.getAddress());
         salon.setGstNumber(request.getGstNumber());
         salon.setWorkingHours(request.getWorkingHours());
+        salon.setAiSystemPrompt(request.getAiSystemPrompt());
+        salon.setGoogleMapsLink(request.getGoogleMapsLink());
 
         salonRepository.save(salon);
         return salon;

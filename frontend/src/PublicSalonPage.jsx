@@ -5,20 +5,40 @@ import { generateLocalBusinessSchema, generateServiceSchema } from './SeoAlgorit
 import { MapPin, Phone, Star, Sparkles, CheckCircle2 } from 'lucide-react';
 
 // Mock DB Fetch based on URL parameters (Programmatic SEO)
-const fetchSalonData = (salonId) => ({
-  id: salonId,
-  name: "Surbhi Beauty Parlour",
-  phone: "+91 99346 66690",
-  streetAddress: "A P Colony, Near Kaveri Sweets",
-  city: "Gaya",
-  state: "Bihar",
-  zipCode: "823001",
-  latitude: "24.7955",
-  longitude: "84.9994",
-  rating: "4.8",
-  reviews: 124,
-  neighborhoods: ["A P Colony", "Gewal Bigha", "Bodhgaya"]
-});
+const fetchSalonData = (salonId) => {
+  const db = {
+    'surbhi-gaya': {
+      id: 'surbhi-gaya',
+      name: "Surbhi Beauty Parlour",
+      phone: "+91 99346 66690",
+      streetAddress: "A P Colony, Near Kaveri Sweets",
+      city: "Gaya",
+      state: "Bihar",
+      zipCode: "823001",
+      latitude: "24.7955",
+      longitude: "84.9994",
+      rating: "4.8",
+      reviews: 124,
+      neighborhoods: ["A P Colony", "Gewal Bigha", "Bodhgaya"]
+    },
+    'pihu-makeover': {
+      id: 'pihu-makeover',
+      name: "Pihu Makeover Saloon",
+      phone: "+91 98765 43210",
+      streetAddress: "Main Road, Near Mahabodhi Temple",
+      city: "Bodhgaya",
+      state: "Bihar",
+      zipCode: "824231",
+      latitude: "24.6961",
+      longitude: "84.9914",
+      rating: "4.9",
+      reviews: 87,
+      neighborhoods: ["Bodhgaya", "Sujata Bypass", "Kalchakra Maidan"]
+    }
+  };
+  
+  return db[salonId] || db['surbhi-gaya']; // fallback
+};
 
 const fetchServiceData = (serviceSlug) => {
   const db = {
