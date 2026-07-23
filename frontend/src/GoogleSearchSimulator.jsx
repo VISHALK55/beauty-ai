@@ -60,18 +60,18 @@ export default function GoogleSearchSimulator() {
           </div>
 
           {/* Map Pack Result Card - Pihu Makeover */}
-          <div className="p-5 bg-white border-b border-gray-200 hover:bg-blue-50/40 transition-colors">
-            <div className="flex justify-between items-start">
-              <div>
-                <div className="flex items-center gap-2">
-                  <h3 className="text-lg font-bold text-gray-900 hover:text-blue-600 cursor-pointer">
+          <div className="p-4 sm:p-5 bg-white border-b border-gray-200 hover:bg-blue-50/40 transition-colors">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
+              <div className="flex-1">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h3 className="text-base sm:text-lg font-bold text-gray-900 hover:text-blue-600 cursor-pointer">
                     Pihu Makeover Saloon
                   </h3>
                   <span className="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
                     <ShieldCheck size={10} /> Google Verified
                   </span>
                 </div>
-                <div className="flex items-center gap-1 mt-1 text-sm">
+                <div className="flex flex-wrap items-center gap-1.5 mt-1 text-xs sm:text-sm">
                   <span className="font-bold text-amber-600">4.9</span>
                   <div className="flex text-amber-400">
                     {'★'.repeat(5)}
@@ -80,27 +80,27 @@ export default function GoogleSearchSimulator() {
                   <span className="text-gray-300">•</span>
                   <span className="text-gray-600">Beauty salon</span>
                 </div>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-gray-500 mt-1 leading-normal">
                   Main Road, Near Mahabodhi Temple, Bodhgaya, Bihar • Open ⋅ Closes 9 PM
                 </p>
-                <p className="text-xs text-emerald-700 font-medium mt-1 flex items-center gap-1">
-                  <CheckCircle2 size={12} /> WhatsApp Booking & AI Voice Confirmation Available
+                <p className="text-xs text-emerald-700 font-medium mt-1.5 flex items-center gap-1">
+                  <CheckCircle2 size={12} className="shrink-0" /> WhatsApp Booking & AI Voice Confirmation Available
                 </p>
               </div>
 
-              <div className="flex flex-col gap-2">
+              <div className="flex sm:flex-col gap-2 shrink-0 pt-1 sm:pt-0 border-t sm:border-t-0 border-gray-100">
                 <a
                   href="tel:+919876543210"
-                  className="px-3.5 py-1.5 bg-blue-50 text-blue-600 border border-blue-200 rounded-full text-xs font-semibold hover:bg-blue-100 flex items-center gap-1 justify-center"
+                  className="flex-1 sm:flex-none px-4 py-2 bg-blue-50 text-blue-600 border border-blue-200 rounded-full text-xs font-semibold hover:bg-blue-100 flex items-center gap-1.5 justify-center"
                 >
-                  <Phone size={12} /> Call
+                  <Phone size={13} /> Call
                 </a>
                 <Link
                   to="/salon/pihu-makeover/bridal-makeup/bodhgaya"
                   target="_blank"
-                  className="px-3.5 py-1.5 bg-blue-600 text-white rounded-full text-xs font-semibold hover:bg-blue-700 flex items-center gap-1 justify-center shadow-sm"
+                  className="flex-1 sm:flex-none px-4 py-2 bg-blue-600 text-white rounded-full text-xs font-semibold hover:bg-blue-700 flex items-center gap-1.5 justify-center shadow-sm"
                 >
-                  <Globe size={12} /> Website
+                  <Globe size={13} /> Website
                 </Link>
               </div>
             </div>
