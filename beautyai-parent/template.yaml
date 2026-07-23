@@ -51,7 +51,7 @@ Resources:
   AuthFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: auth-service/target/auth-service-1.0.0-SNAPSHOT.jar
+      CodeUri: auth-service
       Handler: com.beautyai.auth.StreamLambdaHandler::handleRequest
       Events:
         Api:
@@ -65,7 +65,7 @@ Resources:
   SalonFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: salon-service/target/salon-service-1.0.0-SNAPSHOT.jar
+      CodeUri: salon-service
       Handler: com.beautyai.salon.StreamLambdaHandler::handleRequest
       Events:
         Api:
@@ -86,7 +86,7 @@ Resources:
   BookingFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: booking-service/target/booking-service-1.0.0-SNAPSHOT.jar
+      CodeUri: booking-service
       Handler: com.beautyai.booking.StreamLambdaHandler::handleRequest
       Events:
         Api:
@@ -100,7 +100,7 @@ Resources:
   AiFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ai-service/target/ai-service-1.0.0-SNAPSHOT.jar
+      CodeUri: ai-service
       Handler: com.beautyai.ai.StreamLambdaHandler::handleRequest
       Events:
         Api:
@@ -114,7 +114,7 @@ Resources:
   NotificationFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: notification-service/target/notification-service-1.0.0-SNAPSHOT.jar
+      CodeUri: notification-service
       Handler: com.beautyai.notification.StreamLambdaHandler::handleRequest
       Events:
         Api:
@@ -128,7 +128,7 @@ Resources:
   PaymentFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: payment-service/target/payment-service-1.0.0-SNAPSHOT.jar
+      CodeUri: payment-service
       Handler: com.beautyai.payment.StreamLambdaHandler::handleRequest
       Events:
         Api:
@@ -142,7 +142,7 @@ Resources:
   AnalyticsFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: analytics-service/target/analytics-service-1.0.0-SNAPSHOT.jar
+      CodeUri: analytics-service
       Handler: com.beautyai.analytics.StreamLambdaHandler::handleRequest
       Events:
         Api:

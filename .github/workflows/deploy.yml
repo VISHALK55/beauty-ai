@@ -27,22 +27,24 @@ jobs:
           cache: maven
 
       - name: Build with Maven
-        run: mvn clean package -DskipTests
+        run: mvn clean install -DskipTests
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1 # Change this if your AWS region is different
+          aws-region: us-east-1
 
       - name: Setup AWS SAM CLI
         uses: aws-actions/setup-sam@v2
 
+      - name: SAM Build
+        run: sam build --template template.yaml
+
       - name: SAM Deploy
         run: >
           sam deploy 
-          --template-file template.yaml
           --stack-name beauty-ai-backend 
           --resolve-s3 
           --capabilities CAPABILITY_IAM 
