@@ -75,6 +75,13 @@ Resources:
             Path: /api/v1/salons/{proxy+}
             Method: ANY
             PayloadFormatVersion: '1.0'
+        SitemapApi:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref BeautyAiHttpApi
+            Path: /api/v1/sitemap.xml
+            Method: GET
+            PayloadFormatVersion: '1.0'
 
   BookingFunction:
     Type: AWS::Serverless::Function
