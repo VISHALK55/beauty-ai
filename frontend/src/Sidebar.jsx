@@ -9,7 +9,9 @@ import {
   Settings,
   PhoneCall,
   MapPin,
-  Store
+  Store,
+  Search,
+  Zap
 } from 'lucide-react';
 
 const Sidebar = () => (
@@ -37,6 +39,15 @@ const Sidebar = () => (
       </NavLink>
       <NavLink to="/voice-calls" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
         <PhoneCall size={20}/> AI Voice Calls
+      </NavLink>
+      <NavLink to="/salons" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+        <Store size={20}/> 100+ Salons Directory
+      </NavLink>
+      <NavLink to="/google-preview" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+        <Search size={20}/> Google Search View
+      </NavLink>
+      <NavLink to="/speed-control" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+        <Zap size={20}/> Hyper-Speed Engine
       </NavLink>
       <NavLink to="/geo-rank" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
         <MapPin size={20}/> Geo Rank AI
