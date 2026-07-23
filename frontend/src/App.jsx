@@ -11,6 +11,7 @@ import PartnerOnboarding from './PartnerOnboarding';
 import SalonDirectory from './SalonDirectory';
 import GoogleSearchSimulator from './GoogleSearchSimulator';
 import HyperSpeedControlCenter from './HyperSpeedControlCenter';
+import Appointments from './Appointments';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
       {/* Admin Dashboard Routes */}
       <Route path="/" element={<Layout />}>
         <Route index element={<Dashboard />} />
+        <Route path="appointments" element={<Appointments />} />
         <Route path="salons" element={<SalonDirectory />} />
         <Route path="google-preview" element={<GoogleSearchSimulator />} />
         <Route path="speed-control" element={<HyperSpeedControlCenter />} />

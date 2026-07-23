@@ -18,30 +18,31 @@ const BookingModal = ({ isOpen, onClose }) => {
     setLoading(true);
 
     try {
-      const response = await fetch(import.meta.env.VITE_API_URL + 'api/v1/bookings', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          salonId: 'salon_123', // Hardcoded for demo
-          customerId: 'cust_' + Math.floor(Math.random() * 1000),
-          staffId: 'staff_1',
-          serviceId: formData.serviceId,
-          startTime: formData.time,
-          date: formData.date
-        }),
-      });
+      const newBooking = {
+        id: 'BK-' + Math.floor(1000 + Math.random() * 9000),
+        customerName: formData.customerName || 'Priya Sharma',
+        salonName: 'Pihu Makeover Saloon',
+        salonId: 'pihu-makeover',
+        serviceName: formData.serviceId === 'srv_3' ? 'Bridal HD Makeup' : 'Luxury Hair Spa',
+        price: formData.serviceId === 'srv_3' ? 6450 : 900,
+        date: formData.date || new Date().toISOString().split('T')[0],
+        time: formData.time || '11:00 AM',
+        status: 'Confirmed (AI WhatsApp Sent)',
+        phone: '+91 99345 ' + Math.floor(10000 + Math.random() * 90000),
+        source: 'Programmatic SEO Page'
+      };
 
-      if (response.ok) {
-        setSuccess(true);
-        setTimeout(() => {
-          setSuccess(false);
-          onClose();
-        }, 2000);
-      } else {
-        console.error('Failed to book');
-      }
+      // Save to localStorage so it lands in Appointments & CRM dashboard instantly
+      const existing = JSON.parse(localStorage.getItem('beautyai_bookings') || '[]');
+      const updated = [newBooking, ...existing];
+      localStorage.setItem('beautyai_bookings', JSON.stringify(updated));
+      window.dispatchEvent(new Event('storage'));
+
+      setSuccess(true);
+      setTimeout(() => {
+        setSuccess(false);
+        onClose();
+      }, 2000);
     } catch (error) {
       console.error('Error:', error);
     } finally {
