@@ -6,7 +6,9 @@ import {
   Calendar, 
   Scissors, 
   MessageSquare, 
-  Settings
+  Settings,
+  PhoneCall,
+  MapPin
 } from 'lucide-react';
 
 const Sidebar = () => (
@@ -30,7 +32,13 @@ const Sidebar = () => (
         <Scissors size={20}/> Services
       </NavLink>
       <NavLink to="/ai-receptionist" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-        <MessageSquare size={20}/> AI Receptionist
+        <MessageSquare size={20}/> AI Chat Bot
+      </NavLink>
+      <NavLink to="/voice-calls" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+        <PhoneCall size={20}/> AI Voice Calls
+      </NavLink>
+      <NavLink to="/geo-rank" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+        <MapPin size={20}/> Geo Rank AI
       </NavLink>
       <NavLink to="/settings" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
         <Settings size={20}/> Settings
