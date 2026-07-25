@@ -20,6 +20,7 @@ export const salonsDatabase = {
     id: "pihu-makeover",
     name: "Pihu Makeover Saloon",
     phone: "+91 98765 43210",
+    instagram: "https://www.instagram.com/pihu_makeover22/",
     streetAddress: "Main Road, Near Mahabodhi Temple",
     city: "Bodhgaya & Gaya",
     state: "Bihar",

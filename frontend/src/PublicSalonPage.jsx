@@ -100,6 +100,11 @@ export default function PublicSalonPage() {
             <div className="flex flex-wrap items-center gap-4 text-gray-400 text-sm">
               <span className="flex items-center gap-1"><MapPin size={16}/> {salon.streetAddress}, {salon.city}</span>
               <span className="flex items-center gap-1"><Phone size={16}/> {salon.phone}</span>
+              {salon.instagram && (
+                <a href={salon.instagram} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-pink-400 hover:text-pink-300 transition-colors">
+                  <ExternalLink size={14}/> Instagram (@pihu_makeover22)
+                </a>
+              )}
               <span className="flex items-center gap-1 text-gold-400 font-medium">
                 <Star size={16} className="fill-gold-400"/> {salon.rating} ({salon.reviews} reviews)
               </span>

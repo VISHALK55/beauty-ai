@@ -38,7 +38,7 @@ export const generateKnowledgeGraphMatrix = (salonData) => {
         "priceRange": "₹₹",
         "sameAs": [
           `https://maps.google.com/?cid=${salonData.id}`,
-          `https://www.instagram.com/${salonData.id}`,
+          salonData.instagram || `https://www.instagram.com/${salonData.id}`,
           `https://www.facebook.com/${salonData.id}`
         ],
         "geo": {
