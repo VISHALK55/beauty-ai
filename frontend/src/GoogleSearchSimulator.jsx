@@ -54,9 +54,9 @@ export default function GoogleSearchSimulator() {
         <div className="mt-6 border border-gray-200 rounded-xl overflow-hidden shadow-sm bg-gray-50">
           <div className="bg-blue-50 px-5 py-3 border-b border-blue-100 flex justify-between items-center">
             <span className="text-xs font-bold uppercase tracking-wider text-blue-700 flex items-center gap-1.5">
-              <MapPin size={14} /> Google Local Pack (Rank #1 in Bodhgaya)
+              <MapPin size={14} /> Google Local Pack (Rank #1 in Bodhgaya & Gaya)
             </span>
-            <span className="text-xs text-gray-500 font-mono">Near Mahabodhi Temple</span>
+            <span className="text-xs text-gray-500 font-mono">Bodhgaya & Gaya Region</span>
           </div>
 
           {/* Map Pack Result Card - Pihu Makeover */}
@@ -76,12 +76,12 @@ export default function GoogleSearchSimulator() {
                   <div className="flex text-amber-400">
                     {'★'.repeat(5)}
                   </div>
-                  <span className="text-gray-500 font-medium">(215 reviews)</span>
+                  <span className="text-gray-500 font-medium">(520 reviews)</span>
                   <span className="text-gray-300">•</span>
                   <span className="text-gray-600">Beauty salon</span>
                 </div>
                 <p className="text-xs text-gray-500 mt-1 leading-normal">
-                  Main Road, Near Mahabodhi Temple, Bodhgaya, Bihar • Open ⋅ Closes 9 PM
+                  Main Road, Near Mahabodhi Temple, Bodhgaya & Gaya, Bihar • Open ⋅ Closes 9 PM
                 </p>
                 <p className="text-xs text-emerald-700 font-medium mt-1.5 flex items-center gap-1">
                   <CheckCircle2 size={12} className="shrink-0" /> WhatsApp Booking & AI Voice Confirmation Available

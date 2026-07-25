@@ -21,14 +21,14 @@ export const salonsDatabase = {
     name: "Pihu Makeover Saloon",
     phone: "+91 98765 43210",
     streetAddress: "Main Road, Near Mahabodhi Temple",
-    city: "Bodhgaya",
+    city: "Bodhgaya & Gaya",
     state: "Bihar",
     zipCode: "824231",
     latitude: "24.6961",
     longitude: "84.9914",
     rating: "4.9",
-    reviews: 215,
-    neighborhoods: ["Bodhgaya", "Sujata Bypass", "Kalchakra Maidan"],
+    reviews: 520,
+    neighborhoods: ["Bodhgaya", "Gaya Main Market", "A P Colony", "Gewal Bigha", "Sujata Bypass", "Kalchakra Maidan"],
     image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80"
   },
   "glamour-gaya": {

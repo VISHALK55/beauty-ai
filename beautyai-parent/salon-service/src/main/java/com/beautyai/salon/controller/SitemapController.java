@@ -38,23 +38,23 @@ public class SitemapController {
         xmlBuilder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
         xmlBuilder.append("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n");
 
-        // Mock Database Query: In production, this would be salonRepository.findAll()
-        // For MVP, we simulate the two salons we know exist in the system.
-        List<String> salonIds = Arrays.asList("surbhi-gaya", "pihu-makeover", "glamour-gaya", "radiance-bodhgaya", "blossom-gaya", "elegance-parlour-gaya", "elegance-studio-bodhgaya", "elegance-makeover-gaya", "elegance-lounge-gaya", "elegance-care-bodhgaya", "elegance-salon-gaya", "elegance-spa-gaya", "elegance-boutique-bodhgaya", "elegance-hub-gaya", "elegance-clinic-gaya", "style-parlour-bodhgaya", "style-studio-gaya", "style-makeover-gaya", "style-lounge-bodhgaya", "style-care-gaya", "style-salon-gaya", "style-spa-bodhgaya", "style-boutique-gaya", "style-hub-gaya", "style-clinic-bodhgaya", "beauty-parlour-gaya", "beauty-studio-gaya", "beauty-makeover-bodhgaya", "beauty-lounge-gaya", "beauty-care-gaya", "beauty-salon-bodhgaya", "beauty-spa-gaya", "beauty-boutique-gaya", "beauty-hub-bodhgaya", "beauty-clinic-gaya", "glamour-parlour-gaya", "glamour-studio-bodhgaya", "glamour-makeover-gaya", "glamour-lounge-gaya", "glamour-care-bodhgaya", "glamour-salon-gaya", "glamour-spa-gaya", "glamour-boutique-bodhgaya", "glamour-hub-gaya", "glamour-clinic-gaya", "radiance-parlour-bodhgaya", "radiance-studio-gaya", "radiance-makeover-gaya", "radiance-lounge-bodhgaya", "radiance-care-gaya", "radiance-salon-gaya", "radiance-spa-bodhgaya", "radiance-boutique-gaya", "radiance-hub-gaya", "radiance-clinic-bodhgaya", "blossom-parlour-gaya", "blossom-studio-gaya", "blossom-makeover-bodhgaya", "blossom-lounge-gaya", "blossom-care-gaya", "blossom-salon-bodhgaya", "blossom-spa-gaya", "blossom-boutique-gaya", "blossom-hub-bodhgaya", "blossom-clinic-gaya", "aura-parlour-gaya", "aura-studio-bodhgaya", "aura-makeover-gaya", "aura-lounge-gaya", "aura-care-bodhgaya", "aura-salon-gaya", "aura-spa-gaya", "aura-boutique-bodhgaya", "aura-hub-gaya", "aura-clinic-gaya", "divine-parlour-bodhgaya", "divine-studio-gaya", "divine-makeover-gaya", "divine-lounge-bodhgaya", "divine-care-gaya", "divine-salon-gaya", "divine-spa-bodhgaya", "divine-boutique-gaya", "divine-hub-gaya", "divine-clinic-bodhgaya", "flawless-parlour-gaya", "flawless-studio-gaya", "flawless-makeover-bodhgaya", "flawless-lounge-gaya", "flawless-care-gaya", "flawless-salon-bodhgaya", "flawless-spa-gaya", "flawless-boutique-gaya", "flawless-hub-bodhgaya", "flawless-clinic-gaya", "chic-parlour-gaya", "chic-studio-bodhgaya", "chic-makeover-gaya", "chic-lounge-gaya", "chic-care-bodhgaya");
-        List<String> services = Arrays.asList("bridal-makeup", "hair-spa");
-        List<String> neighborhoods = Arrays.asList("bodhgaya", "ap-colony", "sujata-bypass");
+        // Place Pihu Makeover at index 0 for flagship top priority indexing
+        List<String> salonIds = Arrays.asList("pihu-makeover", "surbhi-gaya", "glamour-gaya", "radiance-bodhgaya", "blossom-gaya", "elegance-parlour-gaya", "elegance-studio-bodhgaya", "elegance-makeover-gaya", "elegance-lounge-gaya", "elegance-care-bodhgaya", "elegance-salon-gaya", "elegance-spa-gaya", "elegance-boutique-bodhgaya", "elegance-hub-gaya", "elegance-clinic-gaya", "style-parlour-bodhgaya", "style-studio-gaya", "style-makeover-gaya", "style-lounge-bodhgaya", "style-care-gaya", "style-salon-gaya", "style-spa-bodhgaya", "style-boutique-gaya", "style-hub-gaya", "style-clinic-bodhgaya", "beauty-parlour-gaya", "beauty-studio-gaya", "beauty-makeover-bodhgaya", "beauty-lounge-gaya", "beauty-care-gaya", "beauty-salon-bodhgaya", "beauty-spa-gaya", "beauty-boutique-gaya", "beauty-hub-bodhgaya", "beauty-clinic-gaya", "glamour-parlour-gaya", "glamour-studio-bodhgaya", "glamour-makeover-gaya", "glamour-lounge-gaya", "glamour-care-bodhgaya", "glamour-salon-gaya", "glamour-spa-gaya", "glamour-boutique-bodhgaya", "glamour-hub-gaya", "glamour-clinic-gaya", "radiance-parlour-bodhgaya", "radiance-studio-gaya", "radiance-makeover-gaya", "radiance-lounge-bodhgaya", "radiance-care-gaya", "radiance-salon-gaya", "radiance-spa-bodhgaya", "radiance-boutique-gaya", "radiance-hub-gaya", "radiance-clinic-bodhgaya", "blossom-parlour-gaya", "blossom-studio-gaya", "blossom-makeover-bodhgaya", "blossom-lounge-gaya", "blossom-care-gaya", "blossom-salon-bodhgaya", "blossom-spa-gaya", "blossom-boutique-gaya", "blossom-hub-bodhgaya", "blossom-clinic-gaya", "aura-parlour-gaya", "aura-studio-bodhgaya", "aura-makeover-gaya", "aura-lounge-gaya", "aura-care-bodhgaya", "aura-salon-gaya", "aura-spa-gaya", "aura-boutique-bodhgaya", "aura-hub-gaya", "aura-clinic-gaya", "divine-parlour-bodhgaya", "divine-studio-gaya", "divine-makeover-gaya", "divine-lounge-bodhgaya", "divine-care-gaya", "divine-salon-gaya", "divine-spa-bodhgaya", "divine-boutique-gaya", "divine-hub-gaya", "divine-clinic-bodhgaya", "flawless-parlour-gaya", "flawless-studio-gaya", "flawless-makeover-bodhgaya", "flawless-lounge-gaya", "flawless-care-gaya", "flawless-salon-bodhgaya", "flawless-spa-gaya", "flawless-boutique-gaya", "flawless-hub-bodhgaya", "flawless-clinic-gaya", "chic-parlour-gaya", "chic-studio-bodhgaya", "chic-makeover-gaya", "chic-lounge-gaya", "chic-care-bodhgaya");
+        List<String> services = Arrays.asList("bridal-makeup", "hair-spa", "facial", "skin-care", "pre-bridal");
+        List<String> neighborhoods = Arrays.asList("bodhgaya", "gaya-main-market", "ap-colony", "sujata-bypass", "kalchakra-maidan");
 
         // Step 2: Programmatically generate URLs for the SEO Engine
         for (String salonId : salonIds) {
+            boolean isFlagship = "pihu-makeover".equals(salonId);
             for (String service : services) {
                 // Add the base service page
                 String baseUrl = String.format("%s/salon/%s/%s", domain, salonId, service);
-                xmlBuilder.append(createUrlTag(baseUrl));
+                xmlBuilder.append(createUrlTag(baseUrl, isFlagship));
 
                 // Add the Hyper-Local Neighborhood pages
                 for (String neighborhood : neighborhoods) {
                     String localUrl = String.format("%s/salon/%s/%s/%s", domain, salonId, service, neighborhood);
-                    xmlBuilder.append(createUrlTag(localUrl));
+                    xmlBuilder.append(createUrlTag(localUrl, isFlagship));
                 }
             }
         }
@@ -63,11 +63,13 @@ public class SitemapController {
         return ResponseEntity.ok(xmlBuilder.toString());
     }
 
-    private String createUrlTag(String url) {
+    private String createUrlTag(String url, boolean isFlagship) {
+        String priority = isFlagship ? "1.0" : "0.8";
+        String changefreq = isFlagship ? "hourly" : "daily";
         return "  <url>\n" +
                "    <loc>" + url + "</loc>\n" +
-               "    <changefreq>daily</changefreq>\n" +
-               "    <priority>0.9</priority>\n" +
+               "    <changefreq>" + changefreq + "</changefreq>\n" +
+               "    <priority>" + priority + "</priority>\n" +
                "  </url>\n";
     }
 }
