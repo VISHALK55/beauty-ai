@@ -1,21 +1,6 @@
 // 100+ Salons Master Database for Programmatic SEO & Geo-Rank AI Engine
 export const salonsDatabase = {
   // --- GAYA & BODHGAYA (15 Salons) ---
-  "surbhi-gaya": {
-    id: "surbhi-gaya",
-    name: "Surbhi Beauty Parlour",
-    phone: "+91 99346 66690",
-    streetAddress: "A P Colony, Near Kaveri Sweets",
-    city: "Gaya",
-    state: "Bihar",
-    zipCode: "823001",
-    latitude: "24.7955",
-    longitude: "84.9994",
-    rating: "4.9",
-    reviews: 320,
-    neighborhoods: ["A P Colony", "Gewal Bigha", "Bodhgaya"],
-    image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80"
-  },
   "pihu-makeover": {
     id: "pihu-makeover",
     name: "Pihu Makeover Saloon",

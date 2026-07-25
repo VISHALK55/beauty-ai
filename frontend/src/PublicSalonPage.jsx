@@ -8,7 +8,7 @@ import BookingModal from './BookingModal';
 
 // DB Fetch based on URL parameters (Programmatic SEO)
 const fetchSalonData = (salonId) => {
-  return salonsDatabase[salonId] || salonsDatabase['surbhi-gaya']; // fallback
+  return salonsDatabase[salonId] || salonsDatabase['pihu-makeover']; // fallback
 };
 
 const fetchServiceData = (serviceSlug) => {
