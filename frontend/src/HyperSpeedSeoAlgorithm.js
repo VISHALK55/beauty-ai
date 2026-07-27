@@ -32,14 +32,14 @@ export const generateKnowledgeGraphMatrix = (salonData) => {
     "@graph": [
       {
         "@type": "BeautySalon",
-        "@id": `https://surbhibeauty.com/salon/${salonData.id}#identity`,
+        "@id": `https://beautyai.app/salon/${salonData.id}#identity`,
         "name": salonData.name,
         "telephone": salonData.phone,
         "priceRange": "₹₹",
         "sameAs": [
           `https://maps.google.com/?cid=${salonData.id}`,
-          `https://www.instagram.com/${salonData.id}`,
-          `https://www.facebook.com/${salonData.id}`
+          salonData.instagram || `https://www.instagram.com/${salonData.id}`,
+          salonData.facebook || `https://www.facebook.com/${salonData.id}`
         ],
         "geo": {
           "@type": "GeoCoordinates",
@@ -50,10 +50,10 @@ export const generateKnowledgeGraphMatrix = (salonData) => {
       },
       {
         "@type": "WebPage",
-        "@id": `https://surbhibeauty.com/salon/${salonData.id}#webpage`,
-        "url": `https://surbhibeauty.com/salon/${salonData.id}`,
+        "@id": `https://beautyai.app/salon/${salonData.id}#webpage`,
+        "url": `https://beautyai.app/salon/${salonData.id}`,
         "name": `${salonData.name} - Best Beauty Salon in ${salonData.city}`,
-        "about": { "@id": `https://surbhibeauty.com/salon/${salonData.id}#identity` },
+        "about": { "@id": `https://beautyai.app/salon/${salonData.id}#identity` },
         "speakable": {
           "@type": "SpeakableSpecification",
           "cssSelector": ["h1", "h2", ".service-description"]

@@ -125,7 +125,7 @@ export default function GoogleSearchSimulator() {
           <div className="mt-2">
             <div className="flex items-center gap-2 text-xs text-gray-600 mb-1">
               <span className="w-4 h-4 rounded-full bg-gold-500 text-dark-900 font-bold flex items-center justify-center text-[10px]">P</span>
-              <span>surbhibeauty.com › salon › pihu-makeover › bridal-makeup</span>
+              <span>beautyai.app › salon › pihu-makeover › bridal-makeup</span>
             </div>
 
             <Link

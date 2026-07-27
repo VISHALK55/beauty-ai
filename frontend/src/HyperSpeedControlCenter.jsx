@@ -15,10 +15,10 @@ export default function HyperSpeedControlCenter() {
   const [isLoading, setIsLoading] = useState(false);
 
   const salon = salonsDatabase[selectedSalonId] || salonsDatabase['pihu-makeover'];
-  const targetUrl = `https://surbhibeauty.com/salon/${salon.id}/bridal-makeup/${salon.neighborhoods[0]?.toLowerCase().replace(/\s+/g, '-') || 'bodhgaya'}`;
+  const targetUrl = `https://beautyai.app/salon/${salon.id}/bridal-makeup/${salon.neighborhoods[0]?.toLowerCase().replace(/\s+/g, '-') || 'bodhgaya'}`;
 
   const indexingPayload = generateGoogleIndexingApiPayload(targetUrl);
-  const indexNowPayload = generateIndexNowPayload('surbhibeauty.com', [targetUrl]);
+  const indexNowPayload = generateIndexNowPayload('beautyai.app', [targetUrl]);
   const knowledgeGraph = generateKnowledgeGraphMatrix(salon);
   const reviewPrompt = generateAcceleratedReviewPrompt('Priya Sharma', salon.name, 'Bridal HD Makeup', salon.neighborhoods[0] || salon.city);
 

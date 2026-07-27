@@ -3,17 +3,19 @@ export const salonsDatabase = {
   // --- GAYA & BODHGAYA (15 Salons) ---
   "pihu-makeover": {
     id: "pihu-makeover",
-    name: "Pihu Makeover Saloon",
-    phone: "+91 98765 43210",
-    streetAddress: "Main Road, Near Mahabodhi Temple",
-    city: "Bodhgaya & Gaya",
+    name: "Pihu Makeover Beauty Salon",
+    phone: "+91 91137 15558",
+    instagram: "https://www.instagram.com/pihu_makeover22/",
+    facebook: "https://www.facebook.com/pihumakeover.bodhgaya",
+    streetAddress: "Rajapur, Sujata Rd, near Govt. Middle School, Upadhayay Bigha",
+    city: "Bodh Gaya, Gaya",
     state: "Bihar",
     zipCode: "824231",
     latitude: "24.6961",
     longitude: "84.9914",
     rating: "4.9",
-    reviews: 520,
-    neighborhoods: ["Bodhgaya", "Gaya Main Market", "A P Colony", "Gewal Bigha", "Sujata Bypass", "Kalchakra Maidan"],
+    reviews: 57,
+    neighborhoods: ["Sujata Bypass", "Rajapur Road", "Bodhgaya", "Gaya Main Market", "A P Colony", "Gewal Bigha"],
     image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80"
   },
   "glamour-gaya": {

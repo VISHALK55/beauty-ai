@@ -13,9 +13,11 @@ import {
   Smartphone,
   Copy,
   Star,
+  Sparkles,
   Globe
 } from 'lucide-react';
 import BookingModal from './BookingModal';
+import AdCampaignLauncher from './AdCampaignLauncher';
 
 const StatCard = ({ title, value, icon, trend }) => (
   <div className="glass-panel p-6 animate-slide-up">
@@ -105,6 +107,9 @@ export default function Dashboard() {
         <StatCard title="AI Interactions" value="128" icon={<MessageSquare size={24} />} trend="+18.4%" />
       </div>
 
+      {/* 🚀 AUTOMATED AD CAMPAIGN LAUNCHER 🚀 */}
+      <AdCampaignLauncher salonName="Pihu Makeover Saloon" salonId="pihu-makeover" />
+
       {/* 🔴 NEW HYPER-SPEED SEO PANEL 🔴 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
         <div className="glass-panel p-6 border border-gold-500/20">
@@ -183,16 +188,50 @@ export default function Dashboard() {
             </a>
           </div>
 
+          {/* 📸 META ADS & INSTAGRAM BIO LINK GROWTH HUB 📸 */}
+          <div className="glass-panel p-6 border border-pink-500/30 relative overflow-hidden bg-gradient-to-r from-purple-900/10 to-pink-900/10">
+            <h2 className="text-lg font-semibold mb-2 flex items-center gap-2 text-pink-400">
+              <Sparkles size={20} /> Social & Meta Ads Growth Hub
+            </h2>
+            <p className="text-xs text-gray-400 mb-4">Target local women in Bodhgaya & Gaya via Instagram & Facebook Ads.</p>
+            
+            <div className="space-y-3 text-xs">
+              <div className="bg-dark-900/80 p-3 rounded-lg border border-white/5">
+                <span className="text-gray-400 uppercase font-mono block text-[10px]">Official IG & FB Bio Link:</span>
+                <span className="text-gold-400 font-mono select-all">https://beautyai.app/salon/pihu-makeover</span>
+              </div>
+              
+              <div className="flex gap-2">
+                <a 
+                  href="https://www.instagram.com/pihu_makeover22/" 
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white py-2.5 px-3 rounded-lg text-center font-bold text-xs hover:opacity-90 transition-opacity flex items-center justify-center gap-1.5"
+                >
+                  Instagram Page
+                </a>
+                <a 
+                  href="https://www.facebook.com/pihumakeover.bodhgaya" 
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="flex-1 bg-blue-600 text-white py-2.5 px-3 rounded-lg text-center font-bold text-xs hover:bg-blue-500 transition-colors flex items-center justify-center gap-1.5"
+                >
+                  Facebook Page
+                </a>
+              </div>
+            </div>
+          </div>
+
           <div className="glass-panel p-6">
             <h2 className="text-lg font-semibold mb-3 flex items-center gap-2">
               <MapPin size={20} className="text-blue-400" /> NAP Citation Copier
             </h2>
             <div className="bg-dark-900 p-4 rounded-lg text-sm font-mono text-gray-300 relative group">
               <p>Pihu Makeover Saloon</p>
-              <p>Main Road, Near Mahabodhi Temple</p>
+              <p>Opposite Govt Middle School, Sujata Bypass, Rajapur Road</p>
               <p>Bodhgaya, Bihar 824231</p>
               <p>+91 98765 43210</p>
-              <button onClick={() => navigator.clipboard.writeText("Pihu Makeover Saloon\\nMain Road, Near Mahabodhi Temple\\nBodhgaya, Bihar 824231\\n+91 98765 43210")} className="absolute top-3 right-3 text-gray-500 hover:text-white bg-dark-800 p-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+              <button onClick={() => navigator.clipboard.writeText("Pihu Makeover Saloon\nOpposite Govt Middle School, Sujata Bypass, Rajapur Road\nBodhgaya, Bihar 824231\n+91 98765 43210")} className="absolute top-3 right-3 text-gray-500 hover:text-white bg-dark-800 p-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">
                 <Copy size={16} />
               </button>
             </div>

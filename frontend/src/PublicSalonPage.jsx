@@ -5,6 +5,7 @@ import { generateLocalBusinessSchema, generateServiceSchema } from './SeoAlgorit
 import { MapPin, Phone, Star, Sparkles, CheckCircle2, Gift, MessageCircle, PhoneCall, ChevronRight } from 'lucide-react';
 import { salonsDatabase } from './salonsData';
 import BookingModal from './BookingModal';
+import CallTrackingModal from './CallTrackingModal';
 
 // DB Fetch based on URL parameters (Programmatic SEO)
 const fetchSalonData = (salonId) => {
@@ -13,13 +14,15 @@ const fetchSalonData = (salonId) => {
 
 const fetchServiceData = (serviceSlug) => {
   const db = {
-    'bridal-makeup': { name: "Bridal HD Makeup", price: 6450, description: "Premium HD bridal makeup for your special day." },
-    'hair-spa': { name: "Luxury Hair Spa", price: 900, description: "Rejuvenating hair spa and scalp treatment." },
-    'hair-cut': { name: "Styling & Hair Cut", price: 450, description: "Modern haircut and blow dry styling." },
-    'facial': { name: "Gold Radiance Facial", price: 1200, description: "Deep cleansing and instant skin brightening facial." },
-    'keratin': { name: "Keratin Smooth Treatment", price: 3500, description: "Frizz-free silk hair smoothing treatment." }
+    'bridal-makeup': { name: "Bridal & Party Makeup", price: 8500, description: "Premium HD bridal & party makeup with 3D lash extensions & flawless finish." },
+    'airbrush-makeup': { name: "Airbrush HD Bridal Suite", price: 12500, description: "Ultra-waterproof airbrush HD makeup package for grand weddings." },
+    'haircut-styling': { name: "Haircuts, Styling & Coloring", price: 1200, description: "Modern haircuts, professional blow-dry, and balayage/highlights." },
+    'facial-skincare': { name: "Facials, Skin Care & Spa", price: 1999, description: "Deep cleansing facials, skin brightening, and relaxing spa treatments." },
+    'nails': { name: "Manicures, Pedicures & Acrylic Nails", price: 1500, description: "Luxury mani-pedi spa and professional acrylic nail extensions." },
+    'lashes-brows': { name: "Eyelash Extensions & Brow Lamination", price: 2499, description: "Semi-permanent eyelash extensions and brow lamination for a bold look." },
+    'hair-removal': { name: "Waxing & Laser Hair Removal", price: 899, description: "Full body waxing and advanced laser hair removal services." }
   };
-  return db[serviceSlug] || { name: serviceSlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()), price: 500, description: "Professional salon service." };
+  return db[serviceSlug] || { name: serviceSlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()), price: 850, description: "Professional salon service." };
 };
 
 export default function PublicSalonPage() {
@@ -28,6 +31,7 @@ export default function PublicSalonPage() {
   const [service, setService] = useState(null);
   const [schemas, setSchemas] = useState({ localBusiness: null, service: null });
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  const [isCallTrackingOpen, setIsCallTrackingOpen] = useState(false);
   const [isOfferUnlocked, setIsOfferUnlocked] = useState(false);
 
   useEffect(() => {
@@ -62,7 +66,7 @@ export default function PublicSalonPage() {
       <Helmet>
         <title>{service.name} in {displayLocation} | {salon.name}</title>
         <meta name="description" content={`Book ${service.name} at ${salon.name} in ${displayLocation}. ${service.description}`} />
-        <link rel="canonical" href={`https://surbhibeauty.com/salon/${salonId}/${serviceSlug}${neighborhoodSlug ? '/' + neighborhoodSlug : ''}`} />
+        <link rel="canonical" href={`https://beautyai.app/salon/${salonId}/${serviceSlug}${neighborhoodSlug ? '/' + neighborhoodSlug : ''}`} />
         
         {/* Schema Injection */}
         {schemas.localBusiness && (
@@ -93,17 +97,49 @@ export default function PublicSalonPage() {
       </div>
 
       <div className="max-w-4xl mx-auto px-6 py-12 relative z-10">
-        {/* Header */}
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-white/10 pb-8 mb-8">
+        {/* Header with Quick Action Bar */}
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-white/10 pb-8 mb-8 gap-6">
           <div>
-            <h1 className="text-4xl md:text-5xl font-serif text-gold-500 mb-2">{salon.name}</h1>
-            <div className="flex flex-wrap items-center gap-4 text-gray-400 text-sm">
-              <span className="flex items-center gap-1"><MapPin size={16}/> {salon.streetAddress}, {salon.city}</span>
-              <span className="flex items-center gap-1"><Phone size={16}/> {salon.phone}</span>
-              <span className="flex items-center gap-1 text-gold-400 font-medium">
-                <Star size={16} className="fill-gold-400"/> {salon.rating} ({salon.reviews} reviews)
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-gold-500/10 text-gold-400 border border-gold-500/20 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
+              <Sparkles size={14} /> Flagship Partner Salon • Bodhgaya & Gaya
+            </div>
+            <h1 className="text-4xl md:text-5xl font-serif text-gold-500 mb-3">{salon.name}</h1>
+            <div className="flex flex-wrap items-center gap-4 text-gray-300 text-sm">
+              <span className="flex items-center gap-1.5"><MapPin size={16} className="text-gold-400"/> {salon.streetAddress}, {salon.city}</span>
+              <span className="flex items-center gap-1.5 text-gold-400 font-bold">
+                <Star size={16} className="fill-gold-400"/> {salon.rating} ({salon.reviews} Verified Reviews)
               </span>
             </div>
+          </div>
+
+          {/* ⚡ INSTANT QUICK ACTION BAR (CALL, MAPS LOCATION, INSTAGRAM, WHATSAPP) ⚡ */}
+          <div className="flex flex-wrap gap-3 w-full md:w-auto">
+            <button 
+              onClick={() => setIsCallTrackingOpen(true)}
+              className="flex-1 md:flex-initial px-5 py-3 bg-gradient-to-r from-gold-500 to-amber-500 hover:from-gold-400 hover:to-amber-400 text-dark-950 font-bold rounded-xl text-sm transition-all shadow-[0_0_20px_rgba(212,175,55,0.3)] flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <Phone size={16} /> Call Direct
+            </button>
+            
+            <a 
+              href={`https://maps.google.com/?q=${salon.latitude},${salon.longitude}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 md:flex-initial px-5 py-3 bg-dark-800 hover:bg-dark-700 text-white font-semibold rounded-xl text-sm border border-white/10 transition-all flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <MapPin size={16} className="text-blue-400" /> View Location
+            </a>
+
+            {salon.instagram && (
+              <a 
+                href={salon.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 md:flex-initial px-5 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-semibold rounded-xl text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <ChevronRight size={16} /> Instagram
+              </a>
+            )}
           </div>
         </header>
 
@@ -165,7 +201,41 @@ export default function PublicSalonPage() {
           </button>
         </div>
 
+        {/* 📸 OFFICIAL INSTAGRAM & SOCIAL SHOWCASE CARD 📸 */}
+        {salon.instagram && (
+          <div className="mt-8 glass-panel p-6 border border-pink-500/30 rounded-2xl relative overflow-hidden bg-gradient-to-r from-purple-900/20 via-pink-900/20 to-red-900/20">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider text-pink-400 flex items-center gap-1.5 mb-1">
+                  <Sparkles size={14} /> Official Instagram Portfolio
+                </span>
+                <h3 className="text-xl font-serif text-white flex items-center gap-2">
+                  Follow {salon.name} on Instagram
+                </h3>
+                <p className="text-gray-400 text-sm mt-1">
+                  Watch latest makeup reels, bridal client transformations, and daily studio updates.
+                </p>
+              </div>
+              <a 
+                href={salon.instagram}
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="px-6 py-3 bg-gradient-to-r from-purple-600 via-pink-600 to-red-500 hover:from-purple-500 hover:to-pink-500 text-white font-bold rounded-xl text-sm transition-all shadow-[0_0_20px_rgba(236,72,153,0.3)] flex items-center gap-2 shrink-0"
+              >
+                <ChevronRight size={16} /> Visit @pihu_makeover22
+              </a>
+            </div>
+          </div>
+        )}
+
         <BookingModal isOpen={isBookingModalOpen} onClose={() => setIsBookingModalOpen(false)} />
+        <CallTrackingModal 
+          isOpen={isCallTrackingOpen} 
+          onClose={() => setIsCallTrackingOpen(false)} 
+          salonName={salon?.name} 
+          salonPhone={salon?.phone} 
+          salonId={salon?.id} 
+        />
         
         {/* 🔴 FLOATING QUICK CONTACT CTAs 🔴 */}
         <div className="fixed bottom-6 right-6 flex flex-col gap-3 z-50">

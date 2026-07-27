@@ -10,8 +10,8 @@ export const generateLocalBusinessSchema = (salonData) => {
     "@type": "BeautySalon",
     "name": salonData.name,
     "image": salonData.image || "https://example.com/salon-hero.jpg",
-    "@id": `https://surbhibeauty.com/salon/${salonData.id}`,
-    "url": `https://surbhibeauty.com/salon/${salonData.id}`,
+    "@id": `https://beautyai.app/salon/${salonData.id}`,
+    "url": `https://beautyai.app/salon/${salonData.id}`,
     "telephone": salonData.phone,
     "address": {
       "@type": "PostalAddress",
@@ -72,7 +72,7 @@ export const generateServiceSchema = (serviceData, salonData, neighborhoodSlug) 
     "provider": {
       "@type": "BeautySalon",
       "name": salonData.name,
-      "@id": `https://surbhibeauty.com/salon/${salonData.id}`
+      "@id": `https://beautyai.app/salon/${salonData.id}`
     },
     "areaServed": {
       "@type": "Place",
