@@ -1,20 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { salonsDatabase } from './salonsData';
+import { api } from './api';
 import { MapPin, Phone, Star, ExternalLink, Search, Filter, Sparkles, Building2 } from 'lucide-react';
 
 export default function SalonDirectory() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCity, setSelectedCity] = useState('All');
   const [selectedService, setSelectedService] = useState('hair-cut');
+  
+  const [salonsData, setSalonsData] = useState({});
+  const [loading, setLoading] = useState(true);
 
-  const salons = Object.values(salonsDatabase);
-  const cities = ['All', ...Array.from(new Set(salons.map(s => s.city)))];
+  useEffect(() => {
+    async function loadData() {
+      const data = await api.getSalons();
+      setSalonsData(data);
+      setLoading(false);
+    }
+    loadData();
+  }, []);
+
+  const salons = Object.values(salonsData);
+  const cities = ['All', ...Array.from(new Set(salons.map(s => s.city).filter(Boolean)))];
 
   const filteredSalons = salons.filter(salon => {
-    const matchesSearch = salon.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          salon.streetAddress.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          salon.neighborhoods.some(n => n.toLowerCase().includes(searchTerm.toLowerCase()));
+    const matchesSearch = (salon.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          (salon.address || salon.streetAddress || '').toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCity = selectedCity === 'All' || salon.city === selectedCity;
     return matchesSearch && matchesCity;
   });
@@ -81,9 +92,14 @@ export default function SalonDirectory() {
       </div>
 
       {/* Salons Grid */}
+      {loading ? (
+        <div className="flex justify-center items-center h-64">
+           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gold-500"></div>
+        </div>
+      ) : (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredSalons.map(salon => {
-          const mainNeighborhood = salon.neighborhoods[0] ? salon.neighborhoods[0].toLowerCase().replace(/\s+/g, '-') : salon.city.toLowerCase();
+          const mainNeighborhood = salon.neighborhoods && salon.neighborhoods[0] ? salon.neighborhoods[0].toLowerCase().replace(/\s+/g, '-') : (salon.city ? salon.city.toLowerCase() : 'local');
           const seoUrl = `/salon/${salon.id}/${selectedService}/${mainNeighborhood}`;
 
           return (
@@ -142,7 +158,8 @@ export default function SalonDirectory() {
         })}
       </div>
 
-      {filteredSalons.length === 0 && (
+      )}
+      {filteredSalons.length === 0 && !loading && (
         <div className="glass-panel p-12 text-center text-gray-400 mt-8">
           <p className="text-lg">No salons found matching "{searchTerm}". Try clearing your filter.</p>
         </div>

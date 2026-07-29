@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Star, MessageSquare } from 'lucide-react';
-import { salonsDatabase } from './salonsData';
+import { api } from './api';
 
 export default function SmartReview() {
   const { salonId } = useParams();
-  const salon = salonsDatabase[salonId] || salonsDatabase['pihu-makeover'];
+  const [salon, setSalon] = useState(null);
+
+  useEffect(() => {
+    async function loadData() {
+      const data = await api.getSalon(salonId);
+      setSalon(data || await api.getSalon('pihu-makeover'));
+    }
+    loadData();
+  }, [salonId]);
   
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
@@ -24,6 +32,8 @@ export default function SmartReview() {
     console.log("Private feedback saved for Dashboard:", feedback);
     setSubmitted(true);
   };
+
+  if (!salon) return <div className="min-h-screen bg-dark-900 flex items-center justify-center p-6 text-gold-500">Loading Smart Review...</div>;
 
   if (submitted) {
     return (

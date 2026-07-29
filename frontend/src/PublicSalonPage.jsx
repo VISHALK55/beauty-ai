@@ -1,17 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { MapPin, Phone, Star, Clock, CalendarCheck, ChevronRight, ShieldCheck, Sparkles, Navigation, MessageCircle, PhoneCall, CheckCircle2, Gift } from 'lucide-react';
 import { generateLocalBusinessSchema, generateServiceSchema } from './SeoAlgorithm';
-import { MapPin, Phone, Star, Sparkles, CheckCircle2, Gift, MessageCircle, PhoneCall, ChevronRight } from 'lucide-react';
-import { salonsDatabase } from './salonsData';
+import { api } from './api';
 import BookingModal from './BookingModal';
 import CallTrackingModal from './CallTrackingModal';
 
 // DB Fetch based on URL parameters (Programmatic SEO)
-const fetchSalonData = (salonId) => {
-  return salonsDatabase[salonId] || salonsDatabase['pihu-makeover']; // fallback
-};
-
 const fetchServiceData = (serviceSlug) => {
   const db = {
     'bridal-makeup': { name: "Bridal & Party Makeup", price: 8500, description: "Premium HD bridal & party makeup with 3D lash extensions & flawless finish." },
@@ -25,7 +21,7 @@ const fetchServiceData = (serviceSlug) => {
   return db[serviceSlug] || { name: serviceSlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()), price: 850, description: "Professional salon service." };
 };
 
-export default function PublicSalonPage() {
+const PublicSalonPage = React.memo(function PublicSalonPage() {
   const { salonId, serviceSlug, neighborhoodSlug } = useParams();
   const [salon, setSalon] = useState(null);
   const [service, setService] = useState(null);
@@ -35,21 +31,23 @@ export default function PublicSalonPage() {
   const [isOfferUnlocked, setIsOfferUnlocked] = useState(false);
 
   useEffect(() => {
-    // 1. Fetch data from DB based on programmatic URL
-    const sData = fetchSalonData(salonId);
-    const srvData = fetchServiceData(serviceSlug || 'hair-cut');
-    setSalon(sData);
-    setService(srvData);
+    async function fetchData() {
+      // 1. Fetch data from DB based on programmatic URL
+      const sData = await api.getSalon(salonId);
+      const srvData = fetchServiceData(serviceSlug || 'hair-cut');
+      setSalon(sData);
+      setService(srvData);
 
-    // 2. SEO ALGORITHM EXECUTION (Hyper-Local Grid)
-    // Generate native Google Machine Code (JSON-LD)
-    const localSchema = generateLocalBusinessSchema(sData);
-    const srvSchema = generateServiceSchema(srvData, sData, neighborhoodSlug);
-    
-    setSchemas({ localBusiness: localSchema, service: srvSchema });
-    
-    // Log it so the developer can see the internal engine working
-    console.log("🔥 [SEO HYPER-LOCAL ENGINE] Injected Schema:", { localSchema, srvSchema });
+      // 2. SEO ALGORITHM EXECUTION (Hyper-Local Grid)
+      // Generate native Google Machine Code (JSON-LD)
+      if (sData) {
+        const localSchema = generateLocalBusinessSchema(sData);
+        const srvSchema = generateServiceSchema(srvData, sData, neighborhoodSlug);
+        
+        setSchemas({ localBusiness: localSchema, service: srvSchema });
+      }
+    }
+    fetchData();
   }, [salonId, serviceSlug, neighborhoodSlug]);
 
   if (!salon || !service) return <div className="p-10 text-white">Loading Programmatic SEO Page...</div>;
@@ -96,9 +94,21 @@ export default function PublicSalonPage() {
         </p>
       </div>
 
-      <div className="max-w-4xl mx-auto px-6 py-12 relative z-10">
+      {salon.image && (
+        <div className="w-full h-64 md:h-96 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-t from-dark-950 to-transparent z-10"></div>
+          <img 
+            src={salon.image} 
+            alt={`${salon.name} in ${displayLocation}`} 
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
+      )}
+
+      <div className="max-w-4xl mx-auto px-6 py-12 relative z-10 -mt-20">
         {/* Header with Quick Action Bar */}
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-white/10 pb-8 mb-8 gap-6">
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-white/10 pb-8 mb-8 gap-6 bg-dark-900/80 backdrop-blur-md p-6 rounded-2xl border border-white/5">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-gold-500/10 text-gold-400 border border-gold-500/20 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
               <Sparkles size={14} /> Flagship Partner Salon • Bodhgaya & Gaya
@@ -112,7 +122,7 @@ export default function PublicSalonPage() {
             </div>
           </div>
 
-          {/* ⚡ INSTANT QUICK ACTION BAR (CALL, MAPS LOCATION, INSTAGRAM, WHATSAPP) ⚡ */}
+          {/* ⚡ INSTANT QUICK ACTION BAR ⚡ */}
           <div className="flex flex-wrap gap-3 w-full md:w-auto">
             <button 
               onClick={() => setIsCallTrackingOpen(true)}
@@ -182,7 +192,7 @@ export default function PublicSalonPage() {
               <p className="text-gray-300 text-sm mb-6">Call {salon.name} right now and mention this code to get a customized VIP quote + Free Consultation!</p>
               
               <a 
-                href={`tel:${salon.phone.replace(/\\s+/g, '')}`}
+                href={`tel:${salon.phone.replace(/\s+/g, '')}`}
                 className="w-full btn-primary text-lg px-8 py-4 shadow-[0_0_30px_rgba(212,175,55,0.3)] hover:shadow-[0_0_40px_rgba(212,175,55,0.5)] flex justify-center items-center gap-2 cursor-pointer"
               >
                 <PhoneCall size={20} /> Call Now for Quote
@@ -239,13 +249,13 @@ export default function PublicSalonPage() {
         
         {/* 🔴 FLOATING QUICK CONTACT CTAs 🔴 */}
         <div className="fixed bottom-6 right-6 flex flex-col gap-3 z-50">
-           <a href={`https://wa.me/${salon.phone.replace(/\\D/g, '')}?text=Hi%20${encodeURIComponent(salon.name)}!%20I%20want%20to%20know%20the%20custom%20price%20for%20${encodeURIComponent(service.name)}.`} 
+           <a href={`https://wa.me/${salon.phone.replace(/\D/g, '')}?text=Hi%20${encodeURIComponent(salon.name)}!%20I%20want%20to%20know%20the%20custom%20price%20for%20${encodeURIComponent(service.name)}.`} 
               target="_blank" rel="noreferrer"
               className="bg-[#25D366] hover:bg-[#20bd5a] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform flex items-center justify-center group relative">
               <MessageCircle size={26} fill="currentColor" />
               <span className="absolute right-full mr-4 bg-dark-900 text-white text-xs px-3 py-1.5 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity border border-white/10 shadow-xl">WhatsApp Us</span>
            </a>
-           <a href={`tel:${salon.phone.replace(/\\D/g, '')}`}
+           <a href={`tel:${salon.phone.replace(/\D/g, '')}`}
               className="bg-gold-500 hover:bg-gold-400 text-dark-950 p-4 rounded-full shadow-2xl hover:scale-110 transition-transform flex items-center justify-center group relative">
               <PhoneCall size={26} fill="currentColor" />
               <span className="absolute right-full mr-4 bg-dark-900 text-white text-xs px-3 py-1.5 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity border border-white/10 shadow-xl">Call Directly</span>
@@ -259,4 +269,6 @@ export default function PublicSalonPage() {
       </div>
     </div>
   );
-}
+});
+
+export default PublicSalonPage;

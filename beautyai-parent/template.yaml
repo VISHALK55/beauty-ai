@@ -53,8 +53,18 @@ Resources:
     Properties:
       CodeUri: auth-service
       Handler: com.beautyai.auth.StreamLambdaHandler::handleRequest
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref BeautyAiTable
       Events:
-        Api:
+        ApiRoot:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref BeautyAiHttpApi
+            Path: /api/v1/auth
+            Method: ANY
+            PayloadFormatVersion: '1.0'
+        ApiProxy:
           Type: HttpApi
           Properties:
             ApiId: !Ref BeautyAiHttpApi
@@ -67,8 +77,18 @@ Resources:
     Properties:
       CodeUri: salon-service
       Handler: com.beautyai.salon.StreamLambdaHandler::handleRequest
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref BeautyAiTable
       Events:
-        Api:
+        ApiRoot:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref BeautyAiHttpApi
+            Path: /api/v1/salons
+            Method: ANY
+            PayloadFormatVersion: '1.0'
+        ApiProxy:
           Type: HttpApi
           Properties:
             ApiId: !Ref BeautyAiHttpApi
@@ -88,8 +108,18 @@ Resources:
     Properties:
       CodeUri: booking-service
       Handler: com.beautyai.booking.StreamLambdaHandler::handleRequest
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref BeautyAiTable
       Events:
-        Api:
+        ApiRoot:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref BeautyAiHttpApi
+            Path: /api/v1/bookings
+            Method: ANY
+            PayloadFormatVersion: '1.0'
+        ApiProxy:
           Type: HttpApi
           Properties:
             ApiId: !Ref BeautyAiHttpApi
@@ -102,8 +132,18 @@ Resources:
     Properties:
       CodeUri: ai-service
       Handler: com.beautyai.ai.StreamLambdaHandler::handleRequest
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref BeautyAiTable
       Events:
-        Api:
+        ApiRoot:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref BeautyAiHttpApi
+            Path: /api/v1/ai
+            Method: ANY
+            PayloadFormatVersion: '1.0'
+        ApiProxy:
           Type: HttpApi
           Properties:
             ApiId: !Ref BeautyAiHttpApi
@@ -116,8 +156,18 @@ Resources:
     Properties:
       CodeUri: notification-service
       Handler: com.beautyai.notification.StreamLambdaHandler::handleRequest
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref BeautyAiTable
       Events:
-        Api:
+        ApiRoot:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref BeautyAiHttpApi
+            Path: /api/v1/notifications
+            Method: ANY
+            PayloadFormatVersion: '1.0'
+        ApiProxy:
           Type: HttpApi
           Properties:
             ApiId: !Ref BeautyAiHttpApi
@@ -130,8 +180,18 @@ Resources:
     Properties:
       CodeUri: payment-service
       Handler: com.beautyai.payment.StreamLambdaHandler::handleRequest
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref BeautyAiTable
       Events:
-        Api:
+        ApiRoot:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref BeautyAiHttpApi
+            Path: /api/v1/payments
+            Method: ANY
+            PayloadFormatVersion: '1.0'
+        ApiProxy:
           Type: HttpApi
           Properties:
             ApiId: !Ref BeautyAiHttpApi
@@ -144,8 +204,18 @@ Resources:
     Properties:
       CodeUri: analytics-service
       Handler: com.beautyai.analytics.StreamLambdaHandler::handleRequest
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref BeautyAiTable
       Events:
-        Api:
+        ApiRoot:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref BeautyAiHttpApi
+            Path: /api/v1/analytics
+            Method: ANY
+            PayloadFormatVersion: '1.0'
+        ApiProxy:
           Type: HttpApi
           Properties:
             ApiId: !Ref BeautyAiHttpApi
@@ -153,7 +223,35 @@ Resources:
             Method: ANY
             PayloadFormatVersion: '1.0'
 
+  FrontendBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: index.html
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
+
+  FrontendBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref FrontendBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: '*'
+            Action: s3:GetObject
+            Resource: !Sub "${FrontendBucket.Arn}/*"
+
 Outputs:
   ApiEndpoint:
     Description: "API Gateway endpoint URL"
     Value: !Sub "https://${BeautyAiHttpApi}.execute-api.${AWS::Region}.amazonaws.com/"
+    
+  FrontendUrl:
+    Description: "Frontend S3 Website URL"
+    Value: !Sub "http://${FrontendBucket}.s3-website-${AWS::Region}.amazonaws.com"

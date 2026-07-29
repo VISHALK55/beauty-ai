@@ -6,6 +6,7 @@ import com.beautyai.salon.service.SalonService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/salons")
@@ -30,5 +31,10 @@ public class SalonController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(salon);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Salon>> getAllSalons() {
+        return ResponseEntity.ok(salonService.getAllSalons());
     }
 }

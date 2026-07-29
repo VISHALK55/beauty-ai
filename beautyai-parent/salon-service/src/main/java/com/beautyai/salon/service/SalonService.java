@@ -4,6 +4,7 @@ import com.beautyai.salon.dto.CreateSalonRequest;
 import com.beautyai.salon.model.Salon;
 import com.beautyai.salon.repository.SalonRepository;
 import org.springframework.stereotype.Service;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -17,7 +18,7 @@ public class SalonService {
 
     public Salon createSalon(CreateSalonRequest request) {
         Salon salon = new Salon();
-        String id = UUID.randomUUID().toString();
+        String id = request.getName().toLowerCase().replace(" ", "-"); // Use predictable ID for seed script
         
         salon.setPk("SALON#" + id);
         salon.setSk("METADATA");
@@ -35,5 +36,9 @@ public class SalonService {
 
     public Salon getSalon(String id) {
         return salonRepository.findById(id);
+    }
+
+    public List<Salon> getAllSalons() {
+        return salonRepository.findAll();
     }
 }

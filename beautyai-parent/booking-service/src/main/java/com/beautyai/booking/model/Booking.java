@@ -23,10 +23,12 @@ public class Booking {
     private String gsi1sk; // APPT#<date>
 
     @DynamoDbPartitionKey
+    @software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbAttribute("PK")
     public String getPk() { return pk; }
     public void setPk(String pk) { this.pk = pk; }
 
     @DynamoDbSortKey
+    @software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbAttribute("SK")
     public String getSk() { return sk; }
     public void setSk(String sk) { this.sk = sk; }
 

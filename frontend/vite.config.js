@@ -7,5 +7,20 @@ export default defineConfig({
   server: {
     host: true,
     allowedHosts: true
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: (id) => {
+          if (id.includes('node_modules')) {
+            if (id.includes('react')) return 'vendor_react';
+            return 'vendor'; // all other node_modules in one chunk
+          }
+          if (id.includes('src/salonsData')) {
+            return 'salons_data'; // separate the heavy database
+          }
+        }
+      }
+    }
   }
 })

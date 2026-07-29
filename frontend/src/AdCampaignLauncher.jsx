@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Megaphone, Target, DollarSign, Calendar, Sparkles, CheckCircle2, Play, Building2, Layers, TrendingUp, Users } from 'lucide-react';
-import { salonsDatabase } from './salonsData';
+import { api } from './api';
 
 export default function AdCampaignLauncher({ salonName, salonId }) {
   const [campaignType, setCampaignType] = useState('single'); // 'single' or 'multi'
@@ -10,8 +10,17 @@ export default function AdCampaignLauncher({ salonName, salonId }) {
   const [dailyBudget, setDailyBudget] = useState('250');
   const [durationDays, setDurationDays] = useState('7');
   const [isCampaignActive, setIsCampaignActive] = useState(false);
+  const [salonsData, setSalonsData] = useState({});
 
-  const availableSalons = Object.values(salonsDatabase).slice(0, 6);
+  useEffect(() => {
+    async function loadData() {
+      const data = await api.getSalons();
+      setSalonsData(data);
+    }
+    loadData();
+  }, []);
+
+  const availableSalons = Object.values(salonsData).slice(0, 6);
 
   const adTemplates = {
     bridal: {
@@ -54,7 +63,7 @@ export default function AdCampaignLauncher({ salonName, salonId }) {
 
   const activeSalonCount = campaignType === 'single' ? 1 : selectedMultiSalons.length;
   const activeSalonNames = campaignType === 'single' 
-    ? (salonsDatabase[selectedSalon]?.name || salonName || "Pihu Makeover")
+    ? (salonsData[selectedSalon]?.name || salonName || "Pihu Makeover")
     : `${selectedMultiSalons.length} Top Partner Salons (Bodhgaya & Gaya)`;
 
   return (
@@ -235,7 +244,7 @@ export default function AdCampaignLauncher({ salonName, salonId }) {
             <div className="flex items-center gap-2 mb-2 pb-2 border-b border-gray-200">
               <span className="w-5 h-5 rounded-full bg-gradient-to-tr from-purple-600 to-pink-500 text-white text-[10px] font-bold flex items-center justify-center">IG</span>
               <span className="font-bold text-gray-800">
-                {campaignType === 'single' ? (salonsDatabase[selectedSalon]?.name || "Pihu Makeover") : "Bodhgaya Beauty Network"}
+                {campaignType === 'single' ? (salonsData[selectedSalon]?.name || "Pihu Makeover") : "Bodhgaya Beauty Network"}
               </span>
               <span className="ml-auto text-[10px] text-gray-400">Sponsored</span>
             </div>
@@ -281,7 +290,7 @@ export default function AdCampaignLauncher({ salonName, salonId }) {
                 <span className="text-gray-400 text-[10px] uppercase font-bold tracking-wider block">Bookings Per Parlour:</span>
                 {selectedMultiSalons.map((id, idx) => (
                   <div key={id} className="flex justify-between items-center text-[11px]">
-                    <span className="text-gray-300">{salonsDatabase[id]?.name || id}</span>
+                    <span className="text-gray-300">{salonsData[id]?.name || id}</span>
                     <span className="text-green-400 font-mono font-bold">{32 - (idx * 5)} bookings</span>
                   </div>
                 ))}

@@ -6,6 +6,7 @@ import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
+import java.util.List;
 
 @Repository
 public class SalonRepository {
@@ -13,7 +14,8 @@ public class SalonRepository {
     private final DynamoDbTable<Salon> salonTable;
 
     public SalonRepository(DynamoDbEnhancedClient enhancedClient) {
-        this.salonTable = enhancedClient.table("BeautyAI_SalonService", TableSchema.fromBean(Salon.class));
+        String tableName = System.getenv("TABLE_NAME") != null ? System.getenv("TABLE_NAME") : "BeautyAiTable";
+        this.salonTable = enhancedClient.table(tableName, TableSchema.fromBean(Salon.class));
     }
 
     public void save(Salon salon) {
@@ -26,5 +28,9 @@ public class SalonRepository {
                 .sortValue("METADATA")
                 .build();
         return salonTable.getItem(key);
+    }
+
+    public List<Salon> findAll() {
+        return salonTable.scan().items().stream().toList();
     }
 }

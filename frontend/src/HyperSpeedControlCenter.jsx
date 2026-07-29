@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Zap, Send, CheckCircle, ShieldCheck, Code, Globe, RefreshCw, Cpu, Server } from 'lucide-react';
 import { 
   generateGoogleIndexingApiPayload, 
@@ -6,15 +6,25 @@ import {
   generateKnowledgeGraphMatrix, 
   generateAcceleratedReviewPrompt 
 } from './HyperSpeedSeoAlgorithm';
-import { salonsDatabase } from './salonsData';
+import { api } from './api';
 
 export default function HyperSpeedControlCenter() {
   const [selectedSalonId, setSelectedSalonId] = useState('pihu-makeover');
   const [activeTab, setActiveTab] = useState('indexing');
   const [statusMessage, setStatusMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [salon, setSalon] = useState(null);
 
-  const salon = salonsDatabase[selectedSalonId] || salonsDatabase['pihu-makeover'];
+  useEffect(() => {
+    async function loadData() {
+      const data = await api.getSalon(selectedSalonId);
+      setSalon(data || await api.getSalon('pihu-makeover'));
+    }
+    loadData();
+  }, [selectedSalonId]);
+
+  if (!salon) return <div className="p-8 text-gold-500">Loading Control Center...</div>;
+
   const targetUrl = `https://beautyai.app/salon/${salon.id}/bridal-makeup/${salon.neighborhoods[0]?.toLowerCase().replace(/\s+/g, '-') || 'bodhgaya'}`;
 
   const indexingPayload = generateGoogleIndexingApiPayload(targetUrl);

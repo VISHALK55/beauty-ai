@@ -22,6 +22,7 @@ public class Salon {
     private String googleMapsLink;
 
     @DynamoDbPartitionKey
+    @software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbAttribute("PK")
     public String getPk() {
         return pk;
     }
@@ -31,6 +32,7 @@ public class Salon {
     }
 
     @DynamoDbSortKey
+    @software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbAttribute("SK")
     public String getSk() {
         return sk;
     }
