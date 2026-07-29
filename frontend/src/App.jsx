@@ -12,6 +12,7 @@ import SalonDirectory from './SalonDirectory';
 import GoogleSearchSimulator from './GoogleSearchSimulator';
 import HyperSpeedControlCenter from './HyperSpeedControlCenter';
 import Appointments from './Appointments';
+import SmartReview from './SmartReview';
 
 function App() {
   return (
@@ -19,6 +20,9 @@ function App() {
       {/* Public Programmatic SEO Routes */}
       <Route path="/salon/:salonId/:serviceSlug" element={<PublicSalonPage />} />
       <Route path="/salon/:salonId/:serviceSlug/:neighborhoodSlug" element={<PublicSalonPage />} />
+      
+      {/* Smart Review Scanner Route */}
+      <Route path="/review/:salonId" element={<SmartReview />} />
 
       {/* Admin Dashboard Routes */}
       <Route path="/" element={<Layout />}>

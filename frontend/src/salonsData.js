@@ -15,7 +15,12 @@ export const salonsDatabase = {
     longitude: "84.9914",
     rating: "4.9",
     reviews: 57,
-    neighborhoods: ["Sujata Bypass", "Rajapur Road", "Bodhgaya", "Gaya Main Market", "A P Colony", "Gewal Bigha"],
+    neighborhoods: [
+      // Bodhgaya Target Areas
+      "Bodhgaya", "Sujata Bypass", "Rajapur Road", "Mastipur", "Kalachakra Maidan", "Mocharim", "Pachatti", 
+      // Gaya Target Areas
+      "Gaya Main Market", "A P Colony", "Gewal Bigha", "Swarajpuri Road", "GB Road", "White House Compound", "Delha", "Manpur", "Civil Lines", "Chand Chaura", "Vishnupad", "Katari Hill Road", "Rampur"
+    ],
     image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80"
   },
   "glamour-gaya": {
