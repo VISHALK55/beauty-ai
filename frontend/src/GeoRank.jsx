@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { api } from './api';
 import { 
   MapPin, 
   MessageCircle, 
@@ -33,7 +34,19 @@ const StatCard = ({ title, value, icon, subtitle, highlight }) => (
 
 export default function GeoRank() {
   const [isEnabled, setIsEnabled] = useState(true);
-  const [mapsUrl, setMapsUrl] = useState("https://maps.google.com/?cid=123456789 (A P Colony, Gaya)");
+  const [salon, setSalon] = useState(null);
+  const [mapsUrl, setMapsUrl] = useState("");
+
+  useEffect(() => {
+    async function loadData() {
+      const data = await api.getSalon('pihu-makeover-beauty-salon');
+      setSalon(data);
+      if (data) setMapsUrl(data.googleMapsLink || "https://maps.google.com/?cid=123456789");
+    }
+    loadData();
+  }, []);
+
+  if (!salon) return <div className="p-10 text-gold-500">Loading Geo Rank Engine...</div>;
 
   return (
     <div className="px-10 py-8 min-h-full">
@@ -42,7 +55,7 @@ export default function GeoRank() {
           <h1 className="text-4xl font-serif tracking-tight flex items-center gap-3">
             Geo Rank AI <Zap size={28} className="text-blue-500 fill-blue-500/20" />
           </h1>
-          <p className="text-gray-400 mt-2 text-lg">Automate your local SEO and dominate Google Maps in Gaya.</p>
+          <p className="text-gray-400 mt-2 text-lg">Automate your local SEO and dominate Google Maps in {salon.city}.</p>
         </div>
       </header>
 
@@ -90,7 +103,7 @@ export default function GeoRank() {
                 <MessageCircle size={16} className="text-blue-400" /> WhatsApp Preview
               </h4>
               <p className="text-gray-400 italic text-sm">
-                "Hi! Thank you for visiting Surbhi Beauty Parlour (A P Colony, Gaya) today. If you loved your service, we would be incredibly grateful if you left us a quick 5-star review here: <span className="text-blue-400 not-italic">{mapsUrl}</span>"
+                "Hi! Thank you for visiting {salon.name} ({salon.city}) today. If you loved your service, we would be incredibly grateful if you left us a quick 5-star review here: <span className="text-blue-400 not-italic">{mapsUrl}</span>"
               </p>
             </div>
           </div>
@@ -105,7 +118,7 @@ export default function GeoRank() {
           <div className="space-y-6">
             <div className="bg-dark-900/50 p-4 rounded-xl border border-white/5">
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm text-gray-400">Current Ranking (Gaya)</span>
+                <span className="text-sm text-gray-400">Current Ranking ({salon.city})</span>
                 <span className="text-gold-400 font-bold flex items-center gap-1">Top 3 <TrendingUp size={14} /></span>
               </div>
               <div className="w-full bg-dark-700 rounded-full h-2">
@@ -116,15 +129,16 @@ export default function GeoRank() {
             <div className="pt-2">
               <h4 className="text-sm text-gray-400 uppercase tracking-wide mb-3">AI Targeted Areas</h4>
               <ul className="space-y-3">
-                <li className="flex items-center gap-3 text-sm">
-                  <CheckCircle size={16} className="text-green-500" /> A P Colony <span className="ml-auto text-gray-500">Rank #1</span>
-                </li>
-                <li className="flex items-center gap-3 text-sm">
-                  <CheckCircle size={16} className="text-green-500" /> Gewal Bigha <span className="ml-auto text-gray-500">Rank #1</span>
-                </li>
-                <li className="flex items-center gap-3 text-sm">
-                  <div className="w-4 h-4 rounded-full border-2 border-blue-500 border-t-transparent animate-spin"></div> Bodhgaya <span className="ml-auto text-blue-400">Optimizing...</span>
-                </li>
+                {salon.neighborhoods?.slice(0, 2).map((hood, i) => (
+                  <li key={i} className="flex items-center gap-3 text-sm">
+                    <CheckCircle size={16} className="text-green-500" /> {hood} <span className="ml-auto text-gray-500">Rank #1</span>
+                  </li>
+                ))}
+                {salon.neighborhoods?.length > 2 && (
+                  <li className="flex items-center gap-3 text-sm">
+                    <div className="w-4 h-4 rounded-full border-2 border-blue-500 border-t-transparent animate-spin"></div> {salon.neighborhoods[2]} <span className="ml-auto text-blue-400">Optimizing...</span>
+                  </li>
+                )}
               </ul>
             </div>
           </div>

@@ -4,9 +4,17 @@ server:
 spring:
   application:
     name: salon-service
+  config:
+    import: "aws-parameterstore:/salon-service/"
 
 aws:
   dynamodb:
     endpoint: https://dynamodb.us-east-1.amazonaws.com
     region: us-east-1
   # Credentials should be fetched via IAM Roles or AWS Secrets Manager (Skill: aws-secrets-manager)
+
+meta:
+  ads:
+    access-token: ${meta.ads.access-token:dummy_token}
+    ad-account-id: ${meta.ads.ad-account-id:dummy_act_id}
+    api-version: v19.0

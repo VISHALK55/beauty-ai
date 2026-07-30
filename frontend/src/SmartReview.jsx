@@ -10,7 +10,7 @@ export default function SmartReview() {
   useEffect(() => {
     async function loadData() {
       const data = await api.getSalon(salonId);
-      setSalon(data || await api.getSalon('pihu-makeover'));
+      setSalon(data || await api.getSalon('pihu-makeover-beauty-salon'));
     }
     loadData();
   }, [salonId]);

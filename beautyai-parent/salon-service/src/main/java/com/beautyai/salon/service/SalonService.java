@@ -29,6 +29,12 @@ public class SalonService {
         salon.setWorkingHours(request.getWorkingHours());
         salon.setAiSystemPrompt(request.getAiSystemPrompt());
         salon.setGoogleMapsLink(request.getGoogleMapsLink());
+        salon.setCity(request.getCity());
+        salon.setPhone(request.getPhone());
+        salon.setRating(request.getRating());
+        salon.setReviews(request.getReviews());
+        salon.setImage(request.getImage());
+        salon.setNeighborhoods(request.getNeighborhoods());
 
         salonRepository.save(salon);
         return salon;
@@ -40,5 +46,53 @@ public class SalonService {
 
     public List<Salon> getAllSalons() {
         return salonRepository.findAll();
+    }
+
+    public com.beautyai.salon.model.SalonServiceItem createService(String salonId, com.beautyai.salon.dto.CreateServiceRequest request) {
+        com.beautyai.salon.model.SalonServiceItem service = new com.beautyai.salon.model.SalonServiceItem();
+        String serviceId = java.util.UUID.randomUUID().toString();
+        
+        service.setPk("SALON#" + salonId);
+        service.setSk("SERVICE#" + serviceId);
+        service.setId(serviceId);
+        service.setSalonId(salonId);
+        service.setName(request.getName());
+        service.setDescription(request.getDescription());
+        service.setPriceINR(request.getPriceINR());
+        service.setDuration(request.getDuration());
+        service.setIcon(request.getIcon());
+
+        salonRepository.saveService(service);
+        return service;
+    }
+
+    public List<com.beautyai.salon.model.SalonServiceItem> getServices(String salonId) {
+        return salonRepository.findServicesBySalonId(salonId);
+    }
+
+    public com.beautyai.salon.model.Appointment createAppointment(String salonId, com.beautyai.salon.dto.CreateAppointmentRequest request) {
+        com.beautyai.salon.model.Appointment appointment = new com.beautyai.salon.model.Appointment();
+        String appointmentId = "BK-" + java.util.UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        
+        appointment.setPk("SALON#" + salonId);
+        appointment.setSk("APPOINTMENT#" + appointmentId);
+        appointment.setId(appointmentId);
+        appointment.setSalonId(salonId);
+        appointment.setCustomerName(request.getCustomerName());
+        appointment.setSalonName(request.getSalonName());
+        appointment.setServiceName(request.getServiceName());
+        appointment.setPrice(request.getPrice());
+        appointment.setDate(request.getDate());
+        appointment.setTime(request.getTime());
+        appointment.setStatus(request.getStatus() != null ? request.getStatus() : "Confirmed");
+        appointment.setPhone(request.getPhone());
+        appointment.setSource(request.getSource() != null ? request.getSource() : "Manual Booking");
+
+        salonRepository.saveAppointment(appointment);
+        return appointment;
+    }
+
+    public List<com.beautyai.salon.model.Appointment> getAppointments(String salonId) {
+        return salonRepository.findAppointmentsBySalonId(salonId);
     }
 }

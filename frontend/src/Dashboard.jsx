@@ -108,7 +108,7 @@ export default function Dashboard() {
       </div>
 
       {/* 🚀 AUTOMATED AD CAMPAIGN LAUNCHER 🚀 */}
-      <AdCampaignLauncher salonName="Pihu Makeover Saloon" salonId="pihu-makeover" />
+      <AdCampaignLauncher salonName="Pihu Makeover Saloon" salonId="pihu-makeover-beauty-salon" />
 
       {/* 🔴 NEW HYPER-SPEED SEO PANEL 🔴 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
@@ -198,7 +198,7 @@ export default function Dashboard() {
             <div className="space-y-3 text-xs">
               <div className="bg-dark-900/80 p-3 rounded-lg border border-white/5">
                 <span className="text-gray-400 uppercase font-mono block text-[10px]">Official IG & FB Bio Link:</span>
-                <span className="text-gold-400 font-mono select-all">https://beautyai.app/salon/pihu-makeover</span>
+                <span className="text-gold-400 font-mono select-all">https://beautyai.app/salon/pihu-makeover-beauty-salon</span>
               </div>
               
               <div className="flex gap-2">

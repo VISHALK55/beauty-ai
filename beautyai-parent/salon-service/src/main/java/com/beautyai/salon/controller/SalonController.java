@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/salons")
+@CrossOrigin(origins = "*")
 public class SalonController {
 
     private final SalonService salonService;
@@ -36,5 +37,29 @@ public class SalonController {
     @GetMapping
     public ResponseEntity<List<Salon>> getAllSalons() {
         return ResponseEntity.ok(salonService.getAllSalons());
+    }
+
+    @PostMapping("/{id}/services")
+    public ResponseEntity<com.beautyai.salon.model.SalonServiceItem> createService(
+            @PathVariable String id, 
+            @RequestBody com.beautyai.salon.dto.CreateServiceRequest request) {
+        return new ResponseEntity<>(salonService.createService(id, request), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}/services")
+    public ResponseEntity<List<com.beautyai.salon.model.SalonServiceItem>> getServices(@PathVariable String id) {
+        return ResponseEntity.ok(salonService.getServices(id));
+    }
+
+    @PostMapping("/{id}/appointments")
+    public ResponseEntity<com.beautyai.salon.model.Appointment> createAppointment(
+            @PathVariable String id, 
+            @RequestBody com.beautyai.salon.dto.CreateAppointmentRequest request) {
+        return new ResponseEntity<>(salonService.createAppointment(id, request), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}/appointments")
+    public ResponseEntity<List<com.beautyai.salon.model.Appointment>> getAppointments(@PathVariable String id) {
+        return ResponseEntity.ok(salonService.getAppointments(id));
     }
 }

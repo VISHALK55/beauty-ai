@@ -1,68 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Clock, User, Phone, CheckCircle2, MessageSquare, Search, Filter, Plus, ShieldCheck } from 'lucide-react';
+import { Calendar, Clock, User, Phone, CheckCircle2, MessageSquare, Search, Filter, Plus, ShieldCheck, Loader } from 'lucide-react';
 import BookingModal from './BookingModal';
-
-export const initialBookings = [
-  {
-    id: 'BK-1001',
-    customerName: 'Suman Kumari',
-    salonName: 'Pihu Makeover Saloon',
-    salonId: 'pihu-makeover',
-    serviceName: 'Bridal HD Makeup',
-    price: 6450,
-    date: '2026-07-24',
-    time: '11:00 AM',
-    status: 'Confirmed',
-    phone: '+91 99345 11223',
-    source: 'Google Search (Programmatic SEO)'
-  },
-  {
-    id: 'BK-1002',
-    customerName: 'Anjali Verma',
-    salonName: 'Pihu Makeover Saloon',
-    salonId: 'pihu-makeover',
-    serviceName: 'Luxury Hair Spa',
-    price: 900,
-    date: '2026-07-24',
-    time: '02:30 PM',
-    status: 'AI WhatsApp Confirmed',
-    phone: '+91 98765 88990',
-    source: 'AI Receptionist Chat'
-  },
-  {
-    id: 'BK-1003',
-    customerName: 'Pooja Singh',
-    salonName: 'Surbhi Beauty Parlour',
-    salonId: 'surbhi-gaya',
-    serviceName: 'Gold Radiance Facial',
-    price: 1200,
-    date: '2026-07-25',
-    time: '10:00 AM',
-    status: 'Confirmed',
-    phone: '+91 94312 55667',
-    source: 'Direct Website Booking'
-  }
-];
+import { api } from './api';
 
 export default function Appointments() {
   const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
 
+  const fetchBookings = async () => {
+    setLoading(true);
+    const data = await api.getAppointments('pihu-makeover-beauty-salon');
+    setBookings(data || []);
+    setLoading(false);
+  };
+
   useEffect(() => {
-    const saved = localStorage.getItem('beautyai_bookings');
-    if (saved) {
-      try {
-        setBookings(JSON.parse(saved));
-      } catch (e) {
-        setBookings(initialBookings);
-      }
-    } else {
-      setBookings(initialBookings);
-      localStorage.setItem('beautyai_bookings', JSON.stringify(initialBookings));
-    }
+    fetchBookings();
   }, []);
+
+  const handleBookingCreated = () => {
+    fetchBookings();
+  };
 
   const filteredBookings = bookings.filter(b => {
     const matchesSearch = b.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -139,7 +100,12 @@ export default function Appointments() {
 
       {/* Appointments List */}
       <div className="space-y-4">
-        {filteredBookings.map((b, idx) => (
+        {loading ? (
+          <div className="flex justify-center py-20 text-gold-500">
+            <Loader className="animate-spin" size={40} />
+          </div>
+        ) : filteredBookings.length > 0 ? (
+          filteredBookings.map((b, idx) => (
           <div 
             key={b.id || idx} 
             className="glass-panel p-5 rounded-2xl hover:border-gold-500/40 transition-all flex flex-col md:flex-row justify-between items-start md:items-center gap-4 group"
@@ -191,16 +157,19 @@ export default function Appointments() {
               </a>
             </div>
           </div>
-        ))}
-
-        {filteredBookings.length === 0 && (
+          ))
+        ) : (
           <div className="glass-panel p-12 text-center text-gray-400">
             <p className="text-base">No appointments found matching your search.</p>
           </div>
         )}
       </div>
 
-      <BookingModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <BookingModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        onBookingCreated={handleBookingCreated}
+      />
     </div>
   );
 }

@@ -231,7 +231,29 @@ export default function AdCampaignLauncher({ salonName, salonId }) {
 
           {/* Launch Button */}
           <button
-            onClick={() => setIsCampaignActive(true)}
+            onClick={async () => {
+              try {
+                // Set UI state to indicate processing...
+                setIsCampaignActive(true);
+                
+                // Call real backend API
+                const payload = {
+                  salonIds: campaignType === 'single' ? selectedSalon : selectedMultiSalons.join(','),
+                  templateType: selectedTemplate,
+                  dailyBudget: parseInt(dailyBudget),
+                  durationDays: parseInt(durationDays)
+                };
+                
+                const response = await api.launchAdCampaign(payload);
+                console.log("Ad Campaign Backend Response:", response);
+                
+                // Keep UI active upon success
+              } catch (error) {
+                console.error("Failed to launch ad campaign", error);
+                setIsCampaignActive(false);
+                alert("Failed to connect to the backend server. Please check your connection.");
+              }
+            }}
             className="w-full py-4 bg-gradient-to-r from-gold-500 via-amber-500 to-gold-600 hover:from-gold-400 hover:to-amber-400 text-dark-950 font-bold rounded-xl text-base transition-all shadow-[0_0_25px_rgba(212,175,55,0.4)] flex items-center justify-center gap-2 cursor-pointer"
           >
             <Play size={18} fill="currentColor" /> {isCampaignActive ? `Update Active Ad (${activeSalonCount} Salons)` : `Launch Ad for ${activeSalonCount} Parlour(s) (₹${parseInt(dailyBudget) * parseInt(durationDays)} Total)`}

@@ -96,7 +96,7 @@ export default function GoogleSearchSimulator() {
                   <Phone size={13} /> Call
                 </a>
                 <Link
-                  to="/salon/pihu-makeover/bridal-makeup/bodhgaya"
+                  to="/salon/pihu-makeover-beauty-salon/bridal-makeup/bodhgaya"
                   target="_blank"
                   className="flex-1 sm:flex-none px-4 py-2 bg-blue-600 text-white rounded-full text-xs font-semibold hover:bg-blue-700 flex items-center gap-1.5 justify-center shadow-sm"
                 >
@@ -125,11 +125,11 @@ export default function GoogleSearchSimulator() {
           <div className="mt-2">
             <div className="flex items-center gap-2 text-xs text-gray-600 mb-1">
               <span className="w-4 h-4 rounded-full bg-gold-500 text-dark-900 font-bold flex items-center justify-center text-[10px]">P</span>
-              <span>beautyai.app › salon › pihu-makeover › bridal-makeup</span>
+              <span>beautyai.app › salon › pihu-makeover-beauty-salon › bridal-makeup</span>
             </div>
 
             <Link
-              to="/salon/pihu-makeover/bridal-makeup/bodhgaya"
+              to="/salon/pihu-makeover-beauty-salon/bridal-makeup/bodhgaya"
               target="_blank"
               className="text-xl font-semibold text-blue-700 hover:underline block leading-snug"
             >
@@ -141,15 +141,15 @@ export default function GoogleSearchSimulator() {
             </p>
 
             <div className="mt-3 flex items-center gap-3 text-xs text-blue-600 font-medium">
-              <Link to="/salon/pihu-makeover/bridal-makeup/bodhgaya" target="_blank" className="hover:underline flex items-center gap-1">
+              <Link to="/salon/pihu-makeover-beauty-salon/bridal-makeup/bodhgaya" target="_blank" className="hover:underline flex items-center gap-1">
                 Book Appointment Online <ExternalLink size={12} />
               </Link>
               <span className="text-gray-300">•</span>
-              <Link to="/salon/pihu-makeover/hair-spa/sujata-bypass" target="_blank" className="hover:underline">
+              <Link to="/salon/pihu-makeover-beauty-salon/hair-spa/sujata-bypass" target="_blank" className="hover:underline">
                 Hair Spa Packages
               </Link>
               <span className="text-gray-300">•</span>
-              <Link to="/salon/pihu-makeover/facial/kalchakra-maidan" target="_blank" className="hover:underline">
+              <Link to="/salon/pihu-makeover-beauty-salon/facial/kalchakra-maidan" target="_blank" className="hover:underline">
                 Sujata Bypass Branch
               </Link>
             </div>

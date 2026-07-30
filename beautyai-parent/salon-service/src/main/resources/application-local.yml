@@ -1,0 +1,9 @@
+spring:
+  config:
+    import: "" # Disable parameter store for local
+
+meta:
+  ads:
+    access-token: "dummy_token" # Local fallback
+    ad-account-id: "dummy_act_id"
+    api-version: "v19.0"

@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  salon-service
+  AWS Serverless Spring Boot API
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 512
+
+Resources:
+  SalonServiceFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: target/salon-service-1.0.0-SNAPSHOT.jar
+      Handler: com.beautyai.salon.StreamLambdaHandler::handleRequest
+      Runtime: java17
+      Architectures:
+        - x86_64
+      Environment:
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: "*"
+        - Statement:
+            - Effect: Allow
+              Action:
+                - ssm:GetParametersByPath
+                - ssm:GetParameters
+                - ssm:GetParameter
+              Resource: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/salon-service/*"
+      Events:
+        ProxyResource:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+
+Outputs:
+  SalonServiceApi:
+    Description: "API Gateway endpoint URL for Prod environment for Salon Service"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"

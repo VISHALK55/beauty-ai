@@ -4,6 +4,7 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
 import java.util.Map;
+import java.util.List;
 
 @DynamoDbBean
 public class Salon {
@@ -16,6 +17,13 @@ public class Salon {
     private String address;
     private String gstNumber;
     private Map<String, String> workingHours;
+    
+    private String city;
+    private String phone;
+    private String rating;
+    private Integer reviews;
+    private String image;
+    private List<String> neighborhoods;
     
     // Multi-Tenant SaaS Fields
     private String aiSystemPrompt;
@@ -55,6 +63,24 @@ public class Salon {
 
     public Map<String, String> getWorkingHours() { return workingHours; }
     public void setWorkingHours(Map<String, String> workingHours) { this.workingHours = workingHours; }
+
+    public String getCity() { return city; }
+    public void setCity(String city) { this.city = city; }
+
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
+
+    public String getRating() { return rating; }
+    public void setRating(String rating) { this.rating = rating; }
+
+    public Integer getReviews() { return reviews; }
+    public void setReviews(Integer reviews) { this.reviews = reviews; }
+
+    public String getImage() { return image; }
+    public void setImage(String image) { this.image = image; }
+
+    public List<String> getNeighborhoods() { return neighborhoods; }
+    public void setNeighborhoods(List<String> neighborhoods) { this.neighborhoods = neighborhoods; }
 
     public String getAiSystemPrompt() { return aiSystemPrompt; }
     public void setAiSystemPrompt(String aiSystemPrompt) { this.aiSystemPrompt = aiSystemPrompt; }

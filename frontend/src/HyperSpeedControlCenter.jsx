@@ -9,7 +9,7 @@ import {
 import { api } from './api';
 
 export default function HyperSpeedControlCenter() {
-  const [selectedSalonId, setSelectedSalonId] = useState('pihu-makeover');
+  const [selectedSalonId, setSelectedSalonId] = useState('pihu-makeover-beauty-salon');
   const [activeTab, setActiveTab] = useState('indexing');
   const [statusMessage, setStatusMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -18,7 +18,7 @@ export default function HyperSpeedControlCenter() {
   useEffect(() => {
     async function loadData() {
       const data = await api.getSalon(selectedSalonId);
-      setSalon(data || await api.getSalon('pihu-makeover'));
+      setSalon(data || await api.getSalon('pihu-makeover-beauty-salon'));
     }
     loadData();
   }, [selectedSalonId]);
@@ -76,7 +76,7 @@ export default function HyperSpeedControlCenter() {
             }}
             className="bg-dark-800 border border-white/10 text-gold-400 font-bold px-4 py-2.5 rounded-xl focus:outline-none focus:border-gold-500 text-sm"
           >
-            <option value="pihu-makeover">Pihu Makeover Saloon (Bodhgaya & Gaya)</option>
+            <option value="pihu-makeover-beauty-salon">Pihu Makeover Saloon (Bodhgaya & Gaya)</option>
             <option value="glamour-boring-road-patna">Glamour Studio (Patna)</option>
             <option value="vogue-bandra-mumbai">Vogue Luxury (Mumbai)</option>
             <option value="vogue-connaught-delhi">Vogue CP (Delhi)</option>

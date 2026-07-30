@@ -1,15 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Calendar as CalendarIcon, Clock, User, Scissors } from 'lucide-react';
+import { api } from './api';
 
-const BookingModal = ({ isOpen, onClose }) => {
+const BookingModal = ({ isOpen, onClose, onBookingCreated }) => {
   const [formData, setFormData] = useState({
     customerName: '',
-    serviceId: 'srv_1',
+    serviceId: '',
     date: '',
     time: '10:00'
   });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [services, setServices] = useState([]);
+
+  useEffect(() => {
+    async function loadServices() {
+      const data = await api.getSalonServices('pihu-makeover-beauty-salon');
+      if (data && data.length > 0) {
+        setServices(data);
+        setFormData(prev => ({ ...prev, serviceId: data[0].id }));
+      }
+    }
+    if (isOpen) {
+      loadServices();
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -18,25 +33,25 @@ const BookingModal = ({ isOpen, onClose }) => {
     setLoading(true);
 
     try {
+      const selectedService = services.find(s => s.id === formData.serviceId) || services[0];
+      
       const newBooking = {
-        id: 'BK-' + Math.floor(1000 + Math.random() * 9000),
-        customerName: formData.customerName || 'Priya Sharma',
+        customerName: formData.customerName,
         salonName: 'Pihu Makeover Saloon',
-        salonId: 'pihu-makeover',
-        serviceName: formData.serviceId === 'srv_3' ? 'Bridal HD Makeup' : 'Luxury Hair Spa',
-        price: formData.serviceId === 'srv_3' ? 6450 : 900,
+        serviceName: selectedService ? selectedService.name : 'Custom Service',
+        price: selectedService ? selectedService.priceINR : 0,
         date: formData.date || new Date().toISOString().split('T')[0],
         time: formData.time || '11:00 AM',
-        status: 'Confirmed (AI WhatsApp Sent)',
+        status: 'Confirmed',
         phone: '+91 99345 ' + Math.floor(10000 + Math.random() * 90000),
-        source: 'Programmatic SEO Page'
+        source: 'Manual Booking'
       };
 
-      // Save to localStorage so it lands in Appointments & CRM dashboard instantly
-      const existing = JSON.parse(localStorage.getItem('beautyai_bookings') || '[]');
-      const updated = [newBooking, ...existing];
-      localStorage.setItem('beautyai_bookings', JSON.stringify(updated));
-      window.dispatchEvent(new Event('storage'));
+      await api.createAppointment('pihu-makeover-beauty-salon', newBooking);
+
+      if (onBookingCreated) {
+        onBookingCreated();
+      }
 
       setSuccess(true);
       setTimeout(() => {
@@ -96,9 +111,9 @@ const BookingModal = ({ isOpen, onClose }) => {
                   onChange={e => setFormData({...formData, serviceId: e.target.value})}
                   className="w-full pl-10 pr-4 py-2 bg-dark-800 border border-white/10 rounded-lg focus:outline-none focus:border-gold-500 transition-colors text-white appearance-none"
                 >
-                  <option value="srv_1">Premium Haircut & Styling (₹1500)</option>
-                  <option value="srv_2">Color & Highlights (₹4500)</option>
-                  <option value="srv_3">Bridal Makeup (₹15000)</option>
+                  {services.map(s => (
+                    <option key={s.id} value={s.id}>{s.name} (₹{s.priceINR})</option>
+                  ))}
                 </select>
               </div>
             </div>
