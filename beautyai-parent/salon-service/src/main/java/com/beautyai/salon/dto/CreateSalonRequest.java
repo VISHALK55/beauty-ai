@@ -18,6 +18,7 @@ public class CreateSalonRequest {
     // Multi-Tenant SaaS Fields
     private String aiSystemPrompt;
     private String googleMapsLink;
+    private String accessPin;
 
     // Getters and Setters
     public String getName() { return name; }
@@ -55,4 +56,7 @@ public class CreateSalonRequest {
 
     public String getGoogleMapsLink() { return googleMapsLink; }
     public void setGoogleMapsLink(String googleMapsLink) { this.googleMapsLink = googleMapsLink; }
+
+    public String getAccessPin() { return accessPin; }
+    public void setAccessPin(String accessPin) { this.accessPin = accessPin; }
 }

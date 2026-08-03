@@ -17,7 +17,21 @@ Globals:
         TABLE_NAME: 'BeautyAiTable'
 
 Resources:
-
+  BeautyAiTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: 'BeautyAiTable'
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: PK
+          AttributeType: S
+        - AttributeName: SK
+          AttributeType: S
+      KeySchema:
+        - AttributeName: PK
+          KeyType: HASH
+        - AttributeName: SK
+          KeyType: RANGE
   BeautyAiHttpApi:
     Type: AWS::Serverless::HttpApi
     Properties:
@@ -208,7 +222,47 @@ Resources:
             Method: ANY
             PayloadFormatVersion: '1.0'
 
+  RedirectFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: nodejs20.x
+      Handler: index.handler
+      SnapStart:
+        ApplyOn: None
+      InlineCode: |
+        exports.handler = async (event) => {
+            const path = event.rawPath || '';
+            let location = 'http://beauty-ai-customer-41482.s3-website-us-east-1.amazonaws.com';
+            if (path.includes('admin')) {
+                location = 'http://beauty-ai-admin-46074.s3-website-us-east-1.amazonaws.com';
+            }
+            return {
+                statusCode: 301,
+                headers: {
+                    Location: location
+                }
+            };
+        };
+      Events:
+        ApiRoot:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref BeautyAiHttpApi
+            Path: /go
+            Method: GET
+            PayloadFormatVersion: '2.0'
+        AdminRoot:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref BeautyAiHttpApi
+            Path: /admin
+            Method: GET
+            PayloadFormatVersion: '2.0'
+
 Outputs:
   ApiEndpoint:
     Description: "API Gateway endpoint URL"
     Value: !Sub "https://${BeautyAiHttpApi}.execute-api.${AWS::Region}.amazonaws.com/"
+  ShortUrl:
+    Description: "Short redirect URL"
+    Value: !Sub "https://${BeautyAiHttpApi}.execute-api.${AWS::Region}.amazonaws.com/go"

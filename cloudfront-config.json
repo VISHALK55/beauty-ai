@@ -1,0 +1,30 @@
+{
+  "CallerReference": "pihu-makeover-cdn-1785677905.59605",
+  "Aliases": { "Quantity": 0 },
+  "DefaultRootObject": "index.html",
+  "Origins": {
+    "Quantity": 1,
+    "Items": [
+      {
+        "Id": "S3-Website-beauty-ai-customer-41482",
+        "DomainName": "beauty-ai-customer-41482.s3-website-us-east-1.amazonaws.com",
+        "CustomOriginConfig": {
+          "HTTPPort": 80,
+          "HTTPSPort": 443,
+          "OriginProtocolPolicy": "http-only"
+        }
+      }
+    ]
+  },
+  "DefaultCacheBehavior": {
+    "TargetOriginId": "S3-Website-beauty-ai-customer-41482",
+    "ViewerProtocolPolicy": "redirect-to-https",
+    "MinTTL": 0,
+    "ForwardedValues": {
+      "QueryString": false,
+      "Cookies": { "Forward": "none" }
+    }
+  },
+  "Comment": "Pihu Makeover Customer CDN",
+  "Enabled": true
+}

@@ -35,6 +35,7 @@ public class SalonService {
         salon.setReviews(request.getReviews());
         salon.setImage(request.getImage());
         salon.setNeighborhoods(request.getNeighborhoods());
+        salon.setAccessPin(request.getAccessPin());
 
         salonRepository.save(salon);
         return salon;

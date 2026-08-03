@@ -1,4 +1,5 @@
 $ErrorActionPreference = 'Stop'
+$env:JAVA_HOME = "C:\Program Files\Eclipse Adoptium\jdk-21.0.11.10-hotspot"
 
 Write-Host "Downloading Apache Maven..."
 $mavenUrl = "https://archive.apache.org/dist/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.zip"

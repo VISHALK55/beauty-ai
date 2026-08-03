@@ -28,6 +28,7 @@ public class Salon {
     // Multi-Tenant SaaS Fields
     private String aiSystemPrompt;
     private String googleMapsLink;
+    private String accessPin;
 
     @DynamoDbPartitionKey
     @software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbAttribute("PK")
@@ -87,4 +88,7 @@ public class Salon {
 
     public String getGoogleMapsLink() { return googleMapsLink; }
     public void setGoogleMapsLink(String googleMapsLink) { this.googleMapsLink = googleMapsLink; }
+
+    public String getAccessPin() { return accessPin; }
+    public void setAccessPin(String accessPin) { this.accessPin = accessPin; }
 }

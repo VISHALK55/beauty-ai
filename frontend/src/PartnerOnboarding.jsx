@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { Store, MapPin, Link2, Sparkles, PlusCircle, CheckCircle2 } from 'lucide-react';
+import { Store, MapPin, Link2, Sparkles, PlusCircle, CheckCircle2, Key } from 'lucide-react';
+import { api } from './api';
 
 export default function PartnerOnboarding() {
   const [status, setStatus] = useState('idle'); // idle, loading, success
+  const [generatedPin, setGeneratedPin] = useState(null);
+  const [generatedId, setGeneratedId] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     address: '',
@@ -10,14 +13,33 @@ export default function PartnerOnboarding() {
     googleMapsUrl: ''
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('loading');
     
-    // Simulate AI / Backend processing
-    setTimeout(() => {
+    // Generate a secure 6 digit PIN
+    const pin = Math.floor(100000 + Math.random() * 900000).toString();
+    
+    try {
+      const response = await api.createSalon({
+          name: formData.name,
+          address: formData.address,
+          city: formData.city,
+          googleMapsLink: formData.googleMapsUrl,
+          accessPin: pin,
+          neighborhoods: [formData.city],
+          workingHours: { "Monday": "09:00 - 18:00", "Tuesday": "09:00 - 18:00" },
+          aiSystemPrompt: `You are an AI assistant for ${formData.name}.`
+      });
+      
+      setGeneratedPin(pin);
+      setGeneratedId(response.id);
       setStatus('success');
-    }, 2000);
+    } catch (error) {
+      console.error(error);
+      setStatus('idle');
+      alert("Failed to create salon. Check the backend connection.");
+    }
   };
 
   return (
@@ -40,8 +62,28 @@ export default function PartnerOnboarding() {
           <p className="text-gray-400 text-lg mb-8 max-w-2xl mx-auto">
             {formData.name} is now live on the network. The AI has generated their localized schema markup for {formData.city} and activated their Voice AI system.
           </p>
+
+          <div className="bg-dark-900 border border-gold-500/30 rounded-2xl p-8 mb-8 max-w-md mx-auto">
+            <h3 className="text-white font-semibold mb-4 flex items-center justify-center gap-2">
+                <Key className="text-gold-500" size={20} />
+                Secure Login Credentials
+            </h3>
+            <p className="text-gray-400 text-sm mb-6">Send these credentials to the parlour owner so they can log in to their dashboard.</p>
+            
+            <div className="space-y-4">
+                <div>
+                    <label className="text-xs text-gray-500 uppercase font-bold tracking-wider">Salon ID (Username)</label>
+                    <div className="text-xl font-mono text-gold-400 font-bold bg-black/50 py-2 rounded-lg mt-1 border border-white/5">{generatedId}</div>
+                </div>
+                <div>
+                    <label className="text-xs text-gray-500 uppercase font-bold tracking-wider">Secure PIN (Password)</label>
+                    <div className="text-3xl font-mono text-white font-bold tracking-[0.2em] bg-black/50 py-2 rounded-lg mt-1 border border-white/5">{generatedPin}</div>
+                </div>
+            </div>
+          </div>
+
           <button 
-            onClick={() => { setStatus('idle'); setFormData({name: '', address: '', city: '', googleMapsUrl: ''}); }}
+            onClick={() => { setStatus('idle'); setGeneratedPin(null); setGeneratedId(null); setFormData({name: '', address: '', city: '', googleMapsUrl: ''}); }}
             className="btn-primary px-6 py-3"
           >
             Onboard Another Salon

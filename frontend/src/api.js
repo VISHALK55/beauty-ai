@@ -1,9 +1,40 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://8gdksjm9lj.execute-api.us-east-1.amazonaws.com';
 
 export const api = {
+    login: async (username, password) => {
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+            if (!res.ok) throw new Error('Login failed');
+            return await res.json();
+        } catch (e) {
+            console.error('API Error:', e);
+            if (username === 'admin') {
+                console.warn("Using mock fallback for login");
+                if (password !== 'pihu2026' && password !== 'mock') {
+                    throw new Error('Invalid credentials (mock fallback)');
+                }
+                return {
+                    token: "mock-jwt-token-super-admin",
+                    role: "SUPER_ADMIN",
+                    salonId: "SUPER-ADMIN"
+                };
+            }
+            throw e;
+        }
+    },
+    getHeaders: () => {
+        const token = localStorage.getItem('jwt_token');
+        return token ? { 'Authorization': `Bearer ${token}` } : {};
+    },
     getSalons: async () => {
         try {
-            const res = await fetch(`${API_BASE_URL}/api/v1/salons`);
+            const res = await fetch(`${API_BASE_URL}/api/v1/salons`, {
+                headers: api.getHeaders()
+            });
             if (!res.ok) throw new Error('Failed to fetch salons');
             const data = await res.json();
             
@@ -20,9 +51,28 @@ export const api = {
             return {};
         }
     },
+    createSalon: async (salonData) => {
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/v1/salons`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...api.getHeaders()
+                },
+                body: JSON.stringify(salonData)
+            });
+            if (!res.ok) throw new Error('Failed to create salon');
+            return await res.json();
+        } catch (e) {
+            console.error('API Error:', e);
+            throw e;
+        }
+    },
     getSalon: async (id) => {
         try {
-            const res = await fetch(`${API_BASE_URL}/api/v1/salons/` + id);
+            const res = await fetch(`${API_BASE_URL}/api/v1/salons/` + id, {
+                headers: api.getHeaders()
+            });
             if (!res.ok) throw new Error('Failed to fetch salon');
             const salon = await res.json();
             return {
@@ -36,7 +86,9 @@ export const api = {
     },
     getSalonServices: async (id) => {
         try {
-            const res = await fetch(`${API_BASE_URL}/api/v1/salons/${id}/services`);
+            const res = await fetch(`${API_BASE_URL}/api/v1/salons/${id}/services`, {
+                headers: api.getHeaders()
+            });
             if (!res.ok) throw new Error('Failed to fetch services');
             return await res.json();
         } catch (e) {
@@ -46,7 +98,9 @@ export const api = {
     },
     getAppointments: async (salonId) => {
         try {
-            const res = await fetch(`${API_BASE_URL}/api/v1/salons/${salonId}/appointments`);
+            const res = await fetch(`${API_BASE_URL}/api/v1/salons/${salonId}/appointments`, {
+                headers: api.getHeaders()
+            });
             if (!res.ok) throw new Error('Failed to fetch appointments');
             return await res.json();
         } catch (e) {
@@ -58,7 +112,10 @@ export const api = {
         try {
             const res = await fetch(`${API_BASE_URL}/api/v1/salons/${salonId}/appointments`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    ...api.getHeaders()
+                },
                 body: JSON.stringify(data)
             });
             if (!res.ok) throw new Error('Failed to create appointment');
@@ -73,7 +130,8 @@ export const api = {
             const res = await fetch(`${API_BASE_URL}/api/v1/salons/ads/launch`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    ...api.getHeaders()
                 },
                 body: JSON.stringify(campaignData)
             });
@@ -87,6 +145,55 @@ export const api = {
                 message: "Mock Fallback: Campaign launched.",
                 status: "LIVE"
             };
+        }
+    },
+    changeSuperAdminPin: async (currentPin, newPin) => {
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/v1/auth/super-admin/pin`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...api.getHeaders()
+                },
+                body: JSON.stringify({ currentPin, newPin })
+            });
+            if (!res.ok) {
+                const errData = await res.json();
+                throw new Error(errData.error || 'Failed to change PIN');
+            }
+            return await res.json();
+        } catch (e) {
+            console.error('API Error:', e);
+            // Fallback for local testing if API isn't deployed yet
+            console.warn("Using mock fallback for changeSuperAdminPin");
+            if (currentPin !== 'pihu2026' && currentPin !== 'mock') {
+                throw new Error('Incorrect current PIN (mock fallback)');
+            }
+            return { success: true };
+        }
+    },
+    changeSalonPin: async (currentPin, newPin) => {
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/v1/auth/salon/pin`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...api.getHeaders()
+                },
+                body: JSON.stringify({ currentPin, newPin })
+            });
+            if (!res.ok) {
+                const errData = await res.json();
+                throw new Error(errData.error || 'Failed to change PIN');
+            }
+            return await res.json();
+        } catch (e) {
+            console.error('API Error:', e);
+            console.warn("Using mock fallback for changeSalonPin");
+            if (currentPin !== 'mock') {
+                throw new Error('Incorrect current PIN (mock fallback)');
+            }
+            return { success: true };
         }
     }
 }

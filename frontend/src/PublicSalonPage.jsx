@@ -211,6 +211,25 @@ const PublicSalonPage = React.memo(function PublicSalonPage() {
           </button>
         </div>
 
+        {/* 📸 REAL BRIDES GALLERY 📸 */}
+        <div className="mt-8 glass-panel p-8 border border-gold-500/30 rounded-2xl relative overflow-hidden bg-dark-900/50">
+          <div className="text-center mb-8">
+            <Heart className="w-8 h-8 text-gold-500 mx-auto mb-4" />
+            <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">Real Brides, Real Magic</h2>
+            <p className="text-gray-400 max-w-2xl mx-auto">Glimpses of our stunning bridal transformations and studio moments.</p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[1, 2, 3, 4, 5].map((num) => (
+              <div key={num} className="relative group overflow-hidden cursor-pointer rounded-xl" onClick={() => setIsBookingModalOpen(true)}>
+                <img src={`/gallery/gallery_${num}.jpg`} className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-700" alt={`Bridal Gallery ${num}`} />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
+                  <button className="bg-gold-500 text-dark-950 px-6 py-2 font-bold uppercase tracking-widest text-sm hover:bg-white transition-colors rounded-lg shadow-lg">Book Now</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* 📸 OFFICIAL INSTAGRAM & SOCIAL SHOWCASE CARD 📸 */}
         {salon.instagram && (
           <div className="mt-8 glass-panel p-6 border border-pink-500/30 rounded-2xl relative overflow-hidden bg-gradient-to-r from-purple-900/20 via-pink-900/20 to-red-900/20">

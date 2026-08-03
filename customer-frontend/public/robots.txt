@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://beauty-ai-customer-41482.s3-website-us-east-1.amazonaws.com/sitemap.xml

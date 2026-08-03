@@ -17,19 +17,28 @@ const iconMap = {
 };
 
 const Services = () => {
-  const [currency, setCurrency] = useState('INR');
-  const [services, setServices] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function loadServices() {
-      // Fetch specifically for Pihu Makeover
-      const data = await api.getSalonServices('pihu-makeover-beauty-salon');
-      setServices(data || []);
-      setLoading(false);
-    }
-    loadServices();
-  }, []);
+  const rawServices = [
+      "Acne treatments", "Acrylic nails", "Balayage", "Blow dry", "Body waxing", 
+      "Box braids", "Braids", "Bridal services", "Brow lamination", "Dreadlocks", 
+      "Eyebrow beautification", "Eyebrow shaping", "Eyebrow threading", "Eyelashes", 
+      "Eyelash extensions", "Facials", "Haircut", "Hair extensions", "Hairstyling", 
+      "Hair threading", "Laser hair removal", "Lash lift", "Lash perms", "Make-up", 
+      "Make-up services", "Manicure", "Online beauty salon booking", "Pedicure", "Permanent hair removel"
+  ];
+
+  const initialServices = rawServices.map((name, index) => ({
+      id: index.toString(),
+      name: name,
+      description: `Professional ${name.toLowerCase()}`,
+      priceINR: 0,
+      duration: 'Varies',
+      icon: 'Sparkles'
+  }));
+
+  const [currency, setCurrency] = useState('INR');
+  const [services, setServices] = useState(initialServices);
+  const [loading, setLoading] = useState(false);
 
   const formatPrice = (basePriceINR) => {
     const { rate, symbol } = exchangeRates[currency];

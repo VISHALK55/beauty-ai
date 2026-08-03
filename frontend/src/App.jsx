@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Layout from './Layout';
+import { AuthProvider } from './context/AuthContext';
 
 // Lazy loaded components for code splitting
 const Dashboard = React.lazy(() => import('./Dashboard'));
@@ -15,6 +16,11 @@ const GoogleSearchSimulator = React.lazy(() => import('./GoogleSearchSimulator')
 const HyperSpeedControlCenter = React.lazy(() => import('./HyperSpeedControlCenter'));
 const Appointments = React.lazy(() => import('./Appointments'));
 const SmartReview = React.lazy(() => import('./SmartReview'));
+const AdCampaign = React.lazy(() => import('./AdCampaignLauncher'));
+const Login = React.lazy(() => import('./Login'));
+const ProtectedRoute = React.lazy(() => import('./ProtectedRoute'));
+const SuperAdminSettings = React.lazy(() => import('./SuperAdminSettings'));
+const Settings = React.lazy(() => import('./Settings'));
 
 // Fallback Loading UI
 const LoadingFallback = () => (
@@ -25,8 +31,11 @@ const LoadingFallback = () => (
 
 function App() {
   return (
-    <Suspense fallback={<LoadingFallback />}>
-      <Routes>
+    <AuthProvider>
+      <Suspense fallback={<LoadingFallback />}>
+        <Routes>
+          {/* Public Login Route */}
+          <Route path="/login" element={<Login />} />
         {/* Public Programmatic SEO Routes */}
         <Route path="/salon/:salonId/:serviceSlug" element={<PublicSalonPage />} />
         <Route path="/salon/:salonId/:serviceSlug/:neighborhoodSlug" element={<PublicSalonPage />} />
@@ -38,14 +47,19 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Dashboard />} />
           <Route path="appointments" element={<Appointments />} />
-          <Route path="salons" element={<SalonDirectory />} />
-          <Route path="google-preview" element={<GoogleSearchSimulator />} />
-          <Route path="speed-control" element={<HyperSpeedControlCenter />} />
-          <Route path="ai-receptionist" element={<AiChat />} />
-          <Route path="voice-calls" element={<VoiceCalls />} />
-          <Route path="services" element={<Services />} />
-          <Route path="geo-rank" element={<GeoRank />} />
-          <Route path="onboard-partner" element={<PartnerOnboarding />} />
+          <Route path="settings" element={<Settings />} />
+          {/* Protected Super Admin Routes */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="salons" element={<SalonDirectory />} />
+            <Route path="google-preview" element={<GoogleSearchSimulator />} />
+            <Route path="speed-control" element={<HyperSpeedControlCenter />} />
+            <Route path="ai-receptionist" element={<AiChat />} />
+            <Route path="voice-calls" element={<VoiceCalls />} />
+            <Route path="geo-rank" element={<GeoRank />} />
+            <Route path="onboard-partner" element={<PartnerOnboarding />} />
+            <Route path="super-admin-settings" element={<SuperAdminSettings />} />
+            <Route path="ad-campaigns" element={<div className="p-8 h-full overflow-y-auto"><AdCampaign salonName="All Platform Salons (Super Admin)" salonId="SUPER-ADMIN" /></div>} />
+          </Route>
           
           <Route path="*" element={
             <div className="flex items-center justify-center h-full text-gray-400">
@@ -55,6 +69,7 @@ function App() {
         </Route>
       </Routes>
     </Suspense>
+    </AuthProvider>
   );
 }
 
