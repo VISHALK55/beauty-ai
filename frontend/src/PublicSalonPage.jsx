@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { MapPin, Phone, Star, Clock, CalendarCheck, ChevronRight, ShieldCheck, Sparkles, Navigation, MessageCircle, PhoneCall, CheckCircle2, Gift } from 'lucide-react';
+import { MapPin, Phone, Star, Clock, CalendarCheck, ChevronRight, ShieldCheck, Sparkles, Navigation, MessageCircle, PhoneCall, CheckCircle2, Gift, Search, Menu, Mail, Heart, X } from 'lucide-react';
 import { generateLocalBusinessSchema, generateServiceSchema } from './SeoAlgorithm';
 import { api } from './api';
 import BookingModal from './BookingModal';
@@ -10,16 +10,34 @@ import CallTrackingModal from './CallTrackingModal';
 // DB Fetch based on URL parameters (Programmatic SEO)
 const fetchServiceData = (serviceSlug) => {
   const db = {
-    'bridal-makeup': { name: "Bridal & Party Makeup", price: 8500, description: "Premium HD bridal & party makeup with 3D lash extensions & flawless finish." },
-    'airbrush-makeup': { name: "Airbrush HD Bridal Suite", price: 12500, description: "Ultra-waterproof airbrush HD makeup package for grand weddings." },
-    'haircut-styling': { name: "Haircuts, Styling & Coloring", price: 1200, description: "Modern haircuts, professional blow-dry, and balayage/highlights." },
-    'facial-skincare': { name: "Facials, Skin Care & Spa", price: 1999, description: "Deep cleansing facials, skin brightening, and relaxing spa treatments." },
-    'nails': { name: "Manicures, Pedicures & Acrylic Nails", price: 1500, description: "Luxury mani-pedi spa and professional acrylic nail extensions." },
-    'lashes-brows': { name: "Eyelash Extensions & Brow Lamination", price: 2499, description: "Semi-permanent eyelash extensions and brow lamination for a bold look." },
-    'hair-removal': { name: "Waxing & Laser Hair Removal", price: 899, description: "Full body waxing and advanced laser hair removal services." }
+    'bridal-makeup': { name: "Bridal & Party Makeup", description: "Premium HD bridal & party makeup with 3D lash extensions & flawless finish." },
+    'airbrush-makeup': { name: "Airbrush HD Bridal Suite", description: "Ultra-waterproof airbrush HD makeup package for grand weddings." },
+    'haircut-styling': { name: "Haircuts, Styling & Coloring", description: "Modern haircuts, professional blow-dry, and balayage/highlights." },
+    'facial-skincare': { name: "Facials, Skin Care & Spa", description: "Deep cleansing facials, skin brightening, and relaxing spa treatments." },
+    'nails': { name: "Manicures, Pedicures & Acrylic Nails", description: "Luxury mani-pedi spa and professional acrylic nail extensions." },
+    'lashes-brows': { name: "Eyelash Extensions & Brow Lamination", description: "Semi-permanent eyelash extensions and brow lamination for a bold look." },
+    'hair-removal': { name: "Waxing & Laser Hair Removal", description: "Full body waxing and advanced laser hair removal services." }
   };
-  return db[serviceSlug] || { name: serviceSlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()), price: 850, description: "Professional salon service." };
+  return db[serviceSlug] || { name: serviceSlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()), description: "Professional salon service tailored to your beauty needs." };
 };
+
+const blogPostsData = [
+  { 
+    title: "Best Ladies Beauty Parlour in Bodhgaya & Gaya: Where Beauty Meets Perfection", 
+    date: "August 3, 2024",
+    content: "Finding the right beauty parlour in Gaya or Bodhgaya can be overwhelming, but the key is looking for experienced professionals who prioritize hygiene and use premium products. At our salon, we ensure every client receives personalized attention to enhance their natural beauty. Whether it's a simple haircut or a full bridal makeover, perfection is our standard."
+  },
+  { 
+    title: "Best Airbrush Bridal Makeup Tips for Your Big Day in Bodhgaya", 
+    date: "August 10, 2024",
+    content: "Airbrush makeup is the secret to a flawless, long-lasting bridal look in Bodhgaya's climate. Unlike traditional makeup, it sprays a fine mist of foundation that sits lightly on the skin, covering imperfections without looking cakey. For the best results, ensure your skin is deeply hydrated before the session. Trust our experts to give you that perfect HD glow that lasts through tears and sweat!"
+  },
+  { 
+    title: "Hydra Facial in Gaya & Bodhgaya: A Journey to Radiant, Glowing Skin", 
+    date: "August 15, 2024",
+    content: "A HydraFacial is one of the most effective non-invasive skin resurfacing treatments available today across Gaya and Bodhgaya. It combines cleansing, exfoliation, extraction, hydration, and antioxidant protection all in one. Perfect before big events, it leaves your skin looking instantly brighter and more youthful without any downtime."
+  }
+];
 
 const PublicSalonPage = React.memo(function PublicSalonPage() {
   const { salonId, serviceSlug, neighborhoodSlug } = useParams();
@@ -28,45 +46,60 @@ const PublicSalonPage = React.memo(function PublicSalonPage() {
   const [schemas, setSchemas] = useState({ localBusiness: null, service: null });
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [isCallTrackingOpen, setIsCallTrackingOpen] = useState(false);
-  const [isOfferUnlocked, setIsOfferUnlocked] = useState(false);
+  const [selectedBlogPost, setSelectedBlogPost] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
       // 1. Fetch data from DB based on programmatic URL
-      const sData = await api.getSalon(salonId);
+      let sData;
+      try {
+        sData = await api.getSalon(salonId);
+      } catch (e) {
+        console.log("API failed, using fallback data for preview");
+      }
+      
+      // Override API data with Pihu Makeover info
+      sData = {
+        ...(sData || {}),
+        id: salonId,
+        name: "Pihu Makeover",
+        city: "Gaya, Bihar 824231",
+        streetAddress: "Sujata Bypass Road, Near Govt. Middle School Rajapur, Bodhgaya",
+        rating: 4.8,
+        reviews: 120,
+        phone: "+91 9113715558",
+        email: "pihumakeover@gmail.com",
+        instagram: "https://instagram.com/pihu_makeover",
+        image: sData?.image || "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&q=80&w=1000"
+      };
+
       const srvData = fetchServiceData(serviceSlug || 'hair-cut');
       setSalon(sData);
       setService(srvData);
 
       // 2. SEO ALGORITHM EXECUTION (Hyper-Local Grid)
-      // Generate native Google Machine Code (JSON-LD)
       if (sData) {
         const localSchema = generateLocalBusinessSchema(sData);
-        const srvSchema = generateServiceSchema(srvData, sData, neighborhoodSlug);
-        
+        // Note: service schema internally might still generate a dummy price if needed for SEO, 
+        // but it will NOT be displayed to the user on this page.
+        const srvSchema = generateServiceSchema({...srvData, price: 850}, sData, neighborhoodSlug);
         setSchemas({ localBusiness: localSchema, service: srvSchema });
       }
     }
     fetchData();
   }, [salonId, serviceSlug, neighborhoodSlug]);
 
-  if (!salon || !service) return <div className="p-10 text-white">Loading Programmatic SEO Page...</div>;
+  if (!salon || !service) return <div className="p-10 text-white min-h-screen bg-dark-950 flex items-center justify-center">Loading Experience...</div>;
 
-  const displayLocation = neighborhoodSlug ? neighborhoodSlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : salon.city;
+  const displayLocation = neighborhoodSlug ? neighborhoodSlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : "Bodhgaya, Gaya";
 
   return (
     <div className="min-h-screen bg-dark-950 text-white font-sans selection:bg-gold-500/30">
-      {/* 
-        ========================================================================
-        🔥 THE SEO PAYLOAD (HIDDEN FROM HUMANS, VISIBLE TO GOOGLE)
-        ========================================================================
-      */}
       <Helmet>
         <title>{service.name} in {displayLocation} | {salon.name}</title>
         <meta name="description" content={`Book ${service.name} at ${salon.name} in ${displayLocation}. ${service.description}`} />
         <link rel="canonical" href={`https://beautyai.app/salon/${salonId}/${serviceSlug}${neighborhoodSlug ? '/' + neighborhoodSlug : ''}`} />
         
-        {/* Schema Injection */}
         {schemas.localBusiness && (
           <script type="application/ld+json">
             {JSON.stringify(schemas.localBusiness)}
@@ -79,213 +112,330 @@ const PublicSalonPage = React.memo(function PublicSalonPage() {
         )}
       </Helmet>
 
-      {/* 
-        ========================================================================
-        BEAUTIFUL PUBLIC LANDING PAGE (VISIBLE TO HUMANS)
-        ========================================================================
-      */}
-      
-      {/* 🔴 DYNAMIC SEASONAL BANNER 🔴 */}
-      <div className="bg-gradient-to-r from-red-600 via-pink-600 to-purple-600 text-white text-center py-3 px-4 shadow-[0_0_20px_rgba(220,38,38,0.4)] relative z-50">
-        <p className="font-bold flex items-center justify-center gap-2 text-sm md:text-base">
-          <Sparkles size={18} className="animate-pulse text-gold-300" />
-          FESTIVE SEASON ALERT: Only 3 {service.name} Slots Left This Week! 
-          <span className="bg-white/20 px-2 py-1 rounded text-xs uppercase tracking-wider ml-2 hidden md:inline-block">Call Fast</span>
-        </p>
-      </div>
-
-      {salon.image && (
-        <div className="w-full h-64 md:h-96 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-t from-dark-950 to-transparent z-10"></div>
-          <img 
-            src={salon.image} 
-            alt={`${salon.name} in ${displayLocation}`} 
-            className="w-full h-full object-cover"
-            loading="lazy"
-          />
+      {/* --- TOP BAR --- */}
+      <div className="bg-[#1a1a1a] border-b border-white/5 py-2 px-4 md:px-12 flex flex-col md:flex-row justify-between items-center text-xs text-gray-400 gap-2">
+        <div className="flex items-center gap-4">
+          <span className="flex items-center gap-1.5 font-medium tracking-wide">
+            <Clock size={14} className="text-gold-500" /> MON – SUN: 9.00 AM–9.00 PM
+          </span>
         </div>
-      )}
-
-      <div className="max-w-4xl mx-auto px-6 py-12 relative z-10 -mt-20">
-        {/* Header with Quick Action Bar */}
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-white/10 pb-8 mb-8 gap-6 bg-dark-900/80 backdrop-blur-md p-6 rounded-2xl border border-white/5">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-gold-500/10 text-gold-400 border border-gold-500/20 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
-              <Sparkles size={14} /> Flagship Partner Salon • Bodhgaya & Gaya
-            </div>
-            <h1 className="text-4xl md:text-5xl font-serif text-gold-500 mb-3">{salon.name}</h1>
-            <div className="flex flex-wrap items-center gap-4 text-gray-300 text-sm">
-              <span className="flex items-center gap-1.5"><MapPin size={16} className="text-gold-400"/> {salon.streetAddress}, {salon.city}</span>
-              <span className="flex items-center gap-1.5 text-gold-400 font-bold">
-                <Star size={16} className="fill-gold-400"/> {salon.rating} ({salon.reviews} Verified Reviews)
-              </span>
-            </div>
-          </div>
-
-          {/* ⚡ INSTANT QUICK ACTION BAR ⚡ */}
-          <div className="flex flex-wrap gap-3 w-full md:w-auto">
-            <button 
-              onClick={() => setIsCallTrackingOpen(true)}
-              className="flex-1 md:flex-initial px-5 py-3 bg-gradient-to-r from-gold-500 to-amber-500 hover:from-gold-400 hover:to-amber-400 text-dark-950 font-bold rounded-xl text-sm transition-all shadow-[0_0_20px_rgba(212,175,55,0.3)] flex items-center justify-center gap-2 cursor-pointer"
-            >
-              <Phone size={16} /> Call Direct
-            </button>
-            
-            <a 
-              href={`https://maps.google.com/?q=${salon.latitude},${salon.longitude}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 md:flex-initial px-5 py-3 bg-dark-800 hover:bg-dark-700 text-white font-semibold rounded-xl text-sm border border-white/10 transition-all flex items-center justify-center gap-2 cursor-pointer"
-            >
-              <MapPin size={16} className="text-blue-400" /> View Location
-            </a>
-
-            {salon.instagram && (
-              <a 
-                href={salon.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 md:flex-initial px-5 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-semibold rounded-xl text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <ChevronRight size={16} /> Instagram
-              </a>
-            )}
-          </div>
-        </header>
-
-        {/* Dynamic Content Based on Programmatic URL */}
-        <div className="glass-panel p-8 md:p-12 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-gold-500/10 rounded-full blur-3xl -z-10"></div>
-          
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-gold-500/20 text-gold-400 border border-gold-500/30 rounded-full text-xs font-bold uppercase tracking-wider mb-6 shadow-[0_0_15px_rgba(212,175,55,0.2)]">
-            <Sparkles size={14} /> Available Now in {displayLocation}
-          </div>
-
-          <h2 className="text-4xl md:text-6xl font-serif mb-4 leading-tight">
-            Book <span className="bg-gradient-to-r from-gold-300 to-gold-600 bg-clip-text text-transparent">{service.name}</span>
-          </h2>
-          <p className="text-xl text-gray-300 mb-8 max-w-2xl">
-            {service.description} Skip the line and book instantly using our AI system.
-          </p>
-
-          {/* 🔴 NEW LEAD GEN / HIDDEN PRICE UI 🔴 */}
-          {!isOfferUnlocked ? (
-            <div className="mb-10 bg-dark-900/50 p-6 rounded-2xl border border-gold-500/20 backdrop-blur-sm max-w-lg">
-              <h3 className="text-xl font-semibold mb-2 flex items-center gap-2 text-gold-400">
-                <Gift size={20} /> Unlock Custom Pricing
-              </h3>
-              <p className="text-gray-400 text-sm mb-4">Click below to reveal today's exclusive hidden rate for {service.name}. No upfront payment required.</p>
-              
-              <button 
-                onClick={() => setIsOfferUnlocked(true)}
-                className="w-full bg-gradient-to-r from-dark-800 to-dark-700 hover:from-gold-600 hover:to-yellow-500 text-white border border-gold-500/30 hover:border-transparent rounded-xl py-4 font-bold text-lg transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] group flex items-center justify-center gap-2 cursor-pointer"
-              >
-                Reveal Secret Deal <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
-              </button>
-            </div>
-          ) : (
-            <div className="mb-10 bg-gradient-to-r from-gold-900/40 to-green-900/40 p-6 rounded-2xl border border-gold-500/50 backdrop-blur-sm max-w-lg animate-in fade-in zoom-in duration-300">
-              <div className="text-green-400 font-bold uppercase text-xs tracking-wider mb-2 flex items-center gap-1">
-                <CheckCircle2 size={14} /> Deal Unlocked
-              </div>
-              <h3 className="text-3xl font-serif text-white mb-1">Your Code: <span className="text-gold-400 bg-black/30 px-3 py-1 rounded-lg border border-gold-500/30 font-mono tracking-widest">GLOW20</span></h3>
-              <p className="text-gray-300 text-sm mb-6">Call {salon.name} right now and mention this code to get a customized VIP quote + Free Consultation!</p>
-              
-              <a 
-                href={`tel:${salon.phone.replace(/\s+/g, '')}`}
-                className="w-full btn-primary text-lg px-8 py-4 shadow-[0_0_30px_rgba(212,175,55,0.3)] hover:shadow-[0_0_40px_rgba(212,175,55,0.5)] flex justify-center items-center gap-2 cursor-pointer"
-              >
-                <PhoneCall size={20} /> Call Now for Quote
-              </a>
-            </div>
-          )}
-
-          <p className="text-gray-500 text-sm flex items-center gap-2">
-             Or request a call back online:
-          </p>
+        <div className="flex items-center gap-5">
+          <a href="#" className="hover:text-gold-500 transition-colors font-bold tracking-wider">FB</a>
+          <a href="#" className="hover:text-gold-500 transition-colors font-bold tracking-wider">YT</a>
+          <a href={salon.instagram || "#"} className="hover:text-gold-500 transition-colors font-bold tracking-wider">IG</a>
           <button 
             onClick={() => setIsBookingModalOpen(true)}
-            className="mt-3 text-gold-500 hover:text-gold-400 text-sm underline underline-offset-4 font-medium transition-colors cursor-pointer"
+            className="bg-gold-500 text-dark-950 px-4 py-1.5 rounded text-xs font-bold uppercase tracking-wider hover:bg-white transition-colors"
           >
-            Open Consultation Request Form
+            Book Now
           </button>
         </div>
+      </div>
 
-        {/* 📸 REAL BRIDES GALLERY 📸 */}
-        <div className="mt-8 glass-panel p-8 border border-gold-500/30 rounded-2xl relative overflow-hidden bg-dark-900/50">
-          <div className="text-center mb-8">
+      {/* --- MAIN NAVIGATION --- */}
+      <nav className="bg-dark-950/95 backdrop-blur-lg sticky top-0 z-50 border-b border-white/5 py-4 px-4 md:px-12 flex justify-between items-center">
+        <div className="text-2xl md:text-3xl font-serif text-gold-500 font-bold uppercase tracking-wide">
+          {salon.name}
+        </div>
+        
+        {/* Desktop Menu */}
+        <div className="hidden lg:flex items-center gap-8 text-sm font-bold uppercase tracking-widest text-gray-300">
+          <Link to="/" className="hover:text-gold-500 transition-colors">Home</Link>
+          <div className="relative group cursor-pointer py-2">
+            <span className="hover:text-gold-500 transition-colors flex items-center gap-1">Our Services <ChevronRight size={14} className="rotate-90" /></span>
+            {/* Dropdown menu */}
+            <div className="absolute top-full left-0 mt-2 w-56 bg-dark-900 border border-white/10 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 flex flex-col overflow-hidden">
+              <span className="px-4 py-3 hover:bg-gold-500 hover:text-dark-950 transition-colors border-b border-white/5">Bridal Makeup</span>
+              <span className="px-4 py-3 hover:bg-gold-500 hover:text-dark-950 transition-colors border-b border-white/5">Haircut Style</span>
+              <span className="px-4 py-3 hover:bg-gold-500 hover:text-dark-950 transition-colors border-b border-white/5">Skin Care Services</span>
+              <span className="px-4 py-3 hover:bg-gold-500 hover:text-dark-950 transition-colors">Nail Art Services</span>
+            </div>
+          </div>
+          <span className="hover:text-gold-500 transition-colors cursor-pointer">Blog</span>
+          <span className="hover:text-gold-500 transition-colors cursor-pointer">Contact</span>
+        </div>
+
+        <div className="flex items-center gap-4">
+          <Search size={20} className="text-gray-300 hover:text-gold-500 cursor-pointer transition-colors" />
+          <Menu size={24} className="lg:hidden text-gray-300 hover:text-gold-500 cursor-pointer" />
+        </div>
+      </nav>
+
+      {/* --- HERO SLIDER STYLE --- */}
+      <div className="relative w-full h-[60vh] md:h-[75vh] flex items-center overflow-hidden">
+        <div className="absolute inset-0 bg-dark-950 z-0"></div>
+        {salon.image && (
+          <img 
+            src={salon.image} 
+            alt={`${salon.name} Header`} 
+            className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-overlay"
+            loading="lazy"
+          />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-r from-dark-950 via-dark-900/80 to-transparent z-10"></div>
+        
+        <div className="relative z-20 px-6 md:px-16 max-w-5xl">
+          <div className="inline-block px-3 py-1 bg-gold-500/20 text-gold-400 border border-gold-500/30 rounded-full text-xs font-bold uppercase tracking-widest mb-6">
+            <Sparkles size={14} className="inline mr-2" />
+            Top Salon in {displayLocation}
+          </div>
+          <h1 className="text-5xl md:text-7xl font-serif text-white mb-4 leading-tight">
+            Premium <span className="text-gold-500">{service.name}</span>
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl font-light">
+            {service.description} Transform your look with our expert stylists today.
+          </p>
+          <div className="flex flex-wrap gap-4">
+            <button 
+              onClick={() => setIsBookingModalOpen(true)}
+              className="bg-gold-500 hover:bg-white text-dark-950 px-8 py-4 font-bold uppercase tracking-widest text-sm transition-all duration-300 rounded shadow-[0_0_20px_rgba(212,175,55,0.4)] flex items-center gap-2"
+            >
+              Request Free Consultation
+            </button>
+            <button 
+              onClick={() => setIsCallTrackingOpen(true)}
+              className="bg-transparent border border-white hover:border-gold-500 hover:text-gold-500 text-white px-8 py-4 font-bold uppercase tracking-widest text-sm transition-colors rounded flex items-center gap-2"
+            >
+              <Phone size={18} /> Call Now
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* --- MAIN CONTENT AREA --- */}
+      <div className="max-w-7xl mx-auto px-6 py-20">
+        
+        {/* Service Highlight Section (No Prices) */}
+        <div className="grid md:grid-cols-2 gap-12 items-center mb-24">
+          <div className="relative rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+            <div className="absolute inset-0 bg-gradient-to-t from-dark-950 to-transparent z-10"></div>
+            {salon.image ? (
+              <img src={salon.image} className="w-full h-[500px] object-cover" alt="Service Showcase" />
+            ) : (
+              <div className="w-full h-[500px] bg-dark-800 flex items-center justify-center">Image</div>
+            )}
+            <div className="absolute bottom-6 left-6 z-20 text-gold-400 font-serif text-2xl bg-dark-950/80 px-4 py-2 rounded-lg border border-gold-500/20 backdrop-blur">
+              Award Winning Service
+            </div>
+          </div>
+          <div>
+            <h2 className="text-4xl font-serif mb-6 text-white leading-tight">
+              Experience the Best <br/><span className="text-gold-500">{service.name}</span> in {displayLocation}
+            </h2>
+            <p className="text-gray-400 mb-6 text-lg leading-relaxed">
+              At {salon.name}, we believe that beauty is personal. Our highly trained professionals use only the finest products to ensure your {service.name.toLowerCase()} is nothing short of perfection. 
+            </p>
+            <p className="text-gray-400 mb-8 text-lg leading-relaxed">
+              Whether you're preparing for your wedding day or just looking for a refreshing change, our team is dedicated to providing an exceptional and luxurious experience tailored specifically to your needs.
+            </p>
+            <ul className="space-y-4 mb-8">
+              <li className="flex items-center gap-3 text-gray-300 font-medium">
+                <CheckCircle2 className="text-gold-500" size={20} /> Highly experienced styling professionals
+              </li>
+              <li className="flex items-center gap-3 text-gray-300 font-medium">
+                <CheckCircle2 className="text-gold-500" size={20} /> Premium, skin-safe international products
+              </li>
+              <li className="flex items-center gap-3 text-gray-300 font-medium">
+                <CheckCircle2 className="text-gold-500" size={20} /> Relaxing, hygienic, and luxurious environment
+              </li>
+            </ul>
+            <button 
+              onClick={() => setIsBookingModalOpen(true)}
+              className="group flex items-center gap-2 text-gold-500 font-bold uppercase tracking-widest text-sm hover:text-white transition-colors"
+            >
+              Book an Appointment <ChevronRight className="group-hover:translate-x-2 transition-transform" size={18} />
+            </button>
+          </div>
+        </div>
+
+        {/* --- BRANDS WE USE (Mock Carousel) --- */}
+        <div className="mb-24 py-12 border-y border-white/5 text-center">
+          <h3 className="text-sm font-bold uppercase tracking-widest text-gray-500 mb-8">Premium Brands We Trust</h3>
+          <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-60 grayscale hover:grayscale-0 transition-all duration-700">
+            {/* Using text representations as mock logos for now */}
+            <span className="text-3xl font-serif font-bold text-white tracking-wider">L'ORÉAL</span>
+            <span className="text-3xl font-sans font-black text-white tracking-tighter">WELLA</span>
+            <span className="text-2xl font-serif font-light text-white tracking-widest">LOTUS</span>
+            <span className="text-3xl font-mono font-bold text-white">O3+</span>
+            <span className="text-3xl font-sans font-bold text-white tracking-wide">M·A·C</span>
+          </div>
+        </div>
+
+        {/* --- REAL BRIDES / PORTFOLIO GALLERY --- */}
+        <div className="mb-24">
+          <div className="text-center mb-12">
             <Heart className="w-8 h-8 text-gold-500 mx-auto mb-4" />
-            <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">Real Brides, Real Magic</h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">Glimpses of our stunning bridal transformations and studio moments.</p>
+            <h2 className="text-3xl md:text-5xl font-serif text-white mb-4">Real Brides, Real Magic</h2>
+            <p className="text-gray-400 max-w-2xl mx-auto text-lg">Glimpses of our stunning bridal transformations and studio moments.</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[1, 2, 3, 4, 5].map((num) => (
+            {[1, 2, 3, 4].map((num) => (
               <div key={num} className="relative group overflow-hidden cursor-pointer rounded-xl" onClick={() => setIsBookingModalOpen(true)}>
-                <img src={`/gallery/gallery_${num}.jpg`} className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-700" alt={`Bridal Gallery ${num}`} />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
-                  <button className="bg-gold-500 text-dark-950 px-6 py-2 font-bold uppercase tracking-widest text-sm hover:bg-white transition-colors rounded-lg shadow-lg">Book Now</button>
+                <img src={`/gallery/gallery_${num}.jpg`} className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-700 bg-dark-800" alt={`Portfolio ${num}`} />
+                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm">
+                  <span className="text-white font-bold uppercase tracking-widest text-sm border border-white px-6 py-2 rounded hover:bg-white hover:text-black transition-colors">
+                    View & Book
+                  </span>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* 📸 OFFICIAL INSTAGRAM & SOCIAL SHOWCASE CARD 📸 */}
-        {salon.instagram && (
-          <div className="mt-8 glass-panel p-6 border border-pink-500/30 rounded-2xl relative overflow-hidden bg-gradient-to-r from-purple-900/20 via-pink-900/20 to-red-900/20">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-pink-400 flex items-center gap-1.5 mb-1">
-                  <Sparkles size={14} /> Official Instagram Portfolio
-                </span>
-                <h3 className="text-xl font-serif text-white flex items-center gap-2">
-                  Follow {salon.name} on Instagram
+        {/* --- RECENT BLOG POSTS --- */}
+        <div className="mb-12">
+          <div className="flex justify-between items-end mb-10">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-serif text-white mb-2">Our Blog</h2>
+              <p className="text-gray-400">Discover the latest beauty trends and tips.</p>
+            </div>
+            <button className="hidden md:flex text-gold-500 hover:text-white items-center gap-2 font-bold uppercase tracking-widest text-xs transition-colors">
+              View All Posts <ChevronRight size={14} />
+            </button>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8">
+            {blogPostsData.map((post, idx) => (
+              <div key={idx} className="group cursor-pointer" onClick={() => setSelectedBlogPost(post)}>
+                <div className="w-full h-48 bg-dark-800 rounded-xl mb-4 overflow-hidden relative">
+                  <div className="absolute inset-0 bg-gold-500/10 group-hover:bg-transparent transition-colors"></div>
+                  {/* Placeholder for blog image */}
+                </div>
+                <div className="flex items-center gap-2 text-xs text-gold-500 font-bold uppercase tracking-wider mb-2">
+                  <CalendarCheck size={14} /> {post.date}
+                </div>
+                <h3 className="text-xl font-serif text-white group-hover:text-gold-500 transition-colors leading-snug">
+                  {post.title}
                 </h3>
-                <p className="text-gray-400 text-sm mt-1">
-                  Watch latest makeup reels, bridal client transformations, and daily studio updates.
-                </p>
               </div>
-              <a 
-                href={salon.instagram}
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="px-6 py-3 bg-gradient-to-r from-purple-600 via-pink-600 to-red-500 hover:from-purple-500 hover:to-pink-500 text-white font-bold rounded-xl text-sm transition-all shadow-[0_0_20px_rgba(236,72,153,0.3)] flex items-center gap-2 shrink-0"
-              >
-                <ChevronRight size={16} /> Visit @pihu_makeover22
-              </a>
+            ))}
+          </div>
+        </div>
+
+      </div>
+
+      {/* --- FAT FOOTER --- */}
+      <footer className="bg-[#111111] border-t border-white/5 pt-20 pb-10">
+        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12 mb-16">
+          
+          <div className="col-span-1 md:col-span-1">
+            <div className="text-3xl font-serif text-gold-500 font-bold uppercase tracking-wide mb-6">
+              {salon.name}
+            </div>
+            <p className="text-gray-400 text-sm mb-6 leading-relaxed">
+              Premium salon providing expert hair, makeup, and skin care services. Enhance your natural beauty with our dedicated professionals.
+            </p>
+            <div className="flex items-center gap-4 text-gray-400">
+              <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-gold-500 hover:text-dark-950 transition-colors font-bold text-xs">FB</a>
+              <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-gold-500 hover:text-dark-950 transition-colors font-bold text-xs">YT</a>
+              <a href={salon.instagram || "#"} className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-gold-500 hover:text-dark-950 transition-colors font-bold text-xs">IG</a>
             </div>
           </div>
-        )}
 
-        <BookingModal isOpen={isBookingModalOpen} onClose={() => setIsBookingModalOpen(false)} />
-        <CallTrackingModal 
-          isOpen={isCallTrackingOpen} 
-          onClose={() => setIsCallTrackingOpen(false)} 
-          salonName={salon?.name} 
-          salonPhone={salon?.phone} 
-          salonId={salon?.id} 
-        />
-        
-        {/* 🔴 FLOATING QUICK CONTACT CTAs 🔴 */}
-        <div className="fixed bottom-6 right-6 flex flex-col gap-3 z-50">
-           <a href={`https://wa.me/${salon.phone.replace(/\D/g, '')}?text=Hi%20${encodeURIComponent(salon.name)}!%20I%20want%20to%20know%20the%20custom%20price%20for%20${encodeURIComponent(service.name)}.`} 
-              target="_blank" rel="noreferrer"
-              className="bg-[#25D366] hover:bg-[#20bd5a] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform flex items-center justify-center group relative">
-              <MessageCircle size={26} fill="currentColor" />
-              <span className="absolute right-full mr-4 bg-dark-900 text-white text-xs px-3 py-1.5 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity border border-white/10 shadow-xl">WhatsApp Us</span>
-           </a>
-           <a href={`tel:${salon.phone.replace(/\D/g, '')}`}
-              className="bg-gold-500 hover:bg-gold-400 text-dark-950 p-4 rounded-full shadow-2xl hover:scale-110 transition-transform flex items-center justify-center group relative">
-              <PhoneCall size={26} fill="currentColor" />
-              <span className="absolute right-full mr-4 bg-dark-900 text-white text-xs px-3 py-1.5 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity border border-white/10 shadow-xl">Call Directly</span>
-           </a>
+          <div>
+            <h4 className="text-white font-bold uppercase tracking-widest text-sm mb-6">Best Services</h4>
+            <ul className="space-y-3 text-gray-400 text-sm">
+              <li><a href="#" className="hover:text-gold-500 transition-colors">Haircut Style</a></li>
+              <li><a href="#" className="hover:text-gold-500 transition-colors">Bridal Makeup</a></li>
+              <li><a href="#" className="hover:text-gold-500 transition-colors">Skin Care Services</a></li>
+              <li><a href="#" className="hover:text-gold-500 transition-colors">Men's Grooming</a></li>
+              <li><a href="#" className="hover:text-gold-500 transition-colors">Nail Art Services</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-white font-bold uppercase tracking-widest text-sm mb-6">Contact Us</h4>
+            <ul className="space-y-4 text-gray-400 text-sm">
+              <li className="flex items-start gap-3">
+                <MapPin className="text-gold-500 shrink-0 mt-0.5" size={16} />
+                <span>{salon.streetAddress}, {salon.city}</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <Phone className="text-gold-500 shrink-0" size={16} />
+                <a href={`tel:${salon.phone}`} className="hover:text-white transition-colors">{salon.phone}</a>
+              </li>
+              <li className="flex items-center gap-3">
+                <Mail className="text-gold-500 shrink-0" size={16} />
+                <a href={`mailto:${salon.email || 'hello@pihumakeover.com'}`} className="hover:text-white transition-colors">{salon.email || 'hello@pihumakeover.com'}</a>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-white font-bold uppercase tracking-widest text-sm mb-6">Newsletter</h4>
+            <p className="text-gray-400 text-sm mb-4">Subscribe to get the latest beauty updates and news.</p>
+            <div className="flex flex-col gap-3">
+              <input 
+                type="email" 
+                placeholder="Enter your email" 
+                className="bg-dark-900 border border-white/10 rounded px-4 py-3 text-sm text-white focus:outline-none focus:border-gold-500 w-full"
+              />
+              <button className="bg-gold-500 hover:bg-gold-600 text-dark-950 font-bold uppercase tracking-widest text-sm px-4 py-3 rounded transition-colors w-full">
+                Subscribe
+              </button>
+            </div>
+          </div>
+
         </div>
 
-        <div className="mt-8 text-center text-gray-500 text-sm">
-          <p>This page was dynamically generated by the Hyper-Local Geo Rank AI Engine.</p>
-          <Link to="/" className="text-gold-500 hover:underline mt-2 inline-block">Return to Admin Dashboard</Link>
+        <div className="border-t border-white/5 pt-8 text-center text-gray-500 text-xs">
+          <p>© {new Date().getFullYear()} {salon.name}. All Rights Reserved.</p>
         </div>
+      </footer>
+
+      {/* Modals & Floating CTAs */}
+      <BookingModal isOpen={isBookingModalOpen} onClose={() => setIsBookingModalOpen(false)} />
+      <CallTrackingModal 
+        isOpen={isCallTrackingOpen} 
+        onClose={() => setIsCallTrackingOpen(false)} 
+        salonName={salon?.name} 
+        salonPhone={salon?.phone} 
+        salonId={salon?.id} 
+      />
+      
+      {/* Floating WhatsApp CTA */}
+      <div className="fixed bottom-6 right-6 z-40">
+         <a href={`https://wa.me/${salon?.phone?.replace(/\D/g, '')}?text=Hi%20${encodeURIComponent(salon?.name || 'Salon')}!%20I%20would%20like%20to%20book%20a%20consultation.`} 
+            target="_blank" rel="noreferrer"
+            className="bg-[#25D366] hover:bg-[#20bd5a] text-white p-4 rounded-full shadow-[0_10px_30px_rgba(37,211,102,0.4)] hover:scale-110 transition-transform flex items-center justify-center group relative">
+            <MessageCircle size={28} fill="currentColor" />
+            <span className="absolute right-full mr-4 bg-dark-900 text-white text-xs font-bold px-3 py-2 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity border border-white/10">WhatsApp Us</span>
+         </a>
       </div>
+
+      {/* Blog Popup Modal */}
+      {selectedBlogPost && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="bg-dark-900 border border-gold-500/30 rounded-2xl p-8 max-w-2xl w-full relative shadow-[0_0_50px_rgba(212,175,55,0.15)]">
+            <button 
+              onClick={() => setSelectedBlogPost(null)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+            >
+              <X size={24} />
+            </button>
+            <div className="flex items-center gap-2 text-xs text-gold-500 font-bold uppercase tracking-wider mb-4">
+              <CalendarCheck size={14} /> {selectedBlogPost.date}
+            </div>
+            <h2 className="text-3xl font-serif text-white mb-6 leading-tight">{selectedBlogPost.title}</h2>
+            <p className="text-gray-300 text-lg leading-relaxed mb-10">
+              {selectedBlogPost.content}
+            </p>
+            <div className="bg-dark-950 rounded-xl p-8 text-center border border-white/5">
+              <h3 className="text-xl font-serif text-white mb-4">Need Expert Beauty Advice?</h3>
+              <p className="text-gray-400 mb-6 text-sm">Our top stylists are ready to give you a free consultation tailored to your needs.</p>
+              <button 
+                onClick={() => {
+                  setSelectedBlogPost(null);
+                  setIsCallTrackingOpen(true);
+                }}
+                className="bg-gold-500 hover:bg-white text-dark-950 px-8 py-4 font-bold uppercase tracking-widest text-sm transition-colors rounded shadow-[0_0_20px_rgba(212,175,55,0.4)] flex items-center gap-2 mx-auto"
+              >
+                <PhoneCall size={18} /> Call Us Now
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 });
