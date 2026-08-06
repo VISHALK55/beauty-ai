@@ -74,27 +74,27 @@ const Sidebar = ({ isOpen, onClose }) => {
                 <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Super Admin</p>
               </div>
               <div className={userRole !== 'SUPER_ADMIN' ? 'opacity-50 pointer-events-none grayscale select-none' : ''}>
-                <NavLink to="/salons" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''} border border-gold-500/20 bg-gold-900/10`}>
+                <NavLink to="/dashboard/salons" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''} border border-gold-500/20 bg-gold-900/10`}>
                   <Store size={18} className={userRole === 'SUPER_ADMIN' ? "text-gold-400" : "text-gray-500"} /> All Salons (Network)
                   {userRole !== 'SUPER_ADMIN' && <Lock size={14} className="ml-auto text-gray-500" />}
                 </NavLink>
-                <NavLink to="/ad-campaigns" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                <NavLink to="/dashboard/ad-campaigns" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
                   <Store size={18}/> Ad Campaign Manager
                   {userRole !== 'SUPER_ADMIN' && <Lock size={14} className="ml-auto text-gray-500" />}
                 </NavLink>
-                <NavLink to="/speed-control" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                <NavLink to="/dashboard/speed-control" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
                   <Zap size={18}/> Hyper-Speed Engine
                   {userRole !== 'SUPER_ADMIN' && <Lock size={14} className="ml-auto text-gray-500" />}
                 </NavLink>
-                <NavLink to="/geo-rank" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                <NavLink to="/dashboard/geo-rank" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
                   <MapPin size={18}/> Geo Rank AI
                   {userRole !== 'SUPER_ADMIN' && <Lock size={14} className="ml-auto text-gray-500" />}
                 </NavLink>
-                <NavLink to="/google-preview" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                <NavLink to="/dashboard/google-preview" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
                   <Search size={18}/> Google Search View
                   {userRole !== 'SUPER_ADMIN' && <Lock size={14} className="ml-auto text-gray-500" />}
                 </NavLink>
-                <NavLink to="/super-admin-settings" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''} mt-4 border-t border-white/10 pt-4`}>
+                <NavLink to="/dashboard/super-admin-settings" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''} mt-4 border-t border-white/10 pt-4`}>
                   <Settings size={18}/> Security Settings
                   {userRole !== 'SUPER_ADMIN' && <Lock size={14} className="ml-auto text-gray-500" />}
                 </NavLink>

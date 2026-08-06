@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from './api';
-import { MapPin, Phone, Star, ExternalLink, Search, Filter, Sparkles, Building2 } from 'lucide-react';
+import { MapPin, Phone, Star, ExternalLink, Search, Filter, Sparkles, Building2, Plus, X } from 'lucide-react';
 
 export default function SalonDirectory() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -10,15 +10,46 @@ export default function SalonDirectory() {
   
   const [salonsData, setSalonsData] = useState({});
   const [loading, setLoading] = useState(true);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [newSalon, setNewSalon] = useState({
+    name: '', city: '', address: '', phone: '', email: '', instagram: '', image: '', neighborhoods: ''
+  });
+  const [submitting, setSubmitting] = useState(false);
+
+  const loadData = async () => {
+    setLoading(true);
+    const data = await api.getSalons();
+    setSalonsData(data);
+    setLoading(false);
+  };
 
   useEffect(() => {
-    async function loadData() {
-      const data = await api.getSalons();
-      setSalonsData(data);
-      setLoading(false);
-    }
     loadData();
   }, []);
+
+  const handleAddSalon = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      // Auto-generate ID from name
+      const generatedId = newSalon.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      const payload = {
+        ...newSalon,
+        id: generatedId,
+        rating: 5.0,
+        reviews: 0,
+        neighborhoods: newSalon.neighborhoods.split(',').map(n => n.trim()).filter(Boolean)
+      };
+      await api.createSalon(payload);
+      await loadData();
+      setIsAddModalOpen(false);
+      setNewSalon({ name: '', city: '', address: '', phone: '', email: '', instagram: '', image: '', neighborhoods: '' });
+    } catch (err) {
+      alert("Failed to add salon. Check console for details.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const salons = Object.values(salonsData);
   const cities = ['All', ...Array.from(new Set(salons.map(s => s.city).filter(Boolean)))];
@@ -46,6 +77,12 @@ export default function SalonDirectory() {
           <span className="px-4 py-2 bg-gold-500/10 text-gold-400 border border-gold-500/20 rounded-full font-mono text-sm font-bold">
             {salons.length} Salons Live
           </span>
+          <button 
+            onClick={() => setIsAddModalOpen(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-gold-500 hover:bg-gold-600 text-dark-900 rounded-full font-bold text-sm transition-colors"
+          >
+            <Plus size={18} /> Add New Salon
+          </button>
         </div>
       </header>
 
@@ -162,6 +199,70 @@ export default function SalonDirectory() {
       {filteredSalons.length === 0 && !loading && (
         <div className="glass-panel p-12 text-center text-gray-400 mt-8">
           <p className="text-lg">No salons found matching "{searchTerm}". Try clearing your filter.</p>
+        </div>
+      )}
+
+      {/* Add New Salon Modal */}
+      {isAddModalOpen && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#110505] border border-gold-500/30 rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl relative">
+            <div className="flex justify-between items-center p-6 border-b border-white/10">
+              <h2 className="text-2xl font-serif text-white flex items-center gap-2">
+                <Sparkles className="text-gold-500" size={20} /> Add New Salon
+              </h2>
+              <button onClick={() => setIsAddModalOpen(false)} className="text-gray-400 hover:text-white transition-colors">
+                <X size={24} />
+              </button>
+            </div>
+            
+            <div className="p-6 overflow-y-auto custom-scrollbar">
+              <form id="addSalonForm" onSubmit={handleAddSalon} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Salon Name *</label>
+                    <input type="text" required value={newSalon.name} onChange={e => setNewSalon({...newSalon, name: e.target.value})} className="w-full bg-[#1c080b] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold-500" placeholder="e.g. Glamour Studio" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">City *</label>
+                    <input type="text" required value={newSalon.city} onChange={e => setNewSalon({...newSalon, city: e.target.value})} className="w-full bg-[#1c080b] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold-500" placeholder="e.g. Patna, Bihar" />
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Full Address *</label>
+                    <input type="text" required value={newSalon.address} onChange={e => setNewSalon({...newSalon, address: e.target.value})} className="w-full bg-[#1c080b] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold-500" placeholder="e.g. 123 Main St, Near Park" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Phone Number *</label>
+                    <input type="tel" required value={newSalon.phone} onChange={e => setNewSalon({...newSalon, phone: e.target.value})} className="w-full bg-[#1c080b] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold-500" placeholder="+91 9876543210" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Email</label>
+                    <input type="email" value={newSalon.email} onChange={e => setNewSalon({...newSalon, email: e.target.value})} className="w-full bg-[#1c080b] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold-500" placeholder="hello@glamour.com" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Instagram Link</label>
+                    <input type="url" value={newSalon.instagram} onChange={e => setNewSalon({...newSalon, instagram: e.target.value})} className="w-full bg-[#1c080b] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold-500" placeholder="https://instagram.com/..." />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Hero Image URL *</label>
+                    <input type="url" required value={newSalon.image} onChange={e => setNewSalon({...newSalon, image: e.target.value})} className="w-full bg-[#1c080b] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold-500" placeholder="https://unsplash.com/..." />
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Neighborhoods (Comma separated)</label>
+                    <input type="text" value={newSalon.neighborhoods} onChange={e => setNewSalon({...newSalon, neighborhoods: e.target.value})} className="w-full bg-[#1c080b] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold-500" placeholder="e.g. AP Colony, Swarajpuri Road" />
+                  </div>
+                </div>
+              </form>
+            </div>
+            
+            <div className="p-6 border-t border-white/10 bg-[#0a0303] rounded-b-2xl flex justify-end gap-4">
+              <button type="button" onClick={() => setIsAddModalOpen(false)} className="px-6 py-2.5 rounded-lg border border-white/20 text-gray-300 hover:text-white hover:bg-white/5 font-bold text-sm transition-colors">
+                Cancel
+              </button>
+              <button type="submit" form="addSalonForm" disabled={submitting} className="px-6 py-2.5 rounded-lg bg-gold-500 hover:bg-gold-600 text-dark-900 font-bold text-sm transition-colors disabled:opacity-50 flex items-center gap-2">
+                {submitting ? 'Saving...' : 'Save & Launch'}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

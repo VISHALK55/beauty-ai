@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { MapPin, Phone, Star, Clock, CalendarCheck, ChevronRight, ShieldCheck, Sparkles, Navigation, MessageCircle, PhoneCall, CheckCircle2, Gift, Search, Menu, Mail, Heart, X } from 'lucide-react';
 import BookingModal from './BookingModal';
 import CallTrackingModal from './CallTrackingModal';
+import { useSalon } from './context/SalonContext';
 
 const blogPostsData = [
   { 
@@ -52,17 +53,10 @@ const allServices = [
   { title: "Permanent hair removal", img: "https://images.unsplash.com/photo-1552693673-1bf275ce33c6?auto=format&fit=crop&q=80&w=600" }
 ];
 
-const salon = {
-  id: "pihu-makeover",
-  name: "Pihu Makeover",
-  city: "Gaya, Bihar 824231",
-  streetAddress: "Sujata Bypass Road, Near Govt. Middle School Rajapur, Bodhgaya",
-  phone: "+91 9113715558",
-  email: "pihumakeover@gmail.com",
-  instagram: "https://www.instagram.com/pihu_makeover22?igsh=ODZqc3U0M2JsY3pt",
-};
+// Removed hardcoded salon object
 
-const PihuMakeoverHome = () => {
+const SalonHome = () => {
+  const { salon } = useSalon();
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [preselectedService, setPreselectedService] = useState(null);
   
@@ -78,8 +72,8 @@ const PihuMakeoverHome = () => {
   return (
     <div className="min-h-screen bg-dark-950 text-white font-sans selection:bg-gold-500/30">
       <Helmet>
-        <title>Pihu Makeover | Best Salon in Bodhgaya & Gaya</title>
-        <meta name="description" content="Book your appointment at Pihu Makeover, Bodhgaya's premium beauty salon for bridal makeup, hair care, and skin treatments." />
+        <title>{salon.name} | Best Salon in {salon.city}</title>
+        <meta name="description" content={`Book your appointment at ${salon.name}, premium beauty salon for bridal makeup, hair care, and skin treatments.`} />
       </Helmet>
 
       {/* --- TOP BAR --- */}
@@ -110,11 +104,11 @@ const PihuMakeoverHome = () => {
         
         {/* Desktop Menu */}
         <div className="hidden lg:flex items-center gap-8 text-sm font-bold uppercase tracking-widest text-gray-300">
-          <Link to="/" className="hover:text-gold-500 transition-colors border-b-2 border-transparent pb-1">Home</Link>
-          <Link to="/services" className="hover:text-gold-500 transition-colors border-b-2 border-transparent pb-1">Services</Link>
-          <Link to="/academy" className="hover:text-gold-500 transition-colors border-b-2 border-transparent hover:border-gold-500 pb-1">Academy</Link>
-          <Link to="/blog" className="hover:text-gold-500 transition-colors border-b-2 border-transparent hover:border-gold-500 pb-1">Blog</Link>
-          <Link to="/contact" className="hover:text-gold-500 transition-colors border-b-2 border-transparent hover:border-gold-500 pb-1">Contact</Link>
+          <Link to={`/s/${salon.id}`} className="hover:text-gold-500 transition-colors border-b-2 border-transparent pb-1">Home</Link>
+          <Link to={`/s/${salon.id}/services`} className="hover:text-gold-500 transition-colors border-b-2 border-transparent pb-1">Services</Link>
+          <Link to={`/s/${salon.id}/academy`} className="hover:text-gold-500 transition-colors border-b-2 border-transparent hover:border-gold-500 pb-1">Academy</Link>
+          <Link to={`/s/${salon.id}/blog`} className="hover:text-gold-500 transition-colors border-b-2 border-transparent hover:border-gold-500 pb-1">Blog</Link>
+          <Link to={`/s/${salon.id}/contact`} className="hover:text-gold-500 transition-colors border-b-2 border-transparent hover:border-gold-500 pb-1">Contact</Link>
         </div>
 
         <div className="flex items-center gap-4">
@@ -130,11 +124,11 @@ const PihuMakeoverHome = () => {
           <button onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-gold-500"><X size={28} /></button>
         </div>
         <div className="p-4 flex flex-col gap-6 text-lg font-bold uppercase tracking-widest text-gray-300 overflow-y-auto max-h-[calc(100vh-70px)] custom-scrollbar">
-          <Link to="/" className="hover:text-gold-500 transition-colors cursor-pointer" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
-          <Link to="/services" className="hover:text-gold-500 transition-colors cursor-pointer" onClick={() => setIsMobileMenuOpen(false)}>Services</Link>
-          <Link to="/academy" className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Academy</Link>
-          <Link to="/blog" className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Blog</Link>
-          <Link to="/contact" className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
+          <Link to={`/s/${salon.id}`} className="hover:text-gold-500 transition-colors cursor-pointer" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
+          <Link to={`/s/${salon.id}/services`} className="hover:text-gold-500 transition-colors cursor-pointer" onClick={() => setIsMobileMenuOpen(false)}>Services</Link>
+          <Link to={`/s/${salon.id}/academy`} className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Academy</Link>
+          <Link to={`/s/${salon.id}/blog`} className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Blog</Link>
+          <Link to={`/s/${salon.id}/contact`} className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
         </div>
       </div>
 
@@ -152,7 +146,7 @@ const PihuMakeoverHome = () => {
         <div className="relative z-20 px-6 md:px-16 max-w-5xl">
           <div className="inline-block px-3 py-1 bg-gold-500/20 text-gold-400 border border-gold-500/30 rounded-full text-xs font-bold uppercase tracking-widest mb-6">
             <Sparkles size={14} className="inline mr-2" />
-            Top Salon in Bodhgaya
+            Top Salon in {salon.city?.split(',')[0]}
           </div>
           <h1 className="text-4xl md:text-6xl font-serif text-white mb-4 leading-tight">
             Premium <span className="text-gold-500">Beauty Salon & Academy</span>
@@ -222,7 +216,7 @@ const PihuMakeoverHome = () => {
           </div>
           <div>
             <h2 className="text-4xl font-serif mb-6 text-white leading-tight">
-              Experience the Best <br/><span className="text-gold-500">Beauty Services</span> in Bodhgaya, Gaya
+              Experience the Best <br/><span className="text-gold-500">Beauty Services</span> in {salon.city}
             </h2>
             <p className="text-gray-400 mb-6 text-lg leading-relaxed">
               At {salon.name}, we believe that beauty is personal. Our highly trained professionals use only the finest products to ensure your makeup, hair, and skin services are nothing short of perfection. 
@@ -436,4 +430,4 @@ const PihuMakeoverHome = () => {
   );
 };
 
-export default PihuMakeoverHome;
+export default SalonHome;

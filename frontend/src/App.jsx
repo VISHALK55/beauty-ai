@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './Layout';
 import { AuthProvider } from './context/AuthContext';
+import { SalonProvider } from './context/SalonContext';
 
 // Lazy loaded components for code splitting
 const Dashboard = React.lazy(() => import('./Dashboard'));
@@ -22,11 +23,12 @@ const ProtectedRoute = React.lazy(() => import('./ProtectedRoute'));
 const SuperAdminSettings = React.lazy(() => import('./SuperAdminSettings'));
 const Settings = React.lazy(() => import('./Settings'));
 const AiPremiumPlans = React.lazy(() => import('./AiPremiumPlans'));
-const PihuMakeoverHome = React.lazy(() => import('./PihuMakeoverHome'));
+const SalonHome = React.lazy(() => import('./SalonHome'));
 const Academy = React.lazy(() => import('./Academy'));
 const PublicServicesPage = React.lazy(() => import('./PublicServicesPage'));
 const PublicBlogPage = React.lazy(() => import('./PublicBlogPage'));
 const PublicContactPage = React.lazy(() => import('./PublicContactPage'));
+const B2BLandingPage = React.lazy(() => import('./B2BLandingPage'));
 
 // Fallback Loading UI
 const LoadingFallback = () => (
@@ -40,12 +42,17 @@ function App() {
     <AuthProvider>
       <Suspense fallback={<LoadingFallback />}>
         <Routes>
-          {/* Main Landing Page for Pihu Makeover */}
-          <Route path="/" element={<PihuMakeoverHome />} />
-          <Route path="/academy" element={<Academy />} />
-          <Route path="/services" element={<PublicServicesPage />} />
-          <Route path="/blog" element={<PublicBlogPage />} />
-          <Route path="/contact" element={<PublicContactPage />} />
+          {/* Tenant specific routes */}
+          <Route path="/s/:salonId" element={<SalonProvider />}>
+            <Route index element={<SalonHome />} />
+            <Route path="academy" element={<Academy />} />
+            <Route path="services" element={<PublicServicesPage />} />
+            <Route path="blog" element={<PublicBlogPage />} />
+            <Route path="contact" element={<PublicContactPage />} />
+          </Route>
+          
+          {/* B2B SaaS Landing Page */}
+          <Route path="/" element={<B2BLandingPage />} />
 
           {/* Public Login Route */}
           <Route path="/login" element={<Login />} />

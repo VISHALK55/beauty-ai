@@ -2,25 +2,18 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { MapPin, Phone, Clock, Search, Menu, X, Mail, PhoneCall } from 'lucide-react';
-
-const salon = {
-  id: "pihu-makeover",
-  name: "Pihu Makeover",
-  city: "Gaya, Bihar 824231",
-  streetAddress: "Sujata Bypass Road, Near Govt. Middle School Rajapur, Bodhgaya",
-  phone: "+91 9113715558",
-  email: "pihumakeover@gmail.com",
-  instagram: "https://www.instagram.com/pihu_makeover22?igsh=ODZqc3U0M2JsY3pt",
-};
+import { useSalon } from './context/SalonContext';
+// Removed hardcoded salon object
 
 const PublicContactPage = () => {
+  const { salon } = useSalon();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-[#1c080b] text-white font-sans selection:bg-gold-500/30">
       <Helmet>
-        <title>Contact Us | Pihu Makeover</title>
-        <meta name="description" content="Contact Pihu Makeover in Bodhgaya, Gaya for luxury salon treatments, bridal makeup bookings, and professional cosmetology courses." />
+        <title>Contact Us | {salon.name}</title>
+        <meta name="description" content={`Contact ${salon.name} in ${salon.city} for luxury salon treatments, bridal makeup bookings, and professional cosmetology courses.`} />
       </Helmet>
 
       {/* --- TOP BAR --- */}
@@ -48,11 +41,11 @@ const PublicContactPage = () => {
         
         {/* Desktop Menu */}
         <div className="hidden lg:flex items-center gap-8 text-sm font-bold uppercase tracking-widest text-gray-300">
-          <Link to="/" className="hover:text-gold-500 transition-colors border-b-2 border-transparent pb-1">Home</Link>
-          <Link to="/services" className="hover:text-gold-500 transition-colors border-b-2 border-transparent pb-1">Services</Link>
-          <Link to="/academy" className="hover:text-gold-500 transition-colors border-b-2 border-transparent hover:border-gold-500 pb-1">Academy</Link>
-          <Link to="/blog" className="hover:text-gold-500 transition-colors border-b-2 border-transparent hover:border-gold-500 pb-1">Blog</Link>
-          <Link to="/contact" className="text-gold-500 border-b-2 border-gold-500 pb-1">Contact</Link>
+          <Link to={`/s/${salon.id}`} className="hover:text-gold-500 transition-colors border-b-2 border-transparent pb-1">Home</Link>
+          <Link to={`/s/${salon.id}/services`} className="hover:text-gold-500 transition-colors border-b-2 border-transparent pb-1">Services</Link>
+          <Link to={`/s/${salon.id}/academy`} className="hover:text-gold-500 transition-colors border-b-2 border-transparent hover:border-gold-500 pb-1">Academy</Link>
+          <Link to={`/s/${salon.id}/blog`} className="hover:text-gold-500 transition-colors border-b-2 border-transparent hover:border-gold-500 pb-1">Blog</Link>
+          <Link to={`/s/${salon.id}/contact`} className="text-gold-500 border-b-2 border-gold-500 pb-1">Contact</Link>
         </div>
 
         <div className="flex items-center gap-4">
@@ -68,11 +61,11 @@ const PublicContactPage = () => {
           <button onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-gold-500"><X size={28} /></button>
         </div>
         <div className="p-4 flex flex-col gap-6 text-lg font-bold uppercase tracking-widest text-gray-300">
-          <Link to="/" className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
-          <Link to="/services" className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Services</Link>
-          <Link to="/academy" className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Academy</Link>
-          <Link to="/blog" className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Blog</Link>
-          <Link to="/contact" className="text-gold-500" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
+          <Link to={`/s/${salon.id}`} className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
+          <Link to={`/s/${salon.id}/services`} className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Services</Link>
+          <Link to={`/s/${salon.id}/academy`} className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Academy</Link>
+          <Link to={`/s/${salon.id}/blog`} className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Blog</Link>
+          <Link to={`/s/${salon.id}/contact`} className="text-gold-500" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
         </div>
       </div>
 
@@ -109,7 +102,7 @@ const PublicContactPage = () => {
               ELITE LOUNGE
             </div>
             <h2 className="text-4xl font-serif text-white mb-6">
-              Pihu Makeover Studio
+              {salon.name} Studio
             </h2>
             <p className="text-gray-400 text-sm leading-relaxed mb-12 max-w-md">
               Experience premium luxury salon treatments & professional cosmetology courses. 
@@ -254,7 +247,7 @@ const PublicContactPage = () => {
             LOCATION MAP
           </div>
           <h2 className="text-4xl font-serif text-white mb-6">
-            Find Us in Bodhgaya
+            Find Us in {salon.city?.split(',')[0]}
           </h2>
           <div className="w-16 h-px bg-gold-500/50 mx-auto"></div>
         </div>
@@ -294,10 +287,10 @@ const PublicContactPage = () => {
           <div>
             <h4 className="text-white font-bold uppercase tracking-widest text-sm mb-6">Our Services</h4>
             <ul className="space-y-3 text-gray-400 text-sm">
-              <li><Link to="/services" className="hover:text-gold-500 transition-colors">Bridal Makeup</Link></li>
-              <li><Link to="/services" className="hover:text-gold-500 transition-colors">Ceremony & Party Makeup</Link></li>
-              <li><Link to="/services" className="hover:text-gold-500 transition-colors">Pre-Bridal Packages</Link></li>
-              <li><Link to="/services" className="hover:text-gold-500 transition-colors">Mehandi Art</Link></li>
+              <li><Link to={`/s/${salon.id}/services`} className="hover:text-gold-500 transition-colors">Bridal Makeup</Link></li>
+              <li><Link to={`/s/${salon.id}/services`} className="hover:text-gold-500 transition-colors">Ceremony & Party Makeup</Link></li>
+              <li><Link to={`/s/${salon.id}/services`} className="hover:text-gold-500 transition-colors">Pre-Bridal Packages</Link></li>
+              <li><Link to={`/s/${salon.id}/services`} className="hover:text-gold-500 transition-colors">Mehandi Art</Link></li>
             </ul>
           </div>
 

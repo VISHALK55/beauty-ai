@@ -2,16 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { MapPin, Phone, Clock, Search, Menu, X, Mail, ArrowRight } from 'lucide-react';
-
-const salon = {
-  id: "pihu-makeover",
-  name: "Pihu Makeover",
-  city: "Gaya, Bihar 824231",
-  streetAddress: "Sujata Bypass Road, Near Govt. Middle School Rajapur, Bodhgaya",
-  phone: "+91 9113715558",
-  email: "pihumakeover@gmail.com",
-  instagram: "https://www.instagram.com/pihu_makeover22?igsh=ODZqc3U0M2JsY3pt",
-};
+import { useSalon } from './context/SalonContext';
+// Removed hardcoded salon object
 
 const blogs = [
   {
@@ -59,13 +51,14 @@ const blogs = [
 ];
 
 const PublicBlogPage = () => {
+  const { salon } = useSalon();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-[#1c080b] text-white font-sans selection:bg-gold-500/30">
       <Helmet>
-        <title>Beauty & Cosmetology Journal | Pihu Makeover</title>
-        <meta name="description" content="Read our latest blog posts on bridal makeup, hair care, skin therapy, and cosmetology education in Gaya and Bodhgaya." />
+        <title>Beauty & Cosmetology Journal | {salon.name}</title>
+        <meta name="description" content={`Read our latest blog posts on bridal makeup, hair care, skin therapy, and cosmetology education at ${salon.name}.`} />
       </Helmet>
 
       {/* --- TOP BAR --- */}
@@ -93,11 +86,11 @@ const PublicBlogPage = () => {
         
         {/* Desktop Menu */}
         <div className="hidden lg:flex items-center gap-8 text-sm font-bold uppercase tracking-widest text-gray-300">
-          <Link to="/" className="hover:text-gold-500 transition-colors border-b-2 border-transparent pb-1">Home</Link>
-          <Link to="/services" className="hover:text-gold-500 transition-colors border-b-2 border-transparent pb-1">Services</Link>
-          <Link to="/academy" className="hover:text-gold-500 transition-colors border-b-2 border-transparent hover:border-gold-500 pb-1">Academy</Link>
-          <Link to="/blog" className="text-gold-500 border-b-2 border-gold-500 pb-1">Blog</Link>
-          <Link to="/contact" className="hover:text-gold-500 transition-colors border-b-2 border-transparent hover:border-gold-500 pb-1">Contact</Link>
+          <Link to={`/s/${salon.id}`} className="hover:text-gold-500 transition-colors border-b-2 border-transparent pb-1">Home</Link>
+          <Link to={`/s/${salon.id}/services`} className="hover:text-gold-500 transition-colors border-b-2 border-transparent pb-1">Services</Link>
+          <Link to={`/s/${salon.id}/academy`} className="hover:text-gold-500 transition-colors border-b-2 border-transparent hover:border-gold-500 pb-1">Academy</Link>
+          <Link to={`/s/${salon.id}/blog`} className="text-gold-500 border-b-2 border-gold-500 pb-1">Blog</Link>
+          <Link to={`/s/${salon.id}/contact`} className="hover:text-gold-500 transition-colors border-b-2 border-transparent hover:border-gold-500 pb-1">Contact</Link>
         </div>
 
         <div className="flex items-center gap-4">
@@ -113,11 +106,11 @@ const PublicBlogPage = () => {
           <button onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-gold-500"><X size={28} /></button>
         </div>
         <div className="p-4 flex flex-col gap-6 text-lg font-bold uppercase tracking-widest text-gray-300">
-          <Link to="/" className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
-          <Link to="/services" className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Services</Link>
-          <Link to="/academy" className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Academy</Link>
-          <Link to="/blog" className="text-gold-500" onClick={() => setIsMobileMenuOpen(false)}>Blog</Link>
-          <Link to="/contact" className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
+          <Link to={`/s/${salon.id}`} className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
+          <Link to={`/s/${salon.id}/services`} className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Services</Link>
+          <Link to={`/s/${salon.id}/academy`} className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Academy</Link>
+          <Link to={`/s/${salon.id}/blog`} className="text-gold-500" onClick={() => setIsMobileMenuOpen(false)}>Blog</Link>
+          <Link to={`/s/${salon.id}/contact`} className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
         </div>
       </div>
 
@@ -257,10 +250,10 @@ const PublicBlogPage = () => {
           <div>
             <h4 className="text-white font-bold uppercase tracking-widest text-sm mb-6">Our Services</h4>
             <ul className="space-y-3 text-gray-400 text-sm">
-              <li><Link to="/services" className="hover:text-gold-500 transition-colors">Bridal Makeup</Link></li>
-              <li><Link to="/services" className="hover:text-gold-500 transition-colors">Ceremony & Party Makeup</Link></li>
-              <li><Link to="/services" className="hover:text-gold-500 transition-colors">Pre-Bridal Packages</Link></li>
-              <li><Link to="/services" className="hover:text-gold-500 transition-colors">Mehandi Art</Link></li>
+              <li><Link to={`/s/${salon.id}/services`} className="hover:text-gold-500 transition-colors">Bridal Makeup</Link></li>
+              <li><Link to={`/s/${salon.id}/services`} className="hover:text-gold-500 transition-colors">Ceremony & Party Makeup</Link></li>
+              <li><Link to={`/s/${salon.id}/services`} className="hover:text-gold-500 transition-colors">Pre-Bridal Packages</Link></li>
+              <li><Link to={`/s/${salon.id}/services`} className="hover:text-gold-500 transition-colors">Mehandi Art</Link></li>
             </ul>
           </div>
 
