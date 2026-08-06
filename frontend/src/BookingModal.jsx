@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { X, Calendar as CalendarIcon, Clock, User, Scissors } from 'lucide-react';
+import { X, Calendar as CalendarIcon, Clock, User, Scissors, Phone } from 'lucide-react';
 import { api } from './api';
 
-const BookingModal = ({ isOpen, onClose, onBookingCreated }) => {
+const BookingModal = ({ isOpen, onClose, onBookingCreated, preselectedService }) => {
   const [formData, setFormData] = useState({
     customerName: '',
+    phone: '',
     serviceId: '',
     date: '',
     time: '10:00'
@@ -18,13 +19,15 @@ const BookingModal = ({ isOpen, onClose, onBookingCreated }) => {
       const data = await api.getSalonServices('pihu-makeover-beauty-salon');
       if (data && data.length > 0) {
         setServices(data);
-        setFormData(prev => ({ ...prev, serviceId: data[0].id }));
+        if (!preselectedService) {
+          setFormData(prev => ({ ...prev, serviceId: data[0].id }));
+        }
       }
     }
     if (isOpen) {
       loadServices();
     }
-  }, [isOpen]);
+  }, [isOpen, preselectedService]);
 
   if (!isOpen) return null;
 
@@ -34,20 +37,33 @@ const BookingModal = ({ isOpen, onClose, onBookingCreated }) => {
 
     try {
       const selectedService = services.find(s => s.id === formData.serviceId) || services[0];
+      const serviceNameToUse = preselectedService || (selectedService ? selectedService.name : 'Custom Service');
       
-      const newBooking = {
-        customerName: formData.customerName,
-        salonName: 'Pihu Makeover Saloon',
-        serviceName: selectedService ? selectedService.name : 'Custom Service',
-        price: selectedService ? selectedService.priceINR : 0,
-        date: formData.date || new Date().toISOString().split('T')[0],
-        time: formData.time || '11:00 AM',
-        status: 'Confirmed',
-        phone: '+91 99345 ' + Math.floor(10000 + Math.random() * 90000),
-        source: 'Manual Booking'
-      };
+      let finalPrice = 0;
+      if (preselectedService) {
+        const matched = services.find(s => s.name.toLowerCase().includes(preselectedService.toLowerCase().split(' ')[0]));
+        if (matched) finalPrice = matched.priceINR;
+      } else if (selectedService) {
+        finalPrice = selectedService.priceINR;
+      }
+      
+        const newBooking = {
+          customerName: formData.customerName,
+          salonName: 'Pihu Makeover Saloon',
+          serviceName: serviceNameToUse,
+          price: finalPrice,
+          date: formData.date || new Date().toISOString().split('T')[0],
+          time: formData.time || '11:00 AM',
+          status: 'Confirmed',
+          phone: formData.phone,
+          source: 'Manual Booking'
+        };
 
-      await api.createAppointment('pihu-makeover-beauty-salon', newBooking);
+      const res = await api.createAppointment('pihu-makeover-beauty-salon', newBooking);
+
+      if (!res) {
+        throw new Error('Backend failed to create appointment');
+      }
 
       if (onBookingCreated) {
         onBookingCreated();
@@ -60,6 +76,7 @@ const BookingModal = ({ isOpen, onClose, onBookingCreated }) => {
       }, 2000);
     } catch (error) {
       console.error('Error:', error);
+      alert('Failed to connect to the backend and create booking. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -103,20 +120,47 @@ const BookingModal = ({ isOpen, onClose, onBookingCreated }) => {
             </div>
 
             <div>
-              <label className="block text-sm text-gray-400 mb-1">Service</label>
+              <label className="block text-sm text-gray-400 mb-1">Phone Number</label>
               <div className="relative">
-                <Scissors className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
-                <select 
-                  value={formData.serviceId}
-                  onChange={e => setFormData({...formData, serviceId: e.target.value})}
-                  className="w-full pl-10 pr-4 py-2 bg-dark-800 border border-white/10 rounded-lg focus:outline-none focus:border-gold-500 transition-colors text-white appearance-none"
-                >
-                  {services.map(s => (
-                    <option key={s.id} value={s.id}>{s.name} (₹{s.priceINR})</option>
-                  ))}
-                </select>
+                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
+                <input 
+                  type="tel" 
+                  required
+                  value={formData.phone}
+                  onChange={e => setFormData({...formData, phone: e.target.value})}
+                  className="w-full pl-10 pr-4 py-2 bg-dark-800 border border-white/10 rounded-lg focus:outline-none focus:border-gold-500 transition-colors text-white"
+                  placeholder="e.g. +91 9876543210"
+                />
               </div>
             </div>
+
+            {!preselectedService ? (
+              <div>
+                <label className="block text-sm text-gray-400 mb-1">Service</label>
+                <div className="relative">
+                  <Scissors className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
+                  <select 
+                    value={formData.serviceId}
+                    onChange={e => setFormData({...formData, serviceId: e.target.value})}
+                    className="w-full pl-10 pr-4 py-2 bg-dark-800 border border-white/10 rounded-lg focus:outline-none focus:border-gold-500 transition-colors text-white appearance-none"
+                  >
+                    {services.map(s => (
+                      <option key={s.id} value={s.id}>{s.name} (₹{s.priceINR})</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <label className="block text-sm text-gray-400 mb-1">Selected Service</label>
+                <div className="relative">
+                  <Scissors className="absolute left-3 top-1/2 -translate-y-1/2 text-gold-500" size={16} />
+                  <div className="w-full pl-10 pr-4 py-2 bg-dark-800/50 border border-gold-500/30 rounded-lg text-gold-400 flex items-center">
+                    {preselectedService}
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div className="grid grid-cols-2 gap-4">
               <div>

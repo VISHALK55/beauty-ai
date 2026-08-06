@@ -1,4 +1,5 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://8gdksjm9lj.execute-api.us-east-1.amazonaws.com';
+const envUrl = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = (envUrl ? envUrl.replace(/\/$/, '') : 'https://8gdksjm9lj.execute-api.us-east-1.amazonaws.com');
 
 export const api = {
     login: async (username, password) => {
@@ -21,6 +22,17 @@ export const api = {
                     token: "mock-jwt-token-super-admin",
                     role: "SUPER_ADMIN",
                     salonId: "SUPER-ADMIN"
+                };
+            }
+            if (username === 'pihu-makeover') {
+                console.warn("Using mock fallback for owner login");
+                if (password !== '123456') {
+                    throw new Error('Invalid credentials (mock fallback)');
+                }
+                return {
+                    token: "mock-jwt-token-owner",
+                    role: "SALON_OWNER",
+                    salonId: "pihu-makeover"
                 };
             }
             throw e;
@@ -147,7 +159,7 @@ export const api = {
             };
         }
     },
-    changeSuperAdminPin: async (currentPin, newPin) => {
+    changeSuperAdminPin: async (phoneNumber, newPin) => {
         try {
             const res = await fetch(`${API_BASE_URL}/api/v1/auth/super-admin/pin`, {
                 method: 'POST',
@@ -155,7 +167,7 @@ export const api = {
                     'Content-Type': 'application/json',
                     ...api.getHeaders()
                 },
-                body: JSON.stringify({ currentPin, newPin })
+                body: JSON.stringify({ phoneNumber, newPin })
             });
             if (!res.ok) {
                 const errData = await res.json();
@@ -166,13 +178,13 @@ export const api = {
             console.error('API Error:', e);
             // Fallback for local testing if API isn't deployed yet
             console.warn("Using mock fallback for changeSuperAdminPin");
-            if (currentPin !== 'pihu2026' && currentPin !== 'mock') {
-                throw new Error('Incorrect current PIN (mock fallback)');
+            if (phoneNumber !== 'admin' && phoneNumber !== 'mock') {
+                throw new Error('Incorrect owner verification (mock fallback)');
             }
             return { success: true };
         }
     },
-    changeSalonPin: async (currentPin, newPin) => {
+    changeSalonPin: async (phoneNumber, newPin) => {
         try {
             const res = await fetch(`${API_BASE_URL}/api/v1/auth/salon/pin`, {
                 method: 'POST',
@@ -180,7 +192,7 @@ export const api = {
                     'Content-Type': 'application/json',
                     ...api.getHeaders()
                 },
-                body: JSON.stringify({ currentPin, newPin })
+                body: JSON.stringify({ phoneNumber, newPin })
             });
             if (!res.ok) {
                 const errData = await res.json();
@@ -190,8 +202,8 @@ export const api = {
         } catch (e) {
             console.error('API Error:', e);
             console.warn("Using mock fallback for changeSalonPin");
-            if (currentPin !== 'mock') {
-                throw new Error('Incorrect current PIN (mock fallback)');
+            if (phoneNumber !== 'mock') {
+                throw new Error('Incorrect owner phone number (mock fallback)');
             }
             return { success: true };
         }

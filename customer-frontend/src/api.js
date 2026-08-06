@@ -5,11 +5,17 @@ const API_URL = 'https://8gdksjm9lj.execute-api.us-east-1.amazonaws.com';
 const DEFAULT_SALON_ID = 'salon-pihu-makeover';
 
 export const getSalonId = async () => {
-    return DEFAULT_SALON_ID;
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('salon') || DEFAULT_SALON_ID;
 };
 
-export const fetchServices = async () => {
-    const response = await axios.get(`${API_URL}/services?salonId=${DEFAULT_SALON_ID}`);
+export const fetchSalon = async (salonId) => {
+    const response = await axios.get(`${API_BASE_URL}/salons/${salonId}`);
+    return response.data;
+};
+
+export const fetchServices = async (salonId) => {
+    const response = await axios.get(`${API_BASE_URL}/services?salonId=${salonId}`);
     return response.data;
 };
 

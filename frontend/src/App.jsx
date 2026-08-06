@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './Layout';
 import { AuthProvider } from './context/AuthContext';
 
@@ -21,6 +21,12 @@ const Login = React.lazy(() => import('./Login'));
 const ProtectedRoute = React.lazy(() => import('./ProtectedRoute'));
 const SuperAdminSettings = React.lazy(() => import('./SuperAdminSettings'));
 const Settings = React.lazy(() => import('./Settings'));
+const AiPremiumPlans = React.lazy(() => import('./AiPremiumPlans'));
+const PihuMakeoverHome = React.lazy(() => import('./PihuMakeoverHome'));
+const Academy = React.lazy(() => import('./Academy'));
+const PublicServicesPage = React.lazy(() => import('./PublicServicesPage'));
+const PublicBlogPage = React.lazy(() => import('./PublicBlogPage'));
+const PublicContactPage = React.lazy(() => import('./PublicContactPage'));
 
 // Fallback Loading UI
 const LoadingFallback = () => (
@@ -34,6 +40,13 @@ function App() {
     <AuthProvider>
       <Suspense fallback={<LoadingFallback />}>
         <Routes>
+          {/* Main Landing Page for Pihu Makeover */}
+          <Route path="/" element={<PihuMakeoverHome />} />
+          <Route path="/academy" element={<Academy />} />
+          <Route path="/services" element={<PublicServicesPage />} />
+          <Route path="/blog" element={<PublicBlogPage />} />
+          <Route path="/contact" element={<PublicContactPage />} />
+
           {/* Public Login Route */}
           <Route path="/login" element={<Login />} />
         {/* Public Programmatic SEO Routes */}
@@ -44,10 +57,11 @@ function App() {
         <Route path="/review/:salonId" element={<SmartReview />} />
 
         {/* Admin Dashboard Routes */}
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Dashboard />} />
+        <Route path="/dashboard" element={<Layout />}>
+          <Route index element={<Navigate to="appointments" replace />} />
           <Route path="appointments" element={<Appointments />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="ai-premium" element={<AiPremiumPlans />} />
           {/* Protected Super Admin Routes */}
           <Route element={<ProtectedRoute />}>
             <Route path="salons" element={<SalonDirectory />} />

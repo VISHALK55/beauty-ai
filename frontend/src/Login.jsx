@@ -17,7 +17,7 @@ export default function Login() {
             if (response.token) {
                 // Pass the whole response or token/role/salonId to AuthContext
                 login(response.token, response.role, response.salonId);
-                navigate('/');
+                navigate('/dashboard');
             } else {
                 setError('Invalid credentials');
             }

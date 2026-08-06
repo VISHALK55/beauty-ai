@@ -13,7 +13,8 @@ import {
   Store,
   Search,
   Zap,
-  X
+  X,
+  Lock
 } from 'lucide-react';
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -50,74 +51,73 @@ const Sidebar = ({ isOpen, onClose }) => {
         </div>
         
         <nav className="flex-1 px-4 space-y-1.5 mt-4 overflow-y-auto">
-          <NavLink to="/" end onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-            <LayoutDashboard size={18}/> Dashboard
-          </NavLink>
           <NavLink to="/services" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
             <Scissors size={18}/> Services
           </NavLink>
-          <NavLink to="/appointments" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+          <NavLink to="/dashboard/appointments" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
             <Calendar size={18}/> Appointments
           </NavLink>
-          <NavLink to="/settings" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+          <NavLink to="/dashboard/ai-premium" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+            <MessageSquare size={18}/> AI Chat Bot
+          </NavLink>
+          <NavLink to="/dashboard/ai-premium" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+            <PhoneCall size={18}/> AI Voice Calls
+          </NavLink>
+          <NavLink to="/dashboard/settings" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
             <Settings size={18}/> Settings
           </NavLink>
 
           {/* SUPER ADMIN SECTION */}
-          {isAuthenticated && userRole === 'SUPER_ADMIN' && (
+          {isAuthenticated && (
             <>
               <div className="mt-8 mb-2 px-4 flex justify-between items-center">
                 <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Super Admin</p>
-                <button onClick={logout} className="text-[10px] text-red-400 hover:text-red-300 uppercase font-bold tracking-wider">Logout</button>
               </div>
-              <NavLink to="/salons" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''} border border-gold-500/20 bg-gold-900/10`}>
-                <Store size={18} className="text-gold-400" /> All Salons (Network)
-              </NavLink>
-              <NavLink to="/ad-campaigns" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-                <Store size={18}/> Ad Campaign Manager
-              </NavLink>
-              <NavLink to="/voice-calls" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-                <PhoneCall size={18}/> AI Voice Calls
-              </NavLink>
-              <NavLink to="/ai-receptionist" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-                <MessageSquare size={18}/> AI Chat Bot
-              </NavLink>
-              <NavLink to="/speed-control" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-                <Zap size={18}/> Hyper-Speed Engine
-              </NavLink>
-              <NavLink to="/geo-rank" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-                <MapPin size={18}/> Geo Rank AI
-              </NavLink>
-              <NavLink to="/google-preview" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-                <Search size={18}/> Google Search View
-              </NavLink>
-              <NavLink to="/super-admin-settings" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''} mt-4 border-t border-white/10 pt-4`}>
-                <Settings size={18}/> Security Settings
-              </NavLink>
+              <div className={userRole !== 'SUPER_ADMIN' ? 'opacity-50 pointer-events-none grayscale select-none' : ''}>
+                <NavLink to="/salons" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''} border border-gold-500/20 bg-gold-900/10`}>
+                  <Store size={18} className={userRole === 'SUPER_ADMIN' ? "text-gold-400" : "text-gray-500"} /> All Salons (Network)
+                  {userRole !== 'SUPER_ADMIN' && <Lock size={14} className="ml-auto text-gray-500" />}
+                </NavLink>
+                <NavLink to="/ad-campaigns" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                  <Store size={18}/> Ad Campaign Manager
+                  {userRole !== 'SUPER_ADMIN' && <Lock size={14} className="ml-auto text-gray-500" />}
+                </NavLink>
+                <NavLink to="/speed-control" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                  <Zap size={18}/> Hyper-Speed Engine
+                  {userRole !== 'SUPER_ADMIN' && <Lock size={14} className="ml-auto text-gray-500" />}
+                </NavLink>
+                <NavLink to="/geo-rank" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                  <MapPin size={18}/> Geo Rank AI
+                  {userRole !== 'SUPER_ADMIN' && <Lock size={14} className="ml-auto text-gray-500" />}
+                </NavLink>
+                <NavLink to="/google-preview" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                  <Search size={18}/> Google Search View
+                  {userRole !== 'SUPER_ADMIN' && <Lock size={14} className="ml-auto text-gray-500" />}
+                </NavLink>
+                <NavLink to="/super-admin-settings" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''} mt-4 border-t border-white/10 pt-4`}>
+                  <Settings size={18}/> Security Settings
+                  {userRole !== 'SUPER_ADMIN' && <Lock size={14} className="ml-auto text-gray-500" />}
+                </NavLink>
+              </div>
             </>
           )}
         </nav>
         
-        <div className="p-5 border-t border-white/5 bg-dark-950/40">
+        {/* Global User Section */}
+        <div className="p-4 border-t border-white/5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-gold-500 flex items-center justify-center text-dark-900 font-bold text-sm">
+              <div className="w-10 h-10 rounded-full bg-gold-500 flex items-center justify-center text-dark-950 font-bold">
                 {userRole === 'SUPER_ADMIN' ? 'SA' : salonId ? salonId.substring(0, 2).toUpperCase() : 'PM'}
               </div>
               <div>
-                <p className="text-sm font-semibold text-white">
-                  {userRole === 'SUPER_ADMIN' ? 'Super Admin' : salonId || 'Pihu Makeover'}
-                </p>
-                <p className="text-xs text-gold-400">
-                  {userRole === 'SUPER_ADMIN' ? 'Platform Control' : 'Authorized Access'}
-                </p>
+                <p className="text-sm font-bold text-white">{userRole === 'SUPER_ADMIN' ? 'Super Admin' : salonId || 'Pihu Makeover'}</p>
+                <p className="text-[10px] text-gold-400 tracking-wider">Authorized Access</p>
               </div>
             </div>
-            {isAuthenticated && userRole !== 'SUPER_ADMIN' && (
-              <button onClick={logout} className="text-[10px] text-red-400 hover:text-red-300 uppercase font-bold tracking-wider">
-                Logout
-              </button>
-            )}
+            <button onClick={logout} className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors flex items-center justify-center" title="Logout">
+              <X size={20} />
+            </button>
           </div>
         </div>
       </div>

@@ -1,17 +1,17 @@
 package com.beautyai.salon.dto;
 
 public class PinChangeRequest {
-    private String currentPin;
+    private String phoneNumber;
     private String newPin;
 
     public PinChangeRequest() {}
 
-    public String getCurrentPin() {
-        return currentPin;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setCurrentPin(String currentPin) {
-        this.currentPin = currentPin;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getNewPin() {

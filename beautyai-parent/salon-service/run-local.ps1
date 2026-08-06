@@ -10,4 +10,4 @@ $env:JAVA_HOME = $jdkFolder.FullName
 $env:PATH = "$env:JAVA_HOME\bin;$env:PATH"
 
 Write-Host "Starting Spring Boot locally on port 8081 with local profile..."
-java -jar target/salon-service-1.0.0-SNAPSHOT.jar --spring.profiles.active=local
+.\apache-maven-3.9.8\bin\mvn.cmd spring-boot:run "-Dspring-boot.run.profiles=local"

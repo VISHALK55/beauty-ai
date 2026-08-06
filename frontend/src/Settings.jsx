@@ -5,7 +5,7 @@ import { useAuth } from './context/AuthContext';
 
 export default function Settings() {
     const { userRole, salonId } = useAuth();
-    const [currentPin, setCurrentPin] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
     const [newPin, setNewPin] = useState('');
     const [confirmPin, setConfirmPin] = useState('');
     const [status, setStatus] = useState('idle'); // idle, loading, success, error
@@ -38,9 +38,9 @@ export default function Settings() {
         setErrorMessage('');
 
         try {
-            await api.changeSalonPin(currentPin, newPin);
+            await api.changeSalonPin(phoneNumber, newPin);
             setStatus('success');
-            setCurrentPin('');
+            setPhoneNumber('');
             setNewPin('');
             setConfirmPin('');
         } catch (error) {
@@ -85,15 +85,15 @@ export default function Settings() {
 
                 <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
                     <div>
-                        <label className="block text-sm font-bold text-gray-400 mb-1.5 uppercase tracking-wider">Current PIN</label>
+                        <label className="block text-sm font-bold text-gray-400 mb-1.5 uppercase tracking-wider">Owner Phone Number</label>
                         <div className="relative">
                             <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
                             <input 
-                                type="password" 
+                                type="text" 
                                 className="w-full bg-dark-900 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white focus:outline-none focus:border-gold-500 transition-colors tracking-widest"
-                                placeholder="••••••"
-                                value={currentPin}
-                                onChange={(e) => setCurrentPin(e.target.value)}
+                                placeholder="e.g. 9876543210"
+                                value={phoneNumber}
+                                onChange={(e) => setPhoneNumber(e.target.value)}
                                 required
                             />
                         </div>

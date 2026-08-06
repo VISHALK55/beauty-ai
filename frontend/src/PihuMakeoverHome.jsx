@@ -1,25 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { MapPin, Phone, Star, Clock, CalendarCheck, ChevronRight, ShieldCheck, Sparkles, Navigation, MessageCircle, PhoneCall, CheckCircle2, Gift, Search, Menu, Mail, Heart, X } from 'lucide-react';
-import { generateLocalBusinessSchema, generateServiceSchema } from './SeoAlgorithm';
-import { api } from './api';
 import BookingModal from './BookingModal';
 import CallTrackingModal from './CallTrackingModal';
-
-// DB Fetch based on URL parameters (Programmatic SEO)
-const fetchServiceData = (serviceSlug) => {
-  const db = {
-    'bridal-makeup': { name: "Bridal & Party Makeup", description: "Premium HD bridal & party makeup with 3D lash extensions & flawless finish." },
-    'airbrush-makeup': { name: "Airbrush HD Bridal Suite", description: "Ultra-waterproof airbrush HD makeup package for grand weddings." },
-    'haircut-styling': { name: "Haircuts, Styling & Coloring", description: "Modern haircuts, professional blow-dry, and balayage/highlights." },
-    'facial-skincare': { name: "Facials, Skin Care & Spa", description: "Deep cleansing facials, skin brightening, and relaxing spa treatments." },
-    'nails': { name: "Manicures, Pedicures & Acrylic Nails", description: "Luxury mani-pedi spa and professional acrylic nail extensions." },
-    'lashes-brows': { name: "Eyelash Extensions & Brow Lamination", description: "Semi-permanent eyelash extensions and brow lamination for a bold look." },
-    'hair-removal': { name: "Waxing & Laser Hair Removal", description: "Full body waxing and advanced laser hair removal services." }
-  };
-  return db[serviceSlug] || { name: serviceSlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()), description: "Professional salon service tailored to your beauty needs." };
-};
 
 const blogPostsData = [
   { 
@@ -39,77 +23,63 @@ const blogPostsData = [
   }
 ];
 
-const PublicSalonPage = React.memo(function PublicSalonPage() {
-  const { salonId, serviceSlug, neighborhoodSlug } = useParams();
-  const [salon, setSalon] = useState(null);
-  const [service, setService] = useState(null);
-  const [schemas, setSchemas] = useState({ localBusiness: null, service: null });
+const allServices = [
+  { title: "Acne treatments", img: "https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?auto=format&fit=crop&q=80&w=600" },
+  { title: "Acrylic nails", img: "https://images.unsplash.com/photo-1519014816548-bf5fe059c98b?auto=format&fit=crop&q=80&w=600" },
+  { title: "Balayage", img: "https://images.unsplash.com/photo-1562322140-8baeececf3df?auto=format&fit=crop&q=80&w=600" },
+  { title: "Blow dry", img: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&q=80&w=600" },
+  { title: "Body waxing", img: "https://images.unsplash.com/photo-1552693673-1bf275ce33c6?auto=format&fit=crop&q=80&w=600" },
+  { title: "Box braids", img: "https://images.unsplash.com/photo-1605980776564-07d3910c2cde?auto=format&fit=crop&q=80&w=600" },
+  { title: "Braids", img: "https://images.unsplash.com/photo-1564245642054-9a40552bbaaa?auto=format&fit=crop&q=80&w=600" },
+  { title: "Bridal services", img: "/services/bridal_makeup.png" },
+  { title: "Brow lamination", img: "https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?auto=format&fit=crop&q=80&w=600" },
+  { title: "Dreadlocks", img: "https://images.unsplash.com/photo-1596499876569-4e8c148fc286?auto=format&fit=crop&q=80&w=600" },
+  { title: "Eyebrow beautification", img: "https://images.unsplash.com/photo-1518146747223-936d5952f9ce?auto=format&fit=crop&q=80&w=600" },
+  { title: "Eyebrow shaping", img: "https://images.unsplash.com/photo-1512413914441-28562d515a6b?auto=format&fit=crop&q=80&w=600" },
+  { title: "Eyebrow threading", img: "https://images.unsplash.com/photo-1512140411802-535359e99214?auto=format&fit=crop&q=80&w=600" },
+  { title: "Eyelash extensions", img: "https://images.unsplash.com/photo-1587778082149-bd5b1130ba46?auto=format&fit=crop&q=80&w=600" },
+  { title: "Facials", img: "/services/skin_care.png" },
+  { title: "Haircut", img: "/services/haircut_style.png" },
+  { title: "Hair extensions", img: "https://images.unsplash.com/photo-1600537025211-1a89b35b62b7?auto=format&fit=crop&q=80&w=600" },
+  { title: "Hairstyling", img: "https://images.unsplash.com/photo-1562322140-8baeececf3df?auto=format&fit=crop&q=80&w=600" },
+  { title: "Hair threading", img: "https://images.unsplash.com/photo-1512140411802-535359e99214?auto=format&fit=crop&q=80&w=600" },
+  { title: "Laser hair removal", img: "https://images.unsplash.com/photo-1560750588-73207b1ef5b8?auto=format&fit=crop&q=80&w=600" },
+  { title: "Lash lift", img: "https://images.unsplash.com/photo-1587778082149-bd5b1130ba46?auto=format&fit=crop&q=80&w=600" },
+  { title: "Lash perms", img: "https://images.unsplash.com/photo-1587778082149-bd5b1130ba46?auto=format&fit=crop&q=80&w=600" },
+  { title: "Make-up", img: "https://images.unsplash.com/photo-1596462502278-27bf85040462?auto=format&fit=crop&q=80&w=600" },
+  { title: "Manicure", img: "https://images.unsplash.com/photo-1519014816548-bf5fe059c98b?auto=format&fit=crop&q=80&w=600" },
+  { title: "Pedicure", img: "/services/nail_art.png" },
+  { title: "Permanent hair removal", img: "https://images.unsplash.com/photo-1552693673-1bf275ce33c6?auto=format&fit=crop&q=80&w=600" }
+];
+
+const salon = {
+  id: "pihu-makeover",
+  name: "Pihu Makeover",
+  city: "Gaya, Bihar 824231",
+  streetAddress: "Sujata Bypass Road, Near Govt. Middle School Rajapur, Bodhgaya",
+  phone: "+91 9113715558",
+  email: "pihumakeover@gmail.com",
+  instagram: "https://www.instagram.com/pihu_makeover22?igsh=ODZqc3U0M2JsY3pt",
+};
+
+const PihuMakeoverHome = () => {
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  const [preselectedService, setPreselectedService] = useState(null);
+  
+  const openBooking = (serviceName = null) => {
+    setPreselectedService(serviceName);
+    setIsBookingModalOpen(true);
+  };
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
   const [isCallTrackingOpen, setIsCallTrackingOpen] = useState(false);
   const [selectedBlogPost, setSelectedBlogPost] = useState(null);
-
-  useEffect(() => {
-    async function fetchData() {
-      // 1. Fetch data from DB based on programmatic URL
-      let sData;
-      try {
-        sData = await api.getSalon(salonId);
-      } catch (e) {
-        console.log("API failed, using fallback data for preview");
-      }
-      
-      // Override API data with Pihu Makeover info
-      sData = {
-        ...(sData || {}),
-        id: salonId,
-        name: "Pihu Makeover",
-        city: "Gaya, Bihar 824231",
-        streetAddress: "Sujata Bypass Road, Near Govt. Middle School Rajapur, Bodhgaya",
-        rating: 4.8,
-        reviews: 120,
-        phone: "+91 9113715558",
-        email: "pihumakeover@gmail.com",
-        instagram: "https://www.instagram.com/pihu_makeover22?igsh=ODZqc3U0M2JsY3pt",
-        image: sData?.image || "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&q=80&w=1000"
-      };
-
-      const srvData = fetchServiceData(serviceSlug || 'hair-cut');
-      setSalon(sData);
-      setService(srvData);
-
-      // 2. SEO ALGORITHM EXECUTION (Hyper-Local Grid)
-      if (sData) {
-        const localSchema = generateLocalBusinessSchema(sData);
-        // Note: service schema internally might still generate a dummy price if needed for SEO, 
-        // but it will NOT be displayed to the user on this page.
-        const srvSchema = generateServiceSchema({...srvData, price: 850}, sData, neighborhoodSlug);
-        setSchemas({ localBusiness: localSchema, service: srvSchema });
-      }
-    }
-    fetchData();
-  }, [salonId, serviceSlug, neighborhoodSlug]);
-
-  if (!salon || !service) return <div className="p-10 text-white min-h-screen bg-dark-950 flex items-center justify-center">Loading Experience...</div>;
-
-  const displayLocation = neighborhoodSlug ? neighborhoodSlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : "Bodhgaya, Gaya";
 
   return (
     <div className="min-h-screen bg-dark-950 text-white font-sans selection:bg-gold-500/30">
       <Helmet>
-        <title>{service.name} in {displayLocation} | {salon.name}</title>
-        <meta name="description" content={`Book ${service.name} at ${salon.name} in ${displayLocation}. ${service.description}`} />
-        <link rel="canonical" href={`https://beautyai.app/salon/${salonId}/${serviceSlug}${neighborhoodSlug ? '/' + neighborhoodSlug : ''}`} />
-        
-        {schemas.localBusiness && (
-          <script type="application/ld+json">
-            {JSON.stringify(schemas.localBusiness)}
-          </script>
-        )}
-        {schemas.service && (
-          <script type="application/ld+json">
-            {JSON.stringify(schemas.service)}
-          </script>
-        )}
+        <title>Pihu Makeover | Best Salon in Bodhgaya & Gaya</title>
+        <meta name="description" content="Book your appointment at Pihu Makeover, Bodhgaya's premium beauty salon for bridal makeup, hair care, and skin treatments." />
       </Helmet>
 
       {/* --- TOP BAR --- */}
@@ -122,9 +92,9 @@ const PublicSalonPage = React.memo(function PublicSalonPage() {
         <div className="flex items-center gap-5">
           <a href="#" className="hover:text-gold-500 transition-colors font-bold tracking-wider">FB</a>
           <a href="#" className="hover:text-gold-500 transition-colors font-bold tracking-wider">YT</a>
-          <a href={salon.instagram || "#"} className="hover:text-gold-500 transition-colors font-bold tracking-wider">IG</a>
+          <a href={salon.instagram} target="_blank" rel="noreferrer" className="hover:text-gold-500 transition-colors font-bold tracking-wider">IG</a>
           <button 
-            onClick={() => setIsBookingModalOpen(true)}
+            onClick={() => openBooking()}
             className="bg-gold-500 text-dark-950 px-4 py-1.5 rounded text-xs font-bold uppercase tracking-wider hover:bg-white transition-colors"
           >
             Book Now
@@ -134,64 +104,71 @@ const PublicSalonPage = React.memo(function PublicSalonPage() {
 
       {/* --- MAIN NAVIGATION --- */}
       <nav className="bg-dark-950/95 backdrop-blur-lg sticky top-0 z-50 border-b border-white/5 py-4 px-4 md:px-12 flex justify-between items-center">
-        <div className="text-2xl md:text-3xl font-serif text-gold-500 font-bold uppercase tracking-wide">
+        <div className="text-xl md:text-2xl font-serif text-gold-500 font-bold uppercase tracking-wide">
           {salon.name}
         </div>
         
         {/* Desktop Menu */}
         <div className="hidden lg:flex items-center gap-8 text-sm font-bold uppercase tracking-widest text-gray-300">
-          <Link to="/" className="hover:text-gold-500 transition-colors">Home</Link>
-          <div className="relative group cursor-pointer py-2">
-            <span className="hover:text-gold-500 transition-colors flex items-center gap-1">Our Services <ChevronRight size={14} className="rotate-90" /></span>
-            {/* Dropdown menu */}
-            <div className="absolute top-full left-0 mt-2 w-56 bg-dark-900 border border-white/10 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 flex flex-col overflow-hidden">
-              <span className="px-4 py-3 hover:bg-gold-500 hover:text-dark-950 transition-colors border-b border-white/5">Bridal Makeup</span>
-              <span className="px-4 py-3 hover:bg-gold-500 hover:text-dark-950 transition-colors border-b border-white/5">Haircut Style</span>
-              <span className="px-4 py-3 hover:bg-gold-500 hover:text-dark-950 transition-colors border-b border-white/5">Skin Care Services</span>
-              <span className="px-4 py-3 hover:bg-gold-500 hover:text-dark-950 transition-colors">Nail Art Services</span>
-            </div>
-          </div>
-          <span className="hover:text-gold-500 transition-colors cursor-pointer">Blog</span>
-          <span className="hover:text-gold-500 transition-colors cursor-pointer">Contact</span>
+          <Link to="/" className="hover:text-gold-500 transition-colors border-b-2 border-transparent pb-1">Home</Link>
+          <Link to="/services" className="hover:text-gold-500 transition-colors border-b-2 border-transparent pb-1">Services</Link>
+          <Link to="/academy" className="hover:text-gold-500 transition-colors border-b-2 border-transparent hover:border-gold-500 pb-1">Academy</Link>
+          <Link to="/blog" className="hover:text-gold-500 transition-colors border-b-2 border-transparent hover:border-gold-500 pb-1">Blog</Link>
+          <Link to="/contact" className="hover:text-gold-500 transition-colors border-b-2 border-transparent hover:border-gold-500 pb-1">Contact</Link>
         </div>
 
         <div className="flex items-center gap-4">
           <Search size={20} className="text-gray-300 hover:text-gold-500 cursor-pointer transition-colors" />
-          <Menu size={24} className="lg:hidden text-gray-300 hover:text-gold-500 cursor-pointer" />
+          <Menu size={24} className="lg:hidden text-gray-300 hover:text-gold-500 cursor-pointer" onClick={() => setIsMobileMenuOpen(true)} />
         </div>
       </nav>
 
-      {/* --- HERO SLIDER STYLE --- */}
-      <div className="relative w-full h-[60vh] md:h-[75vh] flex items-center overflow-hidden">
+      {/* Mobile Menu Overlay */}
+      <div className={`fixed inset-0 bg-dark-950/95 backdrop-blur-md z-[60] transition-all duration-300 ${isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
+        <div className="flex justify-between items-center p-4 border-b border-white/5">
+          <div className="text-xl font-serif text-gold-500 font-bold uppercase tracking-wide">{salon.name}</div>
+          <button onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-gold-500"><X size={28} /></button>
+        </div>
+        <div className="p-4 flex flex-col gap-6 text-lg font-bold uppercase tracking-widest text-gray-300 overflow-y-auto max-h-[calc(100vh-70px)] custom-scrollbar">
+          <Link to="/" className="hover:text-gold-500 transition-colors cursor-pointer" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
+          <Link to="/services" className="hover:text-gold-500 transition-colors cursor-pointer" onClick={() => setIsMobileMenuOpen(false)}>Services</Link>
+          <Link to="/academy" className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Academy</Link>
+          <Link to="/blog" className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Blog</Link>
+          <Link to="/contact" className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
+        </div>
+      </div>
+
+      {/* --- HERO SECTION --- */}
+      <div className="relative w-full h-[60vh] md:h-[80vh] flex items-center overflow-hidden">
         <div className="absolute inset-0 bg-dark-950 z-0"></div>
-        {salon.image && (
-          <img 
-            src={salon.image} 
-            alt={`${salon.name} Header`} 
-            className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-overlay"
-            loading="lazy"
-          />
-        )}
+        <img 
+          src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&q=80&w=1600" 
+          alt={`${salon.name} Header`} 
+          className="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-overlay"
+          loading="lazy"
+        />
         <div className="absolute inset-0 bg-gradient-to-r from-dark-950 via-dark-900/80 to-transparent z-10"></div>
         
         <div className="relative z-20 px-6 md:px-16 max-w-5xl">
           <div className="inline-block px-3 py-1 bg-gold-500/20 text-gold-400 border border-gold-500/30 rounded-full text-xs font-bold uppercase tracking-widest mb-6">
             <Sparkles size={14} className="inline mr-2" />
-            Top Salon in {displayLocation}
+            Top Salon in Bodhgaya
           </div>
-          <h1 className="text-5xl md:text-7xl font-serif text-white mb-4 leading-tight">
-            Premium <span className="text-gold-500">{service.name}</span>
+          <h1 className="text-4xl md:text-6xl font-serif text-white mb-4 leading-tight">
+            Premium <span className="text-gold-500">Beauty Salon & Academy</span>
           </h1>
-          <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl font-light">
-            {service.description} Transform your look with our expert stylists today.
+          <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl font-light">
+            Professional salon service tailored to your beauty needs. Transform your look with our expert stylists today.
           </p>
           <div className="flex flex-wrap gap-4">
-            <button 
-              onClick={() => setIsBookingModalOpen(true)}
-              className="bg-gold-500 hover:bg-white text-dark-950 px-8 py-4 font-bold uppercase tracking-widest text-sm transition-all duration-300 rounded shadow-[0_0_20px_rgba(212,175,55,0.4)] flex items-center gap-2"
+            <a 
+              href={salon.instagram}
+              target="_blank"
+              rel="noreferrer"
+              className="bg-gradient-to-r from-purple-600 via-pink-500 to-orange-400 hover:opacity-90 text-white px-8 py-4 font-bold uppercase tracking-widest text-sm transition-all duration-300 rounded shadow-[0_0_20px_rgba(236,72,153,0.4)] flex items-center gap-2"
             >
-              Request Free Consultation
-            </button>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg> For more details visit here
+            </a>
             <button 
               onClick={() => setIsCallTrackingOpen(true)}
               className="bg-transparent border border-white hover:border-gold-500 hover:text-gold-500 text-white px-8 py-4 font-bold uppercase tracking-widest text-sm transition-colors rounded flex items-center gap-2"
@@ -202,28 +179,53 @@ const PublicSalonPage = React.memo(function PublicSalonPage() {
         </div>
       </div>
 
-      {/* --- MAIN CONTENT AREA --- */}
+      {/* --- OUR SERVICES CATEGORIES --- */}
+      <div className="max-w-7xl mx-auto px-6 py-20 pb-0" id="services">
+        <div className="text-center mb-16">
+          <Sparkles className="w-8 h-8 text-gold-500 mx-auto mb-4" />
+          <h2 className="text-4xl md:text-5xl font-serif text-white mb-4">Our Premium Services</h2>
+          <p className="text-gray-400 max-w-2xl mx-auto text-lg">Indulge in our luxurious beauty and styling categories tailored for your perfection.</p>
+        </div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            { title: "Bridal Makeup", img: "/services/bridal_makeup.png", link: "/salon/pihu-makeover/bridal-makeup" },
+            { title: "Haircut Style", img: "/services/haircut_style.png", link: "/salon/pihu-makeover/haircut-styling" },
+            { title: "Skin Care Services", img: "/services/skin_care.png", link: "/salon/pihu-makeover/facial-skincare" },
+            { title: "Nail Art Services", img: "/services/nail_art.png", link: "/salon/pihu-makeover/nails" },
+          ].map((srv, idx) => (
+            <div onClick={() => openBooking(srv.title)} key={idx} className="group block relative rounded-2xl overflow-hidden cursor-pointer shadow-[0_10px_30px_rgba(0,0,0,0.5)] bg-dark-900 border border-white/5 hover:border-gold-500/50 transition-all duration-300 transform hover:-translate-y-2">
+              <div className="h-72 overflow-hidden">
+                <img src={srv.img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={srv.title} />
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-dark-950 via-dark-950/60 to-transparent opacity-90 group-hover:opacity-70 transition-opacity"></div>
+              <div className="absolute bottom-0 left-0 p-6 w-full flex items-center justify-between z-10">
+                <h3 className="text-xl font-serif text-white font-bold tracking-wide leading-tight group-hover:text-gold-400 transition-colors">{srv.title}</h3>
+                <div className="w-10 h-10 rounded-full bg-gold-500/20 flex items-center justify-center text-gold-500 group-hover:bg-gold-500 group-hover:text-dark-950 transition-colors shrink-0">
+                  <ChevronRight size={20} />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* --- ABOUT / OWNER SECTION --- */}
       <div className="max-w-7xl mx-auto px-6 py-20">
-        
-        {/* Service Highlight Section (No Prices) */}
         <div className="grid md:grid-cols-2 gap-12 items-center mb-24">
           <div className="relative rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
             <div className="absolute inset-0 bg-gradient-to-t from-dark-950 to-transparent z-10"></div>
-            {salon.image ? (
-              <img src={salon.image} className="w-full h-[500px] object-cover" alt="Service Showcase" />
-            ) : (
-              <div className="w-full h-[500px] bg-dark-800 flex items-center justify-center">Image</div>
-            )}
+            <img src="/gallery/owner.jpg" className="w-full h-[500px] object-cover" alt="Salon Owner" />
+            
             <div className="absolute bottom-6 left-6 z-20 text-gold-400 font-serif text-2xl bg-dark-950/80 px-4 py-2 rounded-lg border border-gold-500/20 backdrop-blur">
               Award Winning Service
             </div>
           </div>
           <div>
             <h2 className="text-4xl font-serif mb-6 text-white leading-tight">
-              Experience the Best <br/><span className="text-gold-500">{service.name}</span> in {displayLocation}
+              Experience the Best <br/><span className="text-gold-500">Beauty Services</span> in Bodhgaya, Gaya
             </h2>
             <p className="text-gray-400 mb-6 text-lg leading-relaxed">
-              At {salon.name}, we believe that beauty is personal. Our highly trained professionals use only the finest products to ensure your {service.name.toLowerCase()} is nothing short of perfection. 
+              At {salon.name}, we believe that beauty is personal. Our highly trained professionals use only the finest products to ensure your makeup, hair, and skin services are nothing short of perfection. 
             </p>
             <p className="text-gray-400 mb-8 text-lg leading-relaxed">
               Whether you're preparing for your wedding day or just looking for a refreshing change, our team is dedicated to providing an exceptional and luxurious experience tailored specifically to your needs.
@@ -240,7 +242,7 @@ const PublicSalonPage = React.memo(function PublicSalonPage() {
               </li>
             </ul>
             <button 
-              onClick={() => setIsBookingModalOpen(true)}
+              onClick={() => openBooking()}
               className="group flex items-center gap-2 text-gold-500 font-bold uppercase tracking-widest text-sm hover:text-white transition-colors"
             >
               Book an Appointment <ChevronRight className="group-hover:translate-x-2 transition-transform" size={18} />
@@ -248,11 +250,10 @@ const PublicSalonPage = React.memo(function PublicSalonPage() {
           </div>
         </div>
 
-        {/* --- BRANDS WE USE (Mock Carousel) --- */}
+        {/* --- BRANDS WE USE --- */}
         <div className="mb-24 py-12 border-y border-white/5 text-center">
           <h3 className="text-sm font-bold uppercase tracking-widest text-gray-500 mb-8">Premium Brands We Trust</h3>
           <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-60 grayscale hover:grayscale-0 transition-all duration-700">
-            {/* Using text representations as mock logos for now */}
             <span className="text-3xl font-serif font-bold text-white tracking-wider">L'ORÉAL</span>
             <span className="text-3xl font-sans font-black text-white tracking-tighter">WELLA</span>
             <span className="text-2xl font-serif font-light text-white tracking-widest">LOTUS</span>
@@ -270,8 +271,8 @@ const PublicSalonPage = React.memo(function PublicSalonPage() {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[1, 2, 3, 4].map((num) => (
-              <div key={num} className="relative group overflow-hidden cursor-pointer rounded-xl" onClick={() => setIsBookingModalOpen(true)}>
-                <img src={`/gallery/gallery_${num}.jpg`} className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-700 bg-dark-800" alt={`Portfolio ${num}`} />
+              <div key={num} className="relative group overflow-hidden cursor-pointer rounded-xl" onClick={() => openBooking('Bridal Makeup')}>
+                <img src={`/gallery/gallery_${num}.jpg`} className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-700 bg-dark-800" alt={`Pihu Makeover Portfolio ${num}`} />
                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm">
                   <span className="text-white font-bold uppercase tracking-widest text-sm border border-white px-6 py-2 rounded hover:bg-white hover:text-black transition-colors">
                     View & Book
@@ -297,8 +298,7 @@ const PublicSalonPage = React.memo(function PublicSalonPage() {
             {blogPostsData.map((post, idx) => (
               <div key={idx} className="group cursor-pointer" onClick={() => setSelectedBlogPost(post)}>
                 <div className="w-full h-48 bg-dark-800 rounded-xl mb-4 overflow-hidden relative">
-                  <div className="absolute inset-0 bg-gold-500/10 group-hover:bg-transparent transition-colors"></div>
-                  {/* Placeholder for blog image */}
+                  <img src={`https://images.unsplash.com/photo-${1510000000000 + idx}?auto=format&fit=crop&q=80&w=600`} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" alt="Blog cover" />
                 </div>
                 <div className="flex items-center gap-2 text-xs text-gold-500 font-bold uppercase tracking-wider mb-2">
                   <CalendarCheck size={14} /> {post.date}
@@ -313,10 +313,9 @@ const PublicSalonPage = React.memo(function PublicSalonPage() {
 
       </div>
 
-      {/* --- FAT FOOTER --- */}
+      {/* --- FOOTER --- */}
       <footer className="bg-[#111111] border-t border-white/5 pt-20 pb-10">
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12 mb-16">
-          
           <div className="col-span-1 md:col-span-1">
             <div className="text-3xl font-serif text-gold-500 font-bold uppercase tracking-wide mb-6">
               {salon.name}
@@ -327,18 +326,17 @@ const PublicSalonPage = React.memo(function PublicSalonPage() {
             <div className="flex items-center gap-4 text-gray-400">
               <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-gold-500 hover:text-dark-950 transition-colors font-bold text-xs">FB</a>
               <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-gold-500 hover:text-dark-950 transition-colors font-bold text-xs">YT</a>
-              <a href={salon.instagram || "#"} className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-gold-500 hover:text-dark-950 transition-colors font-bold text-xs">IG</a>
+              <a href={salon.instagram} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-gold-500 hover:text-dark-950 transition-colors font-bold text-xs">IG</a>
             </div>
           </div>
 
           <div>
             <h4 className="text-white font-bold uppercase tracking-widest text-sm mb-6">Best Services</h4>
             <ul className="space-y-3 text-gray-400 text-sm">
-              <li><a href="#" className="hover:text-gold-500 transition-colors">Haircut Style</a></li>
-              <li><a href="#" className="hover:text-gold-500 transition-colors">Bridal Makeup</a></li>
-              <li><a href="#" className="hover:text-gold-500 transition-colors">Skin Care Services</a></li>
-              <li><a href="#" className="hover:text-gold-500 transition-colors">Men's Grooming</a></li>
-              <li><a href="#" className="hover:text-gold-500 transition-colors">Nail Art Services</a></li>
+              <li><span onClick={() => openBooking('Haircut Style')} className="hover:text-gold-500 transition-colors cursor-pointer">Haircut Style</span></li>
+              <li><span onClick={() => openBooking('Bridal Makeup')} className="hover:text-gold-500 transition-colors cursor-pointer">Bridal Makeup</span></li>
+              <li><span onClick={() => openBooking('Skin Care Services')} className="hover:text-gold-500 transition-colors cursor-pointer">Skin Care Services</span></li>
+              <li><span onClick={() => openBooking('Nail Art Services')} className="hover:text-gold-500 transition-colors cursor-pointer">Nail Art Services</span></li>
             </ul>
           </div>
 
@@ -355,7 +353,7 @@ const PublicSalonPage = React.memo(function PublicSalonPage() {
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="text-gold-500 shrink-0" size={16} />
-                <a href={`mailto:${salon.email || 'hello@pihumakeover.com'}`} className="hover:text-white transition-colors">{salon.email || 'hello@pihumakeover.com'}</a>
+                <a href={`mailto:${salon.email}`} className="hover:text-white transition-colors">{salon.email}</a>
               </li>
             </ul>
           </div>
@@ -374,7 +372,6 @@ const PublicSalonPage = React.memo(function PublicSalonPage() {
               </button>
             </div>
           </div>
-
         </div>
 
         <div className="border-t border-white/5 pt-8 text-center text-gray-500 text-xs">
@@ -382,19 +379,19 @@ const PublicSalonPage = React.memo(function PublicSalonPage() {
         </div>
       </footer>
 
-      {/* Modals & Floating CTAs */}
-      <BookingModal isOpen={isBookingModalOpen} onClose={() => setIsBookingModalOpen(false)} />
+      {/* Modals */}
+      <BookingModal isOpen={isBookingModalOpen} onClose={() => setIsBookingModalOpen(false)} preselectedService={preselectedService} />
       <CallTrackingModal 
         isOpen={isCallTrackingOpen} 
         onClose={() => setIsCallTrackingOpen(false)} 
-        salonName={salon?.name} 
-        salonPhone={salon?.phone} 
-        salonId={salon?.id} 
+        salonName={salon.name} 
+        salonPhone={salon.phone} 
+        salonId={salon.id} 
       />
       
       {/* Floating WhatsApp CTA */}
       <div className="fixed bottom-6 right-6 z-40">
-         <a href={`https://wa.me/${salon?.phone?.replace(/\D/g, '')}?text=Hi%20${encodeURIComponent(salon?.name || 'Salon')}!%20I%20would%20like%20to%20book%20a%20consultation.`} 
+         <a href={`https://wa.me/${salon.phone.replace(/\D/g, '')}?text=Hi%20${encodeURIComponent(salon.name)}!%20I%20would%20like%20to%20book%20a%20consultation.`} 
             target="_blank" rel="noreferrer"
             className="bg-[#25D366] hover:bg-[#20bd5a] text-white p-4 rounded-full shadow-[0_10px_30px_rgba(37,211,102,0.4)] hover:scale-110 transition-transform flex items-center justify-center group relative">
             <MessageCircle size={28} fill="currentColor" />
@@ -435,9 +432,8 @@ const PublicSalonPage = React.memo(function PublicSalonPage() {
           </div>
         </div>
       )}
-
     </div>
   );
-});
+};
 
-export default PublicSalonPage;
+export default PihuMakeoverHome;
