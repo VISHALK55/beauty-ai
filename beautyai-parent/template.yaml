@@ -17,6 +17,17 @@ Globals:
         TABLE_NAME: 'BeautyAiTable'
 
 Resources:
+  BeautyAiMediaBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders: ['*']
+            AllowedMethods: [GET, PUT, POST, DELETE, HEAD]
+            AllowedOrigins: ['*']
+            ExposedHeaders: ['ETag']
+            MaxAge: 3000
+
   BeautyAiTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -79,6 +90,11 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: 'BeautyAiTable'
+        - S3CrudPolicy:
+            BucketName: !Ref BeautyAiMediaBucket
+      Environment:
+        Variables:
+          MEDIA_BUCKET: !Ref BeautyAiMediaBucket
       Events:
         ApiRoot:
           Type: HttpApi
@@ -98,9 +114,27 @@ Resources:
           Type: HttpApi
           Properties:
             ApiId: !Ref BeautyAiHttpApi
-            Path: /api/v1/sitemap.xml
+            Path: /api/v1/sitemap
             Method: GET
             PayloadFormatVersion: '1.0'
+
+  ImageEnhancementFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: salon-service
+      Handler: com.beautyai.salon.ImageEnhancementHandler::handleRequest
+      Policies:
+        - S3CrudPolicy:
+            BucketName: !Ref BeautyAiMediaBucket
+      Environment:
+        Variables:
+          MEDIA_BUCKET: !Ref BeautyAiMediaBucket
+      Events:
+        ImageUpload:
+          Type: S3
+          Properties:
+            Bucket: !Ref BeautyAiMediaBucket
+            Events: s3:ObjectCreated:*
 
   BookingFunction:
     Type: AWS::Serverless::Function

@@ -45,6 +45,12 @@
             <artifactId>dynamodb-enhanced</artifactId>
         </dependency>
         
+        <!-- AWS S3 client for generating pre-signed URLs -->
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>s3</artifactId>
+        </dependency>
+        
         <!-- AWS Systems Manager Parameter Store -->
         <dependency>
             <groupId>io.awspring.cloud</groupId>
