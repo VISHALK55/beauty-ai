@@ -78,6 +78,10 @@ const Sidebar = ({ isOpen, onClose }) => {
                   <Store size={18} className={userRole === 'SUPER_ADMIN' ? "text-gold-400" : "text-gray-500"} /> All Salons (Network)
                   {userRole !== 'SUPER_ADMIN' && <Lock size={14} className="ml-auto text-gray-500" />}
                 </NavLink>
+                <NavLink to="/dashboard/onboard-partner" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                  <Users size={18} className={userRole === 'SUPER_ADMIN' ? "text-green-400" : "text-gray-500"} /> Onboard Partner
+                  {userRole !== 'SUPER_ADMIN' && <Lock size={14} className="ml-auto text-gray-500" />}
+                </NavLink>
                 <NavLink to="/dashboard/ad-campaigns" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
                   <Store size={18}/> Ad Campaign Manager
                   {userRole !== 'SUPER_ADMIN' && <Lock size={14} className="ml-auto text-gray-500" />}
