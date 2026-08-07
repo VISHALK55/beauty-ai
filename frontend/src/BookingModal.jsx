@@ -114,7 +114,7 @@ const BookingModal = ({ isOpen, onClose, onBookingCreated, preselectedService })
                   value={formData.customerName}
                   onChange={e => setFormData({...formData, customerName: e.target.value})}
                   className="w-full pl-10 pr-4 py-2 bg-dark-800 border border-white/10 rounded-lg focus:outline-none focus:border-gold-500 transition-colors text-white"
-                  placeholder="e.g. Sarah Jenkins"
+                  placeholder=""
                 />
               </div>
             </div>
@@ -129,7 +129,7 @@ const BookingModal = ({ isOpen, onClose, onBookingCreated, preselectedService })
                   value={formData.phone}
                   onChange={e => setFormData({...formData, phone: e.target.value})}
                   className="w-full pl-10 pr-4 py-2 bg-dark-800 border border-white/10 rounded-lg focus:outline-none focus:border-gold-500 transition-colors text-white"
-                  placeholder="e.g. +91 9876543210"
+                  placeholder=""
                 />
               </div>
             </div>

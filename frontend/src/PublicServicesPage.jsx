@@ -12,7 +12,7 @@ const PublicServicesPage = () => {
   const whatsappLink = `https://wa.me/${salon.phone.replace(/\D/g, '')}?text=Hi!%20I'm%20interested%20in%20your%20services.`;
 
   return (
-    <div className="min-h-screen bg-[#1c080b] text-white font-sans selection:bg-gold-500/30">
+    <div className="min-h-screen bg-dark-950 text-white font-sans selection:bg-gold-500/30">
       <Helmet>
         <title>Our Luxury Services | {salon.name}</title>
         <meta name="description" content={`Explore our luxury bridal, hair, skin, and nail services at ${salon.name} in ${salon.city?.split(',')[0]}.`} />
@@ -36,7 +36,7 @@ const PublicServicesPage = () => {
       </div>
 
       {/* --- MAIN NAVIGATION --- */}
-      <nav className="bg-[#110505]/80 backdrop-blur-lg sticky top-0 z-50 border-b border-white/5 py-4 px-4 md:px-12 flex justify-between items-center">
+      <nav className="bg-dark-950/80 backdrop-blur-lg sticky top-0 z-50 border-b border-white/5 py-4 px-4 md:px-12 flex justify-between items-center">
         <div className="text-xl md:text-2xl font-serif text-gold-500 font-bold uppercase tracking-wide">
           {salon.name}
         </div>
@@ -51,13 +51,13 @@ const PublicServicesPage = () => {
         </div>
 
         <div className="flex items-center gap-4">
-          <Search size={20} className="text-gray-300 hover:text-gold-500 cursor-pointer transition-colors" />
+          <Link to="/login" className="hidden lg:flex items-center text-xs font-bold uppercase tracking-widest text-gold-500 border border-gold-500/50 px-4 py-1.5 rounded-full hover:bg-gold-500 hover:text-dark-950 transition-colors">Admin</Link>`r`n          <Search size={20} className="text-gray-300 hover:text-gold-500 cursor-pointer transition-colors" />
           <Menu size={24} className="lg:hidden text-gray-300 hover:text-gold-500 cursor-pointer" onClick={() => setIsMobileMenuOpen(true)} />
         </div>
       </nav>
 
       {/* Mobile Menu Overlay */}
-      <div className={`fixed inset-0 bg-[#110505]/98 backdrop-blur-md z-[60] transition-all duration-300 ${isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
+      <div className={`fixed inset-0 bg-dark-950/98 backdrop-blur-md z-[60] transition-all duration-300 ${isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
         <div className="flex justify-between items-center p-4 border-b border-white/5">
           <div className="text-xl font-serif text-gold-500 font-bold uppercase tracking-wide">{salon.name}</div>
           <button onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-gold-500"><X size={28} /></button>
@@ -67,7 +67,7 @@ const PublicServicesPage = () => {
           <Link to={`/s/${salon.id}/services`} className="text-gold-500" onClick={() => setIsMobileMenuOpen(false)}>Services</Link>
           <Link to={`/s/${salon.id}/academy`} className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Academy</Link>
           <Link to={`/s/${salon.id}/blog`} className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Blog</Link>
-          <Link to={`/s/${salon.id}/contact`} className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
+          <Link to={`/s/${salon.id}/contact`} className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>`r`n          <Link to="/login" className="text-gold-500 border border-gold-500/50 text-center py-3 rounded-xl mt-4" onClick={() => setIsMobileMenuOpen(false)}>ADMIN LOGIN</Link>
         </div>
       </div>
 
@@ -80,7 +80,7 @@ const PublicServicesPage = () => {
             alt="Luxury Salon Interior" 
             className="w-full h-full object-cover opacity-20"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#110505]/80 via-[#1c080b]/90 to-[#1c080b]"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-dark-950/80 via-dark-950/90 to-dark-950"></div>
         </div>
 
         <div className="relative z-10 max-w-5xl px-6">
@@ -133,7 +133,7 @@ const PublicServicesPage = () => {
 
         {/* Search Inputs */}
         <div className="flex flex-col md:flex-row gap-4 mb-8">
-          <div className="flex-1 bg-[#150608] border border-white/10 rounded-full flex items-center px-6 py-4">
+          <div className="flex-1 bg-dark-900 border border-white/10 rounded-full flex items-center px-6 py-4">
             <Search className="text-gray-500 mr-3" size={20} />
             <input 
               type="text" 
@@ -141,12 +141,12 @@ const PublicServicesPage = () => {
               className="bg-transparent border-none outline-none text-white w-full placeholder-gray-600"
             />
           </div>
-          <div className="md:w-1/3 bg-[#150608] border border-white/10 rounded-full flex items-center px-6 py-4">
+          <div className="md:w-1/3 bg-dark-900 border border-white/10 rounded-full flex items-center px-6 py-4">
             <MapPin className="text-gray-500 mr-3" size={20} />
             <select className="bg-transparent border-none outline-none text-white w-full appearance-none cursor-pointer">
-              <option className="bg-[#150608]">All Gaya & Bodhgaya Localities</option>
-              <option className="bg-[#150608]">Bodhgaya</option>
-              <option className="bg-[#150608]">Gaya City</option>
+              <option className="bg-dark-900">All Gaya & Bodhgaya Localities</option>
+              <option className="bg-dark-900">Bodhgaya</option>
+              <option className="bg-dark-900">Gaya City</option>
             </select>
           </div>
         </div>
@@ -166,7 +166,7 @@ const PublicServicesPage = () => {
         </div>
 
         {/* Tag Cloud */}
-        <div className="bg-[#240a10] border border-white/5 rounded-2xl p-8 relative">
+        <div className="bg-dark-800 border border-white/5 rounded-2xl p-8 relative">
           <div className="flex justify-between items-center mb-6">
             <span className="text-gray-400 text-sm">Showing <strong>240</strong> localized service searches in Gaya & Bodhgaya:</span>
             <span className="text-gold-500 text-xs">Showing top selections</span>
@@ -190,7 +190,7 @@ const PublicServicesPage = () => {
               "Best bridal makeup artist in Bodhgaya", "HD bridal makeup AP Colony Gaya", "Airbrush bridal makeup Swarajpuri Road Gaya",
               "Top wedding makeup studio Delha Gaya", "Bridal beauty parlor Manpur Gaya"
             ].map((tag, idx) => (
-              <span key={idx} className="bg-[#150608] border border-white/5 text-gray-300 hover:text-white hover:border-gold-500/30 px-4 py-2 rounded-full text-xs cursor-pointer transition-colors flex items-center gap-2">
+              <span key={idx} className="bg-dark-900 border border-white/5 text-gray-300 hover:text-white hover:border-gold-500/30 px-4 py-2 rounded-full text-xs cursor-pointer transition-colors flex items-center gap-2">
                 <span className="text-gold-500/50 text-[10px]">⊙</span> {tag}
               </span>
             ))}
@@ -438,7 +438,7 @@ const PublicServicesPage = () => {
       </div>
 
       {/* --- FOOTER --- */}
-      <footer className="bg-[#0a0404] border-t border-white/5 pt-20 pb-10">
+      <footer className="bg-dark-950 border-t border-white/5 pt-20 pb-10">
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12 mb-16">
           <div className="col-span-1 md:col-span-1">
             <div className="text-3xl font-serif text-gold-500 font-bold uppercase tracking-wide mb-6">

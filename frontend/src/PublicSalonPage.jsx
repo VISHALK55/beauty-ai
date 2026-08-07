@@ -192,12 +192,12 @@ const PublicSalonPage = React.memo(function PublicSalonPage() {
             >
               Request Free Consultation
             </button>
-            <button 
-              onClick={() => setIsCallTrackingOpen(true)}
+            <a 
+              href={`tel:${salon.phone}`}
               className="bg-transparent border border-white hover:border-gold-500 hover:text-gold-500 text-white px-8 py-4 font-bold uppercase tracking-widest text-sm transition-colors rounded flex items-center gap-2"
             >
               <Phone size={18} /> Call Now
-            </button>
+            </a>
           </div>
         </div>
       </div>
