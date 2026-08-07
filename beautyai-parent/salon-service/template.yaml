@@ -8,14 +8,19 @@ Globals:
   Function:
     Timeout: 30
     MemorySize: 512
+  Api:
+    Cors:
+      AllowMethods: "'*'"
+      AllowHeaders: "'*'"
+      AllowOrigin: "'*'"
 
 Resources:
   SalonServiceFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: target/salon-service-1.0.0-SNAPSHOT.jar
+      CodeUri: .
       Handler: com.beautyai.salon.StreamLambdaHandler::handleRequest
-      Runtime: java17
+      Runtime: java21
       Architectures:
         - x86_64
       Environment:
@@ -30,7 +35,10 @@ Resources:
                 - ssm:GetParametersByPath
                 - ssm:GetParameters
                 - ssm:GetParameter
-              Resource: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/salon-service/*"
+              Resource: 
+                - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/salon-service/*"
+                - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/salon-service/"
+                - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/salon-service"
       Events:
         ProxyResource:
           Type: Api
