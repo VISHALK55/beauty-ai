@@ -51,12 +51,27 @@ export const api = {
             const data = await res.json();
             
             const salonsMap = {};
-            data.forEach(salon => {
-                salonsMap[salon.id] = {
-                    ...salon,
-                    streetAddress: salon.address || '' // Map backend 'address' to frontend 'streetAddress'
-                };
-            });
+            if (data && Array.isArray(data)) {
+                data.forEach(salon => {
+                    salonsMap[salon.id] = {
+                        ...salon,
+                        image: salon.hero_image,
+                        streetAddress: salon.address || salon.city || ''
+                    };
+                });
+            } else if (data && typeof data === 'object') {
+                // Handle cases where the API might return an object directly or a different shape
+                const arr = data.salons || (Object.values(data));
+                if (Array.isArray(arr)) {
+                    arr.forEach(salon => {
+                        salonsMap[salon.id] = {
+                            ...salon,
+                            image: salon.hero_image,
+                            streetAddress: salon.address || salon.city || ''
+                        };
+                    });
+                }
+            }
             return salonsMap;
         } catch (e) {
             console.error('API Error:', e);
@@ -65,13 +80,23 @@ export const api = {
     },
     createSalon: async (salonData) => {
         try {
+            const payload = {
+                name: salonData.name,
+                address: salonData.address,
+                city: salonData.city,
+                googleMapsLink: salonData.googleMapsLink,
+                accessPin: salonData.accessPin,
+                neighborhoods: salonData.neighborhoods,
+                workingHours: salonData.workingHours,
+                aiSystemPrompt: salonData.aiSystemPrompt
+            };
             const res = await fetch(`${API_BASE_URL}/api/v1/salons`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     ...api.getHeaders()
                 },
-                body: JSON.stringify(salonData)
+                body: JSON.stringify(payload)
             });
             if (!res.ok) throw new Error('Failed to create salon');
             return await res.json();
@@ -82,15 +107,20 @@ export const api = {
     },
     getSalon: async (id) => {
         try {
-            const res = await fetch(`${API_BASE_URL}/api/v1/salons/` + id, {
+            const res = await fetch(`${API_BASE_URL}/api/v1/salons/${id}`, {
                 headers: api.getHeaders()
             });
             if (!res.ok) throw new Error('Failed to fetch salon');
-            const salon = await res.json();
-            return {
-                ...salon,
-                streetAddress: salon.address || ''
-            };
+            const data = await res.json();
+            
+            if (data) {
+                 return {
+                    ...data,
+                    image: data.hero_image || data.image,
+                    streetAddress: data.city || data.address || ''
+                };
+            }
+            return null;
         } catch (e) {
             console.error('API Error:', e);
             return null;
