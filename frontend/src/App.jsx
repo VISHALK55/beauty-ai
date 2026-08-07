@@ -1,5 +1,5 @@
-import React, { Suspense } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import React, { Suspense, useEffect } from 'react';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Layout from './Layout';
 import { AuthProvider } from './context/AuthContext';
 import { SalonProvider } from './context/SalonContext';
@@ -23,6 +23,7 @@ const ProtectedRoute = React.lazy(() => import('./ProtectedRoute'));
 const SuperAdminSettings = React.lazy(() => import('./SuperAdminSettings'));
 const Settings = React.lazy(() => import('./Settings'));
 const AiPremiumPlans = React.lazy(() => import('./AiPremiumPlans'));
+const WebsiteContentManager = React.lazy(() => import('./WebsiteContentManager'));
 const SalonHome = React.lazy(() => import('./SalonHome'));
 const Academy = React.lazy(() => import('./Academy'));
 const PublicServicesPage = React.lazy(() => import('./PublicServicesPage'));
@@ -37,9 +38,20 @@ const LoadingFallback = () => (
   </div>
 );
 
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
+
 function App() {
   return (
     <AuthProvider>
+      <ScrollToTop />
       <Suspense fallback={<LoadingFallback />}>
         <Routes>
           {/* Tenant specific routes */}
@@ -69,6 +81,7 @@ function App() {
           <Route path="appointments" element={<Appointments />} />
           <Route path="settings" element={<Settings />} />
           <Route path="ai-premium" element={<AiPremiumPlans />} />
+          <Route path="content" element={<WebsiteContentManager />} />
           {/* Protected Super Admin Routes */}
           <Route element={<ProtectedRoute />}>
             <Route path="salons" element={<SalonDirectory />} />

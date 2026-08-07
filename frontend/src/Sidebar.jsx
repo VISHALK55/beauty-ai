@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import { 
   LayoutDashboard, 
@@ -14,11 +14,19 @@ import {
   Search,
   Zap,
   X,
-  Lock
+  Lock,
+  Image,
+  LogOut
 } from 'lucide-react';
 
 const Sidebar = ({ isOpen, onClose }) => {
   const { isAuthenticated, logout, userRole, salonId } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
   
   return (
     <>
@@ -62,6 +70,9 @@ const Sidebar = ({ isOpen, onClose }) => {
           </NavLink>
           <NavLink to="/dashboard/ai-premium" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
             <PhoneCall size={18}/> AI Voice Calls
+          </NavLink>
+          <NavLink to="/dashboard/content" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+            <Image size={18}/> Website Content
           </NavLink>
           <NavLink to="/dashboard/settings" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
             <Settings size={18}/> Settings
@@ -115,8 +126,8 @@ const Sidebar = ({ isOpen, onClose }) => {
                 <p className="text-[10px] text-gold-400 tracking-wider">Authorized Access</p>
               </div>
             </div>
-            <button onClick={logout} className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors flex items-center justify-center" title="Logout">
-              <X size={20} />
+            <button onClick={handleLogout} className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors flex items-center justify-center gap-2" title="Logout">
+              <LogOut size={20} />
             </button>
           </div>
         </div>

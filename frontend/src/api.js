@@ -207,5 +207,44 @@ export const api = {
             }
             return { success: true };
         }
+    },
+    // --- Website Content Endpoints ---
+    getUploadUrl: async (fileName, contentType) => {
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/v1/upload-url?fileName=${encodeURIComponent(fileName)}&contentType=${encodeURIComponent(contentType)}`, {
+                headers: api.getHeaders()
+            });
+            if (!res.ok) throw new Error('Failed to get upload URL');
+            return await res.json();
+        } catch (e) {
+            console.error('API Error:', e);
+            throw e;
+        }
+    },
+    uploadFileToS3: async (presignedUrl, file, contentType) => {
+        try {
+            const res = await fetch(presignedUrl, {
+                method: 'PUT',
+                headers: { 'Content-Type': contentType },
+                body: file
+            });
+            if (!res.ok) throw new Error('Failed to upload file to S3');
+            return true;
+        } catch (e) {
+            console.error('S3 Upload Error:', e);
+            throw e;
+        }
+    },
+    getGallery: async (salonId) => {
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/v1/salons/${salonId}/gallery`, {
+                headers: api.getHeaders()
+            });
+            if (!res.ok) throw new Error('Failed to fetch gallery');
+            return await res.json();
+        } catch (e) {
+            console.error('API Error:', e);
+            return [];
+        }
     }
 }

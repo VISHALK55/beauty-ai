@@ -112,6 +112,9 @@ const SalonHome = () => {
         </div>
 
         <div className="flex items-center gap-4">
+          <Link to="/login" className="hidden lg:flex items-center text-xs font-bold uppercase tracking-widest text-gold-500 border border-gold-500/50 px-4 py-1.5 rounded-full hover:bg-gold-500 hover:text-dark-950 transition-colors">
+            Admin
+          </Link>
           <Search size={20} className="text-gray-300 hover:text-gold-500 cursor-pointer transition-colors" />
           <Menu size={24} className="lg:hidden text-gray-300 hover:text-gold-500 cursor-pointer" onClick={() => setIsMobileMenuOpen(true)} />
         </div>
@@ -129,47 +132,56 @@ const SalonHome = () => {
           <Link to={`/s/${salon.id}/academy`} className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Academy</Link>
           <Link to={`/s/${salon.id}/blog`} className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Blog</Link>
           <Link to={`/s/${salon.id}/contact`} className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
+          <Link to="/login" className="text-gold-500 border border-gold-500/50 text-center py-3 rounded-xl mt-4" onClick={() => setIsMobileMenuOpen(false)}>ADMIN LOGIN</Link>
         </div>
       </div>
 
       {/* --- HERO SECTION --- */}
-      <div className="relative w-full h-[60vh] md:h-[80vh] flex items-center overflow-hidden">
-        <div className="absolute inset-0 bg-dark-950 z-0"></div>
-        <img 
-          src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&q=80&w=1600" 
-          alt={`${salon.name} Header`} 
-          className="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-overlay"
-          loading="lazy"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-dark-950 via-dark-900/80 to-transparent z-10"></div>
+      <div className="relative w-full min-h-[60vh] md:min-h-[80vh] flex items-center overflow-hidden bg-dark-950 py-12 md:py-0">
+        {/* Background elements */}
+        <div className="absolute inset-0 bg-gradient-to-r from-dark-950 via-dark-950 to-transparent z-10 md:hidden"></div>
         
-        <div className="relative z-20 px-6 md:px-16 max-w-5xl">
-          <div className="inline-block px-3 py-1 bg-gold-500/20 text-gold-400 border border-gold-500/30 rounded-full text-xs font-bold uppercase tracking-widest mb-6">
-            <Sparkles size={14} className="inline mr-2" />
-            Top Salon in {salon.city?.split(',')[0]}
+        <div className="relative z-20 max-w-7xl mx-auto px-6 w-full grid md:grid-cols-2 gap-12 items-center">
+          
+          {/* Left Column: Text */}
+          <div className="relative z-20">
+            <div className="inline-block px-3 py-1 bg-gold-500/20 text-gold-400 border border-gold-500/30 rounded-full text-xs font-bold uppercase tracking-widest mb-6">
+              <Sparkles size={14} className="inline mr-2" />
+              Top Salon in {salon.city?.split(',')[0]}
+            </div>
+            <h1 className="text-4xl md:text-6xl font-serif text-white mb-4 leading-tight">
+              Premium <span className="text-gold-500">Beauty Salon & Academy</span>
+            </h1>
+            <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-xl font-light">
+              Professional salon service tailored to your beauty needs. Transform your look with our expert stylists today.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <a 
+                href={salon.instagram}
+                target="_blank"
+                rel="noreferrer"
+                className="bg-gradient-to-r from-purple-600 via-pink-500 to-orange-400 hover:opacity-90 text-white px-8 py-4 font-bold uppercase tracking-widest text-sm transition-all duration-300 rounded shadow-[0_0_20px_rgba(236,72,153,0.4)] flex items-center gap-2"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg> For more details visit here
+              </a>
+              <a 
+                href={`tel:${salon.phone}`}
+                className="bg-transparent border border-white hover:border-gold-500 hover:text-gold-500 text-white px-8 py-4 font-bold uppercase tracking-widest text-sm transition-colors rounded flex items-center gap-2"
+              >
+                <Phone size={18} /> Call Now
+              </a>
+            </div>
           </div>
-          <h1 className="text-4xl md:text-6xl font-serif text-white mb-4 leading-tight">
-            Premium <span className="text-gold-500">Beauty Salon & Academy</span>
-          </h1>
-          <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl font-light">
-            Professional salon service tailored to your beauty needs. Transform your look with our expert stylists today.
-          </p>
-          <div className="flex flex-wrap gap-4">
-            <a 
-              href={salon.instagram}
-              target="_blank"
-              rel="noreferrer"
-              className="bg-gradient-to-r from-purple-600 via-pink-500 to-orange-400 hover:opacity-90 text-white px-8 py-4 font-bold uppercase tracking-widest text-sm transition-all duration-300 rounded shadow-[0_0_20px_rgba(236,72,153,0.4)] flex items-center gap-2"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg> For more details visit here
-            </a>
-            <button 
-              onClick={() => setIsCallTrackingOpen(true)}
-              className="bg-transparent border border-white hover:border-gold-500 hover:text-gold-500 text-white px-8 py-4 font-bold uppercase tracking-widest text-sm transition-colors rounded flex items-center gap-2"
-            >
-              <Phone size={18} /> Call Now
-            </button>
+
+          {/* Right Column: Image */}
+          <div className="relative rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-gold-500/20 transform md:scale-105 hidden md:block">
+            <div className="absolute inset-0 bg-gradient-to-t from-dark-950/80 via-transparent to-transparent z-10"></div>
+            <img src="/gallery/owner.jpg" className="w-full h-[600px] object-cover" alt="Salon Owner" />
+            <div className="absolute bottom-6 left-6 z-20 text-gold-400 font-serif text-2xl bg-dark-950/80 px-4 py-2 rounded-lg border border-gold-500/20 backdrop-blur">
+              Award Winning Service
+            </div>
           </div>
+          
         </div>
       </div>
 
@@ -203,46 +215,7 @@ const SalonHome = () => {
         </div>
       </div>
 
-      {/* --- ABOUT / OWNER SECTION --- */}
       <div className="max-w-7xl mx-auto px-6 py-20">
-        <div className="grid md:grid-cols-2 gap-12 items-center mb-24">
-          <div className="relative rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
-            <div className="absolute inset-0 bg-gradient-to-t from-dark-950 to-transparent z-10"></div>
-            <img src="/gallery/owner.jpg" className="w-full h-[500px] object-cover" alt="Salon Owner" />
-            
-            <div className="absolute bottom-6 left-6 z-20 text-gold-400 font-serif text-2xl bg-dark-950/80 px-4 py-2 rounded-lg border border-gold-500/20 backdrop-blur">
-              Award Winning Service
-            </div>
-          </div>
-          <div>
-            <h2 className="text-4xl font-serif mb-6 text-white leading-tight">
-              Experience the Best <br/><span className="text-gold-500">Beauty Services</span> in {salon.city}
-            </h2>
-            <p className="text-gray-400 mb-6 text-lg leading-relaxed">
-              At {salon.name}, we believe that beauty is personal. Our highly trained professionals use only the finest products to ensure your makeup, hair, and skin services are nothing short of perfection. 
-            </p>
-            <p className="text-gray-400 mb-8 text-lg leading-relaxed">
-              Whether you're preparing for your wedding day or just looking for a refreshing change, our team is dedicated to providing an exceptional and luxurious experience tailored specifically to your needs.
-            </p>
-            <ul className="space-y-4 mb-8">
-              <li className="flex items-center gap-3 text-gray-300 font-medium">
-                <CheckCircle2 className="text-gold-500" size={20} /> Highly experienced styling professionals
-              </li>
-              <li className="flex items-center gap-3 text-gray-300 font-medium">
-                <CheckCircle2 className="text-gold-500" size={20} /> Premium, skin-safe international products
-              </li>
-              <li className="flex items-center gap-3 text-gray-300 font-medium">
-                <CheckCircle2 className="text-gold-500" size={20} /> Relaxing, hygienic, and luxurious environment
-              </li>
-            </ul>
-            <button 
-              onClick={() => openBooking()}
-              className="group flex items-center gap-2 text-gold-500 font-bold uppercase tracking-widest text-sm hover:text-white transition-colors"
-            >
-              Book an Appointment <ChevronRight className="group-hover:translate-x-2 transition-transform" size={18} />
-            </button>
-          </div>
-        </div>
 
         {/* --- BRANDS WE USE --- */}
         <div className="mb-24 py-12 border-y border-white/5 text-center">
@@ -292,7 +265,7 @@ const SalonHome = () => {
             {blogPostsData.map((post, idx) => (
               <div key={idx} className="group cursor-pointer" onClick={() => setSelectedBlogPost(post)}>
                 <div className="w-full h-48 bg-dark-800 rounded-xl mb-4 overflow-hidden relative">
-                  <img src={`https://images.unsplash.com/photo-${1510000000000 + idx}?auto=format&fit=crop&q=80&w=600`} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" alt="Blog cover" />
+                  <img src={`/gallery/gallery_${idx + 1}.jpg`} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" alt="Blog cover" />
                 </div>
                 <div className="flex items-center gap-2 text-xs text-gold-500 font-bold uppercase tracking-wider mb-2">
                   <CalendarCheck size={14} /> {post.date}
@@ -413,15 +386,13 @@ const SalonHome = () => {
             <div className="bg-dark-950 rounded-xl p-8 text-center border border-white/5">
               <h3 className="text-xl font-serif text-white mb-4">Need Expert Beauty Advice?</h3>
               <p className="text-gray-400 mb-6 text-sm">Our top stylists are ready to give you a free consultation tailored to your needs.</p>
-              <button 
-                onClick={() => {
-                  setSelectedBlogPost(null);
-                  setIsCallTrackingOpen(true);
-                }}
-                className="bg-gold-500 hover:bg-white text-dark-950 px-8 py-4 font-bold uppercase tracking-widest text-sm transition-colors rounded shadow-[0_0_20px_rgba(212,175,55,0.4)] flex items-center gap-2 mx-auto"
+              <a 
+                href={`tel:${salon.phone}`}
+                onClick={() => setSelectedBlogPost(null)}
+                className="bg-gold-500 hover:bg-white text-dark-950 px-8 py-4 font-bold uppercase tracking-widest text-sm transition-colors rounded shadow-[0_0_20px_rgba(212,175,55,0.4)] flex items-center justify-center gap-2 mx-auto w-max"
               >
                 <PhoneCall size={18} /> Call Us Now
-              </button>
+              </a>
             </div>
           </div>
         </div>

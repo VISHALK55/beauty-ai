@@ -10,7 +10,7 @@ const Academy = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#110505] text-white font-sans selection:bg-gold-500/30">
+    <div className="min-h-screen bg-dark-950 text-white font-sans selection:bg-gold-500/30">
       <Helmet>
         <title>{salon.name} Academy | Certified Expert Makeup Courses</title>
         <meta name="description" content={`Join ${salon.name} Academy for professional makeup and cosmetology courses in ${salon.city?.split(',')[0]}.`} />
@@ -34,7 +34,7 @@ const Academy = () => {
       </div>
 
       {/* --- MAIN NAVIGATION --- */}
-      <nav className="bg-[#110505]/95 backdrop-blur-lg sticky top-0 z-50 border-b border-white/5 py-4 px-4 md:px-12 flex justify-between items-center">
+      <nav className="bg-dark-950/95 backdrop-blur-lg sticky top-0 z-50 border-b border-white/5 py-4 px-4 md:px-12 flex justify-between items-center">
         <div className="text-xl md:text-2xl font-serif text-gold-500 font-bold uppercase tracking-wide">
           {salon.name}
         </div>
@@ -49,13 +49,13 @@ const Academy = () => {
         </div>
 
         <div className="flex items-center gap-4">
-          <Search size={20} className="text-gray-300 hover:text-gold-500 cursor-pointer transition-colors" />
+          <Link to="/login" className="hidden lg:flex items-center text-xs font-bold uppercase tracking-widest text-gold-500 border border-gold-500/50 px-4 py-1.5 rounded-full hover:bg-gold-500 hover:text-dark-950 transition-colors">Admin</Link>`r`n          <Search size={20} className="text-gray-300 hover:text-gold-500 cursor-pointer transition-colors" />
           <Menu size={24} className="lg:hidden text-gray-300 hover:text-gold-500 cursor-pointer" onClick={() => setIsMobileMenuOpen(true)} />
         </div>
       </nav>
 
       {/* Mobile Menu Overlay */}
-      <div className={`fixed inset-0 bg-[#110505]/98 backdrop-blur-md z-[60] transition-all duration-300 ${isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
+      <div className={`fixed inset-0 bg-dark-950/98 backdrop-blur-md z-[60] transition-all duration-300 ${isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
         <div className="flex justify-between items-center p-4 border-b border-white/5">
           <div className="text-xl font-serif text-gold-500 font-bold uppercase tracking-wide">{salon.name}</div>
           <button onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-gold-500"><X size={28} /></button>
@@ -65,7 +65,7 @@ const Academy = () => {
           <Link to={`/s/${salon.id}/services`} className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Services</Link>
           <Link to={`/s/${salon.id}/academy`} className="text-gold-500" onClick={() => setIsMobileMenuOpen(false)}>Academy</Link>
           <Link to={`/s/${salon.id}/blog`} className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Blog</Link>
-          <Link to={`/s/${salon.id}/contact`} className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
+          <Link to={`/s/${salon.id}/contact`} className="hover:text-gold-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>`r`n          <Link to="/login" className="text-gold-500 border border-gold-500/50 text-center py-3 rounded-xl mt-4" onClick={() => setIsMobileMenuOpen(false)}>ADMIN LOGIN</Link>
         </div>
       </div>
 
@@ -119,7 +119,7 @@ const Academy = () => {
             {/* Stats Row */}
             <div className="grid grid-cols-3 gap-4 mb-10">
               <div className="border border-white/10 rounded-xl p-4 text-center bg-white/5">
-                <div className="text-2xl font-serif text-white font-bold mb-1">6+</div>
+                <div className="text-2xl font-serif text-white font-bold mb-1">15+</div>
                 <div className="text-[10px] uppercase tracking-widest text-gold-500">Years Experience</div>
               </div>
               <div className="border border-white/10 rounded-xl p-4 text-center bg-white/5">
@@ -367,7 +367,7 @@ const Academy = () => {
       </div>
 
       {/* --- FOOTER --- */}
-      <footer className="bg-[#0a0404] border-t border-white/5 pt-20 pb-10">
+      <footer className="bg-dark-950 border-t border-white/5 pt-20 pb-10">
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12 mb-16">
           <div className="col-span-1 md:col-span-1">
             <div className="text-3xl font-serif text-gold-500 font-bold uppercase tracking-wide mb-6">
