@@ -184,7 +184,7 @@ const SalonHome = () => {
           {/* Right Column: Image */}
           <div className="relative rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-gold-500/20 transform md:scale-105 mt-12 md:mt-0">
             <div className="absolute inset-0 bg-gradient-to-t from-dark-950/80 via-transparent to-transparent z-10"></div>
-            <img src={salon.heroImage || salon.image || "/gallery/owner.jpg"} className="w-full h-[400px] md:h-[600px] object-cover" alt={`${salon.name} Hero`} />
+            <img src={salon.heroImage || salon.image || "/gallery/owner.jpg"} className="w-full h-[400px] md:h-[600px] object-cover object-top" alt={`${salon.name} Hero`} />
             <div className="absolute bottom-6 left-6 z-20 text-accent font-serif text-2xl bg-dark-950/80 px-4 py-2 rounded-lg border border-gold-500/20 backdrop-blur">
               Award Winning Service
             </div>
