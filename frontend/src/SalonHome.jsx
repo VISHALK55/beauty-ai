@@ -273,7 +273,7 @@ const SalonHome = () => {
             {blogPostsData.map((post, idx) => (
               <div key={idx} className="group cursor-pointer" onClick={() => setSelectedBlogPost(post)}>
                 <div className="w-full h-48 bg-tertiary rounded-xl mb-4 overflow-hidden relative">
-                  <img src={`/gallery/gallery_${idx + 1}.jpg`} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" alt="Blog cover" />
+                  <img src={salon.galleryImages && salon.galleryImages.length > 0 ? salon.galleryImages[idx % salon.galleryImages.length] : `/gallery/gallery_${idx + 1}.jpg`} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" alt="Blog cover" />
                 </div>
                 <div className="flex items-center gap-2 text-xs text-accent font-bold uppercase tracking-wider mb-2">
                   <CalendarCheck size={14} /> {post.date}
