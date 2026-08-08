@@ -383,7 +383,12 @@ const PublicSalonPage = React.memo(function PublicSalonPage() {
       </footer>
 
       {/* Modals & Floating CTAs */}
-      <BookingModal isOpen={isBookingModalOpen} onClose={() => setIsBookingModalOpen(false)} />
+      <BookingModal 
+        isOpen={isBookingModalOpen} 
+        onClose={() => setIsBookingModalOpen(false)} 
+        salonId={salon.id}
+        salonName={salon.name}
+      />
       <CallTrackingModal 
         isOpen={isCallTrackingOpen} 
         onClose={() => setIsCallTrackingOpen(false)} 

@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, Clock, User, Phone, CheckCircle2, MessageSquare, Search, Filter, Plus, ShieldCheck, Loader } from 'lucide-react';
 import BookingModal from './BookingModal';
 import { api } from './api';
+import { useAuth } from './context/AuthContext';
 
 export default function Appointments() {
+  const { salonId } = useAuth();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,14 +14,16 @@ export default function Appointments() {
 
   const fetchBookings = async () => {
     setLoading(true);
-    const data = await api.getAppointments('pihu-makeover-beauty-salon');
+    // Use the logged-in salon's ID, default to pihu-makeover if super admin for demo purposes
+    const targetSalonId = salonId === 'SUPER-ADMIN' ? 'pihu-makeover' : salonId;
+    const data = await api.getAppointments(targetSalonId);
     setBookings(data || []);
     setLoading(false);
   };
 
   useEffect(() => {
     fetchBookings();
-  }, []);
+  }, [salonId]);
 
   const handleBookingCreated = () => {
     fetchBookings();
@@ -169,6 +173,8 @@ export default function Appointments() {
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
         onBookingCreated={handleBookingCreated}
+        salonId={salonId === 'SUPER-ADMIN' ? 'pihu-makeover' : salonId}
+        salonName="Salon Name" // Could fetch actual name from context if available
       />
     </div>
   );

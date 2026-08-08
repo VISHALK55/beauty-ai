@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import BookingModal from './BookingModal';
 import AdCampaignLauncher from './AdCampaignLauncher';
+import { useAuth } from './context/AuthContext';
 
 const StatCard = ({ title, value, icon, trend }) => (
   <div className="glass-panel p-6 animate-slide-up">
@@ -71,6 +72,7 @@ const UpcomingAppointments = () => (
 );
 
 export default function Dashboard() {
+  const { salonId } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -108,7 +110,12 @@ export default function Dashboard() {
       </div>
 
       <UpcomingAppointments />
-      <BookingModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <BookingModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        salonId={salonId === 'SUPER-ADMIN' ? 'pihu-makeover' : salonId}
+        salonName="Admin Dashboard"
+      />
     </div>
   );
 }

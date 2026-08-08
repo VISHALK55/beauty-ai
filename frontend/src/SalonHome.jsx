@@ -355,7 +355,13 @@ const SalonHome = () => {
       </footer>
 
       {/* Modals */}
-      <BookingModal isOpen={isBookingModalOpen} onClose={() => setIsBookingModalOpen(false)} preselectedService={preselectedService} />
+      <BookingModal 
+        isOpen={isBookingModalOpen} 
+        onClose={() => setIsBookingModalOpen(false)} 
+        preselectedService={preselectedService} 
+        salonId={salon.id}
+        salonName={salon.name}
+      />
       <CallTrackingModal 
         isOpen={isCallTrackingOpen} 
         onClose={() => setIsCallTrackingOpen(false)} 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, Calendar as CalendarIcon, Clock, User, Scissors, Phone } from 'lucide-react';
 import { api } from './api';
 
-const BookingModal = ({ isOpen, onClose, onBookingCreated, preselectedService }) => {
+const BookingModal = ({ isOpen, onClose, onBookingCreated, preselectedService, salonId = 'pihu-makeover-beauty-salon', salonName = 'Pihu Makeover Saloon' }) => {
   const [formData, setFormData] = useState({
     customerName: '',
     phone: '',
@@ -16,7 +16,7 @@ const BookingModal = ({ isOpen, onClose, onBookingCreated, preselectedService })
 
   useEffect(() => {
     async function loadServices() {
-      const data = await api.getSalonServices('pihu-makeover-beauty-salon');
+      const data = await api.getSalonServices(salonId);
       if (data && data.length > 0) {
         setServices(data);
         if (!preselectedService) {
@@ -27,7 +27,7 @@ const BookingModal = ({ isOpen, onClose, onBookingCreated, preselectedService })
     if (isOpen) {
       loadServices();
     }
-  }, [isOpen, preselectedService]);
+  }, [isOpen, preselectedService, salonId]);
 
   if (!isOpen) return null;
 
@@ -49,7 +49,7 @@ const BookingModal = ({ isOpen, onClose, onBookingCreated, preselectedService })
       
         const newBooking = {
           customerName: formData.customerName,
-          salonName: 'Pihu Makeover Saloon',
+          salonName: salonName,
           serviceName: serviceNameToUse,
           price: finalPrice,
           date: formData.date || new Date().toISOString().split('T')[0],
@@ -59,7 +59,7 @@ const BookingModal = ({ isOpen, onClose, onBookingCreated, preselectedService })
           source: 'Manual Booking'
         };
 
-      const res = await api.createAppointment('pihu-makeover-beauty-salon', newBooking);
+      const res = await api.createAppointment(salonId, newBooking);
 
       if (!res) {
         throw new Error('Backend failed to create appointment');
