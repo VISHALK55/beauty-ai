@@ -6,7 +6,16 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: true,
-    allowedHosts: true
+    allowedHosts: true,
+    proxy: {
+      '/api/v1/salons': 'http://localhost:8081',
+      '/api/v1/auth': 'http://localhost:8084',
+      '/api/v1/bookings': 'http://localhost:8082',
+      '/api/v1/ai': 'http://localhost:8083',
+      '/api/v1/notifications': 'http://localhost:8085',
+      '/api/v1/payments': 'http://localhost:8086',
+      '/api/v1/analytics': 'http://localhost:8087',
+    }
   },
   build: {
     rollupOptions: {

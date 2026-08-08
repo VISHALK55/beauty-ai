@@ -26,13 +26,16 @@ export const SalonProvider = () => {
                         name: salonId.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
                         city: "Gaya, Bihar 824231",
                         streetAddress: "Sujata Bypass Road, Near Govt. Middle School Rajapur, Bodhgaya",
-                        phone: "+91 9113715558",
-                        email: "hello@" + salonId + ".com",
-                        instagram: "https://www.instagram.com/" + salonId,
-                        image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&q=80&w=1600"
+                        theme: salonId === 'pihu-makeover' ? 'dark' : 'light' // Pihu is dark & gold, new salons get light luxury!
                     };
                 }
                 
+                // Ensure required contact fields exist
+                sData.phone = sData.phone || "+919113715558";
+                sData.email = sData.email || "hello@" + salonId + ".com";
+                sData.instagram = sData.instagram || (salonId === 'pihu-makeover' ? "https://www.instagram.com/pihu_makeover22?igsh=ODZqc3U0M2JsY3pt" : "https://www.instagram.com/" + salonId);
+                sData.image = sData.heroImage || sData.image || "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&q=80&w=1600";
+
                 if (isMounted) {
                     setSalon(sData);
                     setError(null);
@@ -52,6 +55,24 @@ export const SalonProvider = () => {
         return () => { isMounted = false; };
     }, [salonId]);
 
+    // Apply Theme Side Effect
+    useEffect(() => {
+        if (salon?.theme) {
+            if (salon.theme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+            }
+        } else {
+            // Default to dark mode for dashboard/un-tenant routes (which is the :root default)
+            document.documentElement.removeAttribute('data-theme');
+        }
+        
+        return () => {
+            document.documentElement.removeAttribute('data-theme');
+        };
+    }, [salon?.theme]);
+
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-screen bg-black/90 text-[#d4af37]">
@@ -62,10 +83,10 @@ export const SalonProvider = () => {
 
     if (error || !salon) {
         return (
-            <div className="flex flex-col items-center justify-center min-h-screen bg-black/90 text-white">
-                <h2 className="text-2xl font-serif text-[#d4af37] mb-4">Salon Not Found</h2>
-                <p className="text-gray-400">We couldn't find the salon you're looking for.</p>
-                <a href="/" className="mt-8 px-6 py-2 border border-[#d4af37] text-[#d4af37] hover:bg-[#d4af37] hover:text-black transition-colors rounded">Return Home</a>
+            <div className="flex flex-col items-center justify-center min-h-screen bg-primary text-content">
+                <h2 className="text-2xl font-serif text-accent mb-4">Salon Not Found</h2>
+                <p className="text-muted">We couldn't find the salon you're looking for.</p>
+                <a href="/" className="mt-8 px-6 py-2 border border-accent text-accent hover:bg-accent hover:text-primary transition-colors rounded">Return Home</a>
             </div>
         );
     }

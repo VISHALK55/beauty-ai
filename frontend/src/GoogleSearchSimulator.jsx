@@ -17,7 +17,7 @@ export default function GoogleSearchSimulator() {
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif tracking-tight">
           How Customers See Pihu Makeover on Google
         </h1>
-        <p className="text-gray-400 mt-2 text-sm sm:text-base md:text-lg">
+        <p className="text-muted mt-2 text-sm sm:text-base md:text-lg">
           Simulate real customer searches on Google Mobile & Desktop for Bodhgaya & Gaya.
         </p>
       </header>
@@ -25,7 +25,7 @@ export default function GoogleSearchSimulator() {
       {/* Simulated Google Search Bar */}
       <div className="bg-white text-gray-900 rounded-2xl p-4 sm:p-6 shadow-2xl max-w-4xl mx-auto mb-8 md:mb-10 border border-gray-200">
         <div className="flex items-center gap-3 bg-gray-100 px-5 py-3.5 rounded-full border border-gray-300 shadow-inner">
-          <svg className="w-5 h-5 text-gray-500" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 text-muted" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
             <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
             <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
@@ -37,15 +37,15 @@ export default function GoogleSearchSimulator() {
             onChange={(e) => setQuery(e.target.value)}
             className="flex-1 bg-transparent text-gray-900 font-medium outline-none text-base"
           />
-          <Search size={18} className="text-gray-400" />
+          <Search size={18} className="text-muted" />
         </div>
 
         {/* Google Filter Pills */}
         <div className="flex gap-6 mt-4 border-b border-gray-200 pb-2 px-2 text-sm font-medium text-gray-600">
           <span className={`cursor-pointer pb-2 border-b-2 ${activeTab === 'all' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent'}`} onClick={() => setActiveTab('all')}>All</span>
           <span className={`cursor-pointer pb-2 border-b-2 ${activeTab === 'maps' ? 'border-blue-600 text-blue-600 font-semibold' : 'border-transparent'}`} onClick={() => setActiveTab('maps')}>Maps</span>
-          <span className="text-gray-400">Images</span>
-          <span className="text-gray-400">News</span>
+          <span className="text-muted">Images</span>
+          <span className="text-muted">News</span>
         </div>
 
         {/* ---------------------------------------------------- */}
@@ -56,7 +56,7 @@ export default function GoogleSearchSimulator() {
             <span className="text-xs font-bold uppercase tracking-wider text-blue-700 flex items-center gap-1.5">
               <MapPin size={14} /> Google Local Pack (Rank #1 in Bodhgaya & Gaya)
             </span>
-            <span className="text-xs text-gray-500 font-mono">Bodhgaya & Gaya Region</span>
+            <span className="text-xs text-muted font-mono">Bodhgaya & Gaya Region</span>
           </div>
 
           {/* Map Pack Result Card - Pihu Makeover */}
@@ -76,11 +76,11 @@ export default function GoogleSearchSimulator() {
                   <div className="flex text-amber-400">
                     {'★'.repeat(5)}
                   </div>
-                  <span className="text-gray-500 font-medium">(520 reviews)</span>
-                  <span className="text-gray-300">•</span>
+                  <span className="text-muted font-medium">(520 reviews)</span>
+                  <span className="text-muted">•</span>
                   <span className="text-gray-600">Beauty salon</span>
                 </div>
-                <p className="text-xs text-gray-500 mt-1 leading-normal">
+                <p className="text-xs text-muted mt-1 leading-normal">
                   Main Road, Near Mahabodhi Temple, Bodhgaya & Gaya, Bihar • Open ⋅ Closes 9 PM
                 </p>
                 <p className="text-xs text-emerald-700 font-medium mt-1.5 flex items-center gap-1">
@@ -98,7 +98,7 @@ export default function GoogleSearchSimulator() {
                 <Link
                   to="/salon/pihu-makeover-beauty-salon/bridal-makeup/bodhgaya"
                   target="_blank"
-                  className="flex-1 sm:flex-none px-4 py-2 bg-blue-600 text-white rounded-full text-xs font-semibold hover:bg-blue-700 flex items-center gap-1.5 justify-center shadow-sm"
+                  className="flex-1 sm:flex-none px-4 py-2 bg-blue-600 text-content rounded-full text-xs font-semibold hover:bg-blue-700 flex items-center gap-1.5 justify-center shadow-sm"
                 >
                   <Globe size={13} /> Website
                 </Link>
@@ -111,20 +111,20 @@ export default function GoogleSearchSimulator() {
             <div className="flex justify-between items-center">
               <div>
                 <p className="font-semibold text-gray-700">Radiance Beauty Care</p>
-                <p className="text-gray-500">4.7 ★ (145 reviews) • Temple Street, Bodhgaya</p>
+                <p className="text-muted">4.7 ★ (145 reviews) • Temple Street, Bodhgaya</p>
               </div>
-              <span className="text-gray-400">Rank #2</span>
+              <span className="text-muted">Rank #2</span>
             </div>
           </div>
         </div>
 
         {/* ORGANIC SEARCH RESULT CARD */}
         <div className="mt-8 border-t border-gray-200 pt-6">
-          <span className="text-xs text-gray-400 uppercase tracking-widest font-bold">Organic Search Result #1</span>
+          <span className="text-xs text-muted uppercase tracking-widest font-bold">Organic Search Result #1</span>
           
           <div className="mt-2">
             <div className="flex items-center gap-2 text-xs text-gray-600 mb-1">
-              <span className="w-4 h-4 rounded-full bg-gold-500 text-dark-900 font-bold flex items-center justify-center text-[10px]">P</span>
+              <span className="w-4 h-4 rounded-full bg-accent text-primary font-bold flex items-center justify-center text-[10px]">P</span>
               <span>beautyai.app › salon › pihu-makeover-beauty-salon › bridal-makeup</span>
             </div>
 
@@ -144,11 +144,11 @@ export default function GoogleSearchSimulator() {
               <Link to="/salon/pihu-makeover-beauty-salon/bridal-makeup/bodhgaya" target="_blank" className="hover:underline flex items-center gap-1">
                 Book Appointment Online <ExternalLink size={12} />
               </Link>
-              <span className="text-gray-300">•</span>
+              <span className="text-muted">•</span>
               <Link to="/salon/pihu-makeover-beauty-salon/hair-spa/sujata-bypass" target="_blank" className="hover:underline">
                 Hair Spa Packages
               </Link>
-              <span className="text-gray-300">•</span>
+              <span className="text-muted">•</span>
               <Link to="/salon/pihu-makeover-beauty-salon/facial/kalchakra-maidan" target="_blank" className="hover:underline">
                 Sujata Bypass Branch
               </Link>
@@ -160,13 +160,13 @@ export default function GoogleSearchSimulator() {
       {/* ---------------------------------------------------- */}
       {/* HIGH-LEVEL ACCELERATION ALGORITHM DASHBOARD */}
       {/* ---------------------------------------------------- */}
-      <div className="max-w-4xl mx-auto glass-panel p-8 border border-gold-500/30 rounded-2xl relative overflow-hidden">
+      <div className="max-w-4xl mx-auto glass-panel p-8 border border-accent-light rounded-2xl relative overflow-hidden">
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h2 className="text-2xl font-serif flex items-center gap-2 text-white">
-              Hyper-Speed Acceleration Engine <Zap className="text-gold-400 fill-gold-400/20" size={24} />
+            <h2 className="text-2xl font-serif flex items-center gap-2 text-content">
+              Hyper-Speed Acceleration Engine <Zap className="text-accent fill-gold-400/20" size={24} />
             </h2>
-            <p className="text-gray-400 text-sm mt-1">
+            <p className="text-muted text-sm mt-1">
               Timeline cut down from 3 weeks to 7 days using Google Instant Indexing API & 15-min Review Dispatch.
             </p>
           </div>
@@ -176,24 +176,24 @@ export default function GoogleSearchSimulator() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-gray-300 border-collapse">
+          <table className="w-full text-left text-sm text-muted border-collapse">
             <thead>
-              <tr className="border-b border-white/10 text-gray-400 uppercase text-xs">
+              <tr className="border-b border-divider-strong text-muted uppercase text-xs">
                 <th className="py-3 px-4">Milestone</th>
                 <th className="py-3 px-4">Standard Time</th>
-                <th className="py-3 px-4 text-gold-400">Accelerated Time</th>
+                <th className="py-3 px-4 text-accent">Accelerated Time</th>
                 <th className="py-3 px-4">Algorithm Strategy</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
               {timeline.map((item, i) => (
                 <tr key={i} className="hover:bg-white/5 transition-colors">
-                  <td className="py-4 px-4 font-semibold text-white">{item.milestone}</td>
-                  <td className="py-4 px-4 text-gray-500 line-through">{item.standardTime}</td>
-                  <td className="py-4 px-4 text-gold-400 font-bold text-base flex items-center gap-1">
+                  <td className="py-4 px-4 font-semibold text-content">{item.milestone}</td>
+                  <td className="py-4 px-4 text-muted line-through">{item.standardTime}</td>
+                  <td className="py-4 px-4 text-accent font-bold text-base flex items-center gap-1">
                     <Zap size={14} /> {item.acceleratedTime}
                   </td>
-                  <td className="py-4 px-4 text-xs text-gray-400 font-mono">{item.status}</td>
+                  <td className="py-4 px-4 text-xs text-muted font-mono">{item.status}</td>
                 </tr>
               ))}
             </tbody>

@@ -23,7 +23,7 @@ export default function HyperSpeedControlCenter() {
     loadData();
   }, [selectedSalonId]);
 
-  if (!salon) return <div className="p-8 text-gold-500">Loading Control Center...</div>;
+  if (!salon) return <div className="p-8 text-accent">Loading Control Center...</div>;
 
   const targetUrl = `https://beautyai.app/salon/${salon.id}/bridal-makeup/${salon.neighborhoods[0]?.toLowerCase().replace(/\s+/g, '-') || 'bodhgaya'}`;
 
@@ -54,27 +54,27 @@ export default function HyperSpeedControlCenter() {
     <div className="px-4 py-6 sm:px-6 md:px-10 md:py-8 min-h-full">
       <header className="mb-6 md:mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-gold-500/20 text-gold-400 border border-gold-500/30 rounded-full text-xs font-bold uppercase tracking-wider mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-accent-light text-accent border border-accent-light rounded-full text-xs font-bold uppercase tracking-wider mb-2">
             <Zap size={14} /> High-Level SEO Acceleration Control Center
           </div>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif tracking-tight text-white">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif tracking-tight text-content">
             Hyper-Speed Execution Engine
           </h1>
-          <p className="text-gray-400 mt-1">
+          <p className="text-muted mt-1">
             Execute instant Google indexing, WhatsApp review dispatches, and knowledge graph payloads for {salon.name}.
           </p>
         </div>
 
         {/* Salon Selector */}
         <div className="flex items-center gap-3">
-          <label className="text-xs font-bold text-gray-400 uppercase">Target Salon:</label>
+          <label className="text-xs font-bold text-muted uppercase">Target Salon:</label>
           <select
             value={selectedSalonId}
             onChange={(e) => {
               setSelectedSalonId(e.target.value);
               setStatusMessage('');
             }}
-            className="bg-dark-800 border border-white/10 text-gold-400 font-bold px-4 py-2.5 rounded-xl focus:outline-none focus:border-gold-500 text-sm"
+            className="bg-tertiary border border-divider-strong text-accent font-bold px-4 py-2.5 rounded-xl focus:outline-none focus:border-gold-500 text-sm"
           >
             <option value="pihu-makeover-beauty-salon">Pihu Makeover Saloon (Bodhgaya & Gaya)</option>
             <option value="glamour-boring-road-patna">Glamour Studio (Patna)</option>
@@ -98,15 +98,15 @@ export default function HyperSpeedControlCenter() {
                 Target: &lt; 2 Hours
               </span>
             </div>
-            <h3 className="text-lg font-semibold text-white mb-1">Instant Google Indexing API</h3>
-            <p className="text-xs text-gray-400 mb-4">
+            <h3 className="text-lg font-semibold text-content mb-1">Instant Google Indexing API</h3>
+            <p className="text-xs text-muted mb-4">
               Sends high-urgency payload to Googlebot to index {salon.name} instantly.
             </p>
           </div>
           <button
             onClick={handlePingGoogleIndexing}
             disabled={isLoading}
-            className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_15px_rgba(37,99,235,0.3)]"
+            className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-content text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_15px_rgba(37,99,235,0.3)]"
           >
             {isLoading ? <RefreshCw className="animate-spin" size={14} /> : <Zap size={14} />} Ping Googlebot Now
           </button>
@@ -123,15 +123,15 @@ export default function HyperSpeedControlCenter() {
                 Delay: 15 Mins
               </span>
             </div>
-            <h3 className="text-lg font-semibold text-white mb-1">Accelerated Review Dispatch</h3>
-            <p className="text-xs text-gray-400 mb-4">
+            <h3 className="text-lg font-semibold text-content mb-1">Accelerated Review Dispatch</h3>
+            <p className="text-xs text-muted mb-4">
               Dispatches 15-minute post-service WhatsApp prompt with local keyword hints.
             </p>
           </div>
           <button
             onClick={handleDispatchWhatsAppReview}
             disabled={isLoading}
-            className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_15px_rgba(16,185,129,0.3)]"
+            className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-content text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_15px_rgba(16,185,129,0.3)]"
           >
             {isLoading ? <RefreshCw className="animate-spin" size={14} /> : <Send size={14} />} Dispatch 15-Min Review Prompt
           </button>
@@ -148,8 +148,8 @@ export default function HyperSpeedControlCenter() {
                 AWS Free Tier ($0/mo)
               </span>
             </div>
-            <h3 className="text-lg font-semibold text-white mb-1">AWS Serverless Health</h3>
-            <p className="text-xs text-gray-400 mb-4">
+            <h3 className="text-lg font-semibold text-content mb-1">AWS Serverless Health</h3>
+            <p className="text-xs text-muted mb-4">
               DynamoDB + Lambda (`SalonFunction`) HTTP API status.
             </p>
           </div>
@@ -169,28 +169,28 @@ export default function HyperSpeedControlCenter() {
 
       {/* Payload Code Viewer */}
       <div className="glass-panel p-6">
-        <div className="flex gap-4 border-b border-white/10 pb-3 mb-4 text-xs font-bold uppercase tracking-wider">
+        <div className="flex gap-4 border-b border-divider-strong pb-3 mb-4 text-xs font-bold uppercase tracking-wider">
           <button
             onClick={() => setActiveTab('indexing')}
-            className={`pb-2 border-b-2 transition-colors cursor-pointer ${activeTab === 'indexing' ? 'border-gold-500 text-gold-400' : 'border-transparent text-gray-400'}`}
+            className={`pb-2 border-b-2 transition-colors cursor-pointer ${activeTab === 'indexing' ? 'border-accent text-accent' : 'border-transparent text-muted'}`}
           >
             Google Indexing API Payload
           </button>
           <button
             onClick={() => setActiveTab('knowledge')}
-            className={`pb-2 border-b-2 transition-colors cursor-pointer ${activeTab === 'knowledge' ? 'border-gold-500 text-gold-400' : 'border-transparent text-gray-400'}`}
+            className={`pb-2 border-b-2 transition-colors cursor-pointer ${activeTab === 'knowledge' ? 'border-accent text-accent' : 'border-transparent text-muted'}`}
           >
             Knowledge Graph Matrix (@graph)
           </button>
           <button
             onClick={() => setActiveTab('whatsapp')}
-            className={`pb-2 border-b-2 transition-colors cursor-pointer ${activeTab === 'whatsapp' ? 'border-gold-500 text-gold-400' : 'border-transparent text-gray-400'}`}
+            className={`pb-2 border-b-2 transition-colors cursor-pointer ${activeTab === 'whatsapp' ? 'border-accent text-accent' : 'border-transparent text-muted'}`}
           >
             WhatsApp Accelerated Prompt
           </button>
         </div>
 
-        <div className="bg-dark-950 p-5 rounded-xl border border-white/10 font-mono text-xs text-gray-300 overflow-x-auto">
+        <div className="bg-primary p-5 rounded-xl border border-divider-strong font-mono text-xs text-muted overflow-x-auto">
           {activeTab === 'indexing' && (
             <pre>{JSON.stringify(indexingPayload, null, 2)}</pre>
           )}

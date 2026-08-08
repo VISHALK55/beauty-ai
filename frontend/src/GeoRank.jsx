@@ -19,15 +19,15 @@ const StatCard = ({ title, value, icon, subtitle, highlight }) => (
     )}
     <div className="flex justify-between items-start relative z-10">
       <div>
-        <p className="text-sm text-gray-400 font-medium tracking-wide uppercase">{title}</p>
+        <p className="text-sm text-muted font-medium tracking-wide uppercase">{title}</p>
         <h3 className="text-4xl font-bold mt-2 bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">{value}</h3>
       </div>
-      <div className={`p-4 bg-dark-900/50 rounded-2xl border border-white/5 shadow-lg ${highlight ? 'text-blue-400 border-blue-500/20 shadow-blue-500/20' : 'text-gray-400'}`}>
+      <div className={`p-4 bg-dark-900/50 rounded-2xl border border-divider shadow-lg ${highlight ? 'text-blue-400 border-blue-500/20 shadow-blue-500/20' : 'text-muted'}`}>
         {icon}
       </div>
     </div>
     <div className="mt-4 flex items-center gap-2 text-sm relative z-10">
-      <span className={highlight ? "text-blue-400 font-medium" : "text-gray-400 font-medium"}>{subtitle}</span>
+      <span className={highlight ? "text-blue-400 font-medium" : "text-muted font-medium"}>{subtitle}</span>
     </div>
   </div>
 );
@@ -46,7 +46,7 @@ export default function GeoRank() {
     loadData();
   }, []);
 
-  if (!salon) return <div className="p-10 text-gold-500">Loading Geo Rank Engine...</div>;
+  if (!salon) return <div className="p-10 text-accent">Loading Geo Rank Engine...</div>;
 
   return (
     <div className="px-10 py-8 min-h-full">
@@ -55,7 +55,7 @@ export default function GeoRank() {
           <h1 className="text-4xl font-serif tracking-tight flex items-center gap-3">
             Geo Rank AI <Zap size={28} className="text-blue-500 fill-blue-500/20" />
           </h1>
-          <p className="text-gray-400 mt-2 text-lg">Automate your local SEO and dominate Google Maps in {salon.city}.</p>
+          <p className="text-muted mt-2 text-lg">Automate your local SEO and dominate Google Maps in {salon.city}.</p>
         </div>
       </header>
 
@@ -67,12 +67,12 @@ export default function GeoRank() {
           <div className="flex justify-between items-start mb-8 relative z-10">
             <div>
               <h2 className="text-2xl font-serif mb-2">Automated Review Engine</h2>
-              <p className="text-gray-400">Automatically sends a WhatsApp message to clients 2 hours after their appointment, requesting a 5-star Google review.</p>
+              <p className="text-muted">Automatically sends a WhatsApp message to clients 2 hours after their appointment, requesting a 5-star Google review.</p>
             </div>
             
             {/* Custom Toggle Switch */}
             <div 
-              className={`w-16 h-8 rounded-full flex items-center p-1 cursor-pointer transition-colors duration-300 ${isEnabled ? 'bg-blue-500' : 'bg-dark-700'}`}
+              className={`w-16 h-8 rounded-full flex items-center p-1 cursor-pointer transition-colors duration-300 ${isEnabled ? 'bg-blue-500' : 'bg-tertiary'}`}
               onClick={() => setIsEnabled(!isEnabled)}
             >
               <div className={`w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300 ${isEnabled ? 'translate-x-8' : 'translate-x-0'}`}></div>
@@ -81,28 +81,28 @@ export default function GeoRank() {
 
           <div className="space-y-6 relative z-10">
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-2 uppercase tracking-wide">Google Business Profile URL</label>
+              <label className="block text-sm font-medium text-muted mb-2 uppercase tracking-wide">Google Business Profile URL</label>
               <div className="flex gap-4">
                 <div className="relative flex-1">
-                  <MapPin size={18} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500" />
+                  <MapPin size={18} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted" />
                   <input 
                     type="text" 
                     value={mapsUrl}
                     onChange={(e) => setMapsUrl(e.target.value)}
-                    className="w-full pl-12 pr-4 py-3 bg-dark-900/80 border border-white/10 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white font-mono text-sm"
+                    className="w-full pl-12 pr-4 py-3 bg-dark-900/80 border border-divider-strong rounded-xl focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-content font-mono text-sm"
                   />
                 </div>
-                <button className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-medium rounded-xl transition-colors shadow-[0_0_20px_rgba(37,99,235,0.2)]">
+                <button className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-content font-medium rounded-xl transition-colors shadow-[0_0_20px_rgba(37,99,235,0.2)]">
                   Save Link
                 </button>
               </div>
             </div>
 
-            <div className="bg-dark-900/60 border border-white/5 rounded-xl p-5 border-l-4 border-l-blue-500">
-              <h4 className="text-sm font-bold text-gray-300 mb-2 flex items-center gap-2">
+            <div className="bg-dark-900/60 border border-divider rounded-xl p-5 border-l-4 border-l-blue-500">
+              <h4 className="text-sm font-bold text-muted mb-2 flex items-center gap-2">
                 <MessageCircle size={16} className="text-blue-400" /> WhatsApp Preview
               </h4>
-              <p className="text-gray-400 italic text-sm">
+              <p className="text-muted italic text-sm">
                 "Hi! Thank you for visiting {salon.name} ({salon.city}) today. If you loved your service, we would be incredibly grateful if you left us a quick 5-star review here: <span className="text-blue-400 not-italic">{mapsUrl}</span>"
               </p>
             </div>
@@ -116,22 +116,22 @@ export default function GeoRank() {
           </h3>
           
           <div className="space-y-6">
-            <div className="bg-dark-900/50 p-4 rounded-xl border border-white/5">
+            <div className="bg-dark-900/50 p-4 rounded-xl border border-divider">
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm text-gray-400">Current Ranking ({salon.city})</span>
-                <span className="text-gold-400 font-bold flex items-center gap-1">Top 3 <TrendingUp size={14} /></span>
+                <span className="text-sm text-muted">Current Ranking ({salon.city})</span>
+                <span className="text-accent font-bold flex items-center gap-1">Top 3 <TrendingUp size={14} /></span>
               </div>
-              <div className="w-full bg-dark-700 rounded-full h-2">
+              <div className="w-full bg-tertiary rounded-full h-2">
                 <div className="bg-gradient-to-r from-blue-500 to-indigo-500 h-2 rounded-full w-[85%]"></div>
               </div>
             </div>
             
             <div className="pt-2">
-              <h4 className="text-sm text-gray-400 uppercase tracking-wide mb-3">AI Targeted Areas</h4>
+              <h4 className="text-sm text-muted uppercase tracking-wide mb-3">AI Targeted Areas</h4>
               <ul className="space-y-3">
                 {salon.neighborhoods?.slice(0, 2).map((hood, i) => (
                   <li key={i} className="flex items-center gap-3 text-sm">
-                    <CheckCircle size={16} className="text-green-500" /> {hood} <span className="ml-auto text-gray-500">Rank #1</span>
+                    <CheckCircle size={16} className="text-green-500" /> {hood} <span className="ml-auto text-muted">Rank #1</span>
                   </li>
                 ))}
                 {salon.neighborhoods?.length > 2 && (

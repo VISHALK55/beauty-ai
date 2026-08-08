@@ -10,9 +10,12 @@ public class CreateSalonRequest {
     private Map<String, String> workingHours;
     private String city;
     private String phone;
+    private String instagram;
     private String rating;
     private Integer reviews;
     private String image;
+    private String heroImage;
+    private List<String> galleryImages;
     private List<String> neighborhoods;
 
     // Multi-Tenant SaaS Fields
@@ -39,6 +42,9 @@ public class CreateSalonRequest {
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
 
+    public String getInstagram() { return instagram; }
+    public void setInstagram(String instagram) { this.instagram = instagram; }
+
     public String getRating() { return rating; }
     public void setRating(String rating) { this.rating = rating; }
 
@@ -47,6 +53,12 @@ public class CreateSalonRequest {
 
     public String getImage() { return image; }
     public void setImage(String image) { this.image = image; }
+
+    public String getHeroImage() { return heroImage; }
+    public void setHeroImage(String heroImage) { this.heroImage = heroImage; }
+
+    public List<String> getGalleryImages() { return galleryImages; }
+    public void setGalleryImages(List<String> galleryImages) { this.galleryImages = galleryImages; }
 
     public List<String> getNeighborhoods() { return neighborhoods; }
     public void setNeighborhoods(List<String> neighborhoods) { this.neighborhoods = neighborhoods; }

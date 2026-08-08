@@ -61,15 +61,15 @@ const StatCard = ({ title, value, icon, subtitle }) => (
   <div className="glass-panel p-6 animate-slide-up hover:-translate-y-1 transition-transform duration-300">
     <div className="flex justify-between items-start">
       <div>
-        <p className="text-sm text-gray-400 font-medium tracking-wide uppercase">{title}</p>
+        <p className="text-sm text-muted font-medium tracking-wide uppercase">{title}</p>
         <h3 className="text-3xl font-bold mt-2 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">{value}</h3>
       </div>
-      <div className="p-4 bg-dark-900/50 rounded-2xl text-gold-400 border border-white/5 shadow-[0_0_15px_rgba(212,175,55,0.1)]">
+      <div className="p-4 bg-dark-900/50 rounded-2xl text-accent border border-divider shadow-[0_0_15px_rgba(212,175,55,0.1)]">
         {icon}
       </div>
     </div>
     <div className="mt-4 flex items-center gap-2 text-sm">
-      <span className="text-gold-400 font-medium">{subtitle}</span>
+      <span className="text-accent font-medium">{subtitle}</span>
     </div>
   </div>
 );
@@ -81,20 +81,20 @@ const CallRow = ({ call }) => {
     <div className="group mb-4">
       <div 
         onClick={() => setExpanded(!expanded)}
-        className="flex items-center justify-between p-5 bg-dark-900/50 rounded-xl border border-white/5 hover:border-gold-500/30 transition-all cursor-pointer shadow-lg hover:shadow-gold-500/10 relative overflow-hidden"
+        className="flex items-center justify-between p-5 bg-dark-900/50 rounded-xl border border-divider hover:border-gold-500/30 transition-all cursor-pointer shadow-lg hover:shadow-gold-500/10 relative overflow-hidden"
       >
         {/* Subtle left border accent */}
-        <div className={`absolute left-0 top-0 bottom-0 w-1 ${call.type === 'missed' ? 'bg-rose-500' : 'bg-gold-500'}`}></div>
+        <div className={`absolute left-0 top-0 bottom-0 w-1 ${call.type === 'missed' ? 'bg-rose-500' : 'bg-accent'}`}></div>
         
         <div className="flex items-center gap-5 pl-2">
           <div className={`w-12 h-12 rounded-full flex items-center justify-center shadow-inner ${
-            call.type === 'missed' ? 'bg-rose-500/20 text-rose-500' : 'bg-dark-800 text-gold-400'
+            call.type === 'missed' ? 'bg-rose-500/20 text-rose-500' : 'bg-tertiary text-accent'
           }`}>
             {call.type === 'missed' ? <PhoneMissed size={20} /> : <PhoneIncoming size={20} />}
           </div>
           <div>
             <p className="font-semibold text-lg tracking-wide">{call.caller}</p>
-            <div className="flex items-center gap-3 text-sm text-gray-400 mt-1">
+            <div className="flex items-center gap-3 text-sm text-muted mt-1">
               <span className="flex items-center gap-1"><Clock size={14} /> {call.time}</span>
               {call.duration !== "0s" && <span>• {call.duration}</span>}
             </div>
@@ -118,7 +118,7 @@ const CallRow = ({ call }) => {
             )}
           </div>
           
-          <button className="p-2 text-gray-500 group-hover:text-gold-400 transition-colors">
+          <button className="p-2 text-muted group-hover:text-gold-400 transition-colors">
             {expanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
           </button>
         </div>
@@ -126,20 +126,20 @@ const CallRow = ({ call }) => {
 
       {/* Expandable Transcript Area */}
       <div className={`overflow-hidden transition-all duration-300 ease-in-out ${expanded ? 'max-h-96 opacity-100 mt-2' : 'max-h-0 opacity-0'}`}>
-        <div className="glass-panel p-6 ml-6 mr-2 relative border-l-2 border-gold-500/30 rounded-l-none">
+        <div className="glass-panel p-6 ml-6 mr-2 relative border-l-2 border-accent-light rounded-l-none">
           {call.transcript ? (
             <div className="space-y-4">
-              <h4 className="text-sm font-medium text-gold-400 mb-4 flex items-center gap-2 uppercase tracking-wider">
+              <h4 className="text-sm font-medium text-accent mb-4 flex items-center gap-2 uppercase tracking-wider">
                 <Play size={14} className="fill-gold-400" /> Audio Transcript
               </h4>
               {call.transcript.map((line, idx) => (
                 <div key={idx} className={`flex ${line.speaker === 'AI' ? 'justify-start' : 'justify-end'}`}>
                   <div className={`max-w-[80%] p-3 rounded-2xl ${
                     line.speaker === 'AI' 
-                      ? 'bg-dark-800 text-gray-200 rounded-tl-sm border border-white/5' 
-                      : 'bg-gold-500/10 text-gold-50 border border-gold-500/20 rounded-tr-sm'
+                      ? 'bg-tertiary text-gray-200 rounded-tl-sm border border-divider' 
+                      : 'bg-accent-light text-gold-50 border border-gold-500/20 rounded-tr-sm'
                   }`}>
-                    <span className="text-[10px] uppercase font-bold text-gray-500 mb-1 block">
+                    <span className="text-[10px] uppercase font-bold text-muted mb-1 block">
                       {line.speaker}
                     </span>
                     <p className="text-sm">{line.text}</p>
@@ -148,7 +148,7 @@ const CallRow = ({ call }) => {
               ))}
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center py-6 text-gray-500">
+            <div className="flex flex-col items-center justify-center py-6 text-muted">
               <PhoneMissed size={32} className="mb-2 opacity-50" />
               <p>No transcript available for missed calls.</p>
             </div>
@@ -165,7 +165,7 @@ export default function VoiceCalls() {
       <header className="flex justify-between items-center mb-10 animate-fade-in">
         <div>
           <h1 className="text-4xl font-serif tracking-tight">AI Voice Calls</h1>
-          <p className="text-gray-400 mt-2 text-lg">Monitor all phone conversations handled by your AI.</p>
+          <p className="text-muted mt-2 text-lg">Monitor all phone conversations handled by your AI.</p>
         </div>
         
         <div className="flex items-center gap-4">
@@ -203,12 +203,12 @@ export default function VoiceCalls() {
 
       {/* Call Log */}
       <div className="glass-panel p-8 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-        <div className="flex justify-between items-center mb-8 border-b border-white/5 pb-4">
+        <div className="flex justify-between items-center mb-8 border-b border-divider pb-4">
           <h2 className="text-2xl font-serif">Recent Calls</h2>
           <div className="flex gap-2">
-            <button className="px-4 py-2 bg-dark-800 rounded-lg text-sm border border-white/10 hover:border-gold-500/50 transition-colors">All Calls</button>
-            <button className="px-4 py-2 bg-dark-900 rounded-lg text-sm text-gray-400 border border-transparent hover:border-white/10 transition-colors">Missed</button>
-            <button className="px-4 py-2 bg-dark-900 rounded-lg text-sm text-gray-400 border border-transparent hover:border-white/10 transition-colors">Booked</button>
+            <button className="px-4 py-2 bg-tertiary rounded-lg text-sm border border-divider-strong hover:border-gold-500/50 transition-colors">All Calls</button>
+            <button className="px-4 py-2 bg-secondary rounded-lg text-sm text-muted border border-transparent hover:border-white/10 transition-colors">Missed</button>
+            <button className="px-4 py-2 bg-secondary rounded-lg text-sm text-muted border border-transparent hover:border-white/10 transition-colors">Booked</button>
           </div>
         </div>
         

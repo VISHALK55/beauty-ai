@@ -6,6 +6,17 @@ export default {
   theme: {
     extend: {
       colors: {
+        primary: 'var(--bg-primary)',
+        secondary: 'var(--bg-secondary)',
+        tertiary: 'var(--bg-tertiary)',
+        content: 'var(--text-content)',
+        muted: 'var(--text-muted)',
+        accent: 'var(--accent-main)',
+        'accent-hover': 'var(--accent-hover)',
+        'accent-light': 'var(--accent-light)',
+        divider: 'var(--border-divider)',
+        'divider-strong': 'var(--border-divider-strong)',
+        // Keep these for backward compatibility if we miss any replacements
         gold: {
           400: '#D4AF37',
           500: '#AA8C2C',
@@ -17,7 +28,8 @@ export default {
         dark: {
           900: '#0F0F11',
           800: '#1A1A1D',
-          700: '#2C2C30'
+          700: '#2C2C30',
+          950: '#0a0a0a'
         }
       },
       fontFamily: {

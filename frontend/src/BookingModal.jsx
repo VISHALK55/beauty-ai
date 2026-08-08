@@ -87,7 +87,7 @@ const BookingModal = ({ isOpen, onClose, onBookingCreated, preselectedService })
       <div className="glass-panel w-full max-w-md p-6 relative">
         <button 
           onClick={onClose}
-          className="absolute right-4 top-4 text-gray-400 hover:text-white transition-colors"
+          className="absolute right-4 top-4 text-muted hover:text-white transition-colors"
         >
           <X size={20} />
         </button>
@@ -99,36 +99,36 @@ const BookingModal = ({ isOpen, onClose, onBookingCreated, preselectedService })
             <div className="w-16 h-16 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
               <CalendarIcon size={32} />
             </div>
-            <h3 className="text-xl font-medium text-white mb-2">Booking Confirmed!</h3>
-            <p className="text-gray-400">Your appointment has been successfully scheduled.</p>
+            <h3 className="text-xl font-medium text-content mb-2">Booking Confirmed!</h3>
+            <p className="text-muted">Your appointment has been successfully scheduled.</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm text-gray-400 mb-1">Customer Name</label>
+              <label className="block text-sm text-muted mb-1">Customer Name</label>
               <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" size={16} />
                 <input 
                   type="text" 
                   required
                   value={formData.customerName}
                   onChange={e => setFormData({...formData, customerName: e.target.value})}
-                  className="w-full pl-10 pr-4 py-2 bg-dark-800 border border-white/10 rounded-lg focus:outline-none focus:border-gold-500 transition-colors text-white"
+                  className="w-full pl-10 pr-4 py-2 bg-tertiary border border-divider-strong rounded-lg focus:outline-none focus:border-gold-500 transition-colors text-content"
                   placeholder=""
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm text-gray-400 mb-1">Phone Number</label>
+              <label className="block text-sm text-muted mb-1">Phone Number</label>
               <div className="relative">
-                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
+                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" size={16} />
                 <input 
                   type="tel" 
                   required
                   value={formData.phone}
                   onChange={e => setFormData({...formData, phone: e.target.value})}
-                  className="w-full pl-10 pr-4 py-2 bg-dark-800 border border-white/10 rounded-lg focus:outline-none focus:border-gold-500 transition-colors text-white"
+                  className="w-full pl-10 pr-4 py-2 bg-tertiary border border-divider-strong rounded-lg focus:outline-none focus:border-gold-500 transition-colors text-content"
                   placeholder=""
                 />
               </div>
@@ -136,13 +136,13 @@ const BookingModal = ({ isOpen, onClose, onBookingCreated, preselectedService })
 
             {!preselectedService ? (
               <div>
-                <label className="block text-sm text-gray-400 mb-1">Service</label>
+                <label className="block text-sm text-muted mb-1">Service</label>
                 <div className="relative">
-                  <Scissors className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
+                  <Scissors className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" size={16} />
                   <select 
                     value={formData.serviceId}
                     onChange={e => setFormData({...formData, serviceId: e.target.value})}
-                    className="w-full pl-10 pr-4 py-2 bg-dark-800 border border-white/10 rounded-lg focus:outline-none focus:border-gold-500 transition-colors text-white appearance-none"
+                    className="w-full pl-10 pr-4 py-2 bg-tertiary border border-divider-strong rounded-lg focus:outline-none focus:border-gold-500 transition-colors text-content appearance-none"
                   >
                     {services.map(s => (
                       <option key={s.id} value={s.id}>{s.name} (₹{s.priceINR})</option>
@@ -152,10 +152,10 @@ const BookingModal = ({ isOpen, onClose, onBookingCreated, preselectedService })
               </div>
             ) : (
               <div>
-                <label className="block text-sm text-gray-400 mb-1">Selected Service</label>
+                <label className="block text-sm text-muted mb-1">Selected Service</label>
                 <div className="relative">
-                  <Scissors className="absolute left-3 top-1/2 -translate-y-1/2 text-gold-500" size={16} />
-                  <div className="w-full pl-10 pr-4 py-2 bg-dark-800/50 border border-gold-500/30 rounded-lg text-gold-400 flex items-center">
+                  <Scissors className="absolute left-3 top-1/2 -translate-y-1/2 text-accent" size={16} />
+                  <div className="w-full pl-10 pr-4 py-2 bg-dark-800/50 border border-accent-light rounded-lg text-accent flex items-center">
                     {preselectedService}
                   </div>
                 </div>
@@ -164,28 +164,28 @@ const BookingModal = ({ isOpen, onClose, onBookingCreated, preselectedService })
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm text-gray-400 mb-1">Date</label>
+                <label className="block text-sm text-muted mb-1">Date</label>
                 <div className="relative">
-                  <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
+                  <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" size={16} />
                   <input 
                     type="date" 
                     required
                     value={formData.date}
                     onChange={e => setFormData({...formData, date: e.target.value})}
-                    className="w-full pl-10 pr-4 py-2 bg-dark-800 border border-white/10 rounded-lg focus:outline-none focus:border-gold-500 transition-colors text-white [color-scheme:dark]"
+                    className="w-full pl-10 pr-4 py-2 bg-tertiary border border-divider-strong rounded-lg focus:outline-none focus:border-gold-500 transition-colors text-content [color-scheme:dark]"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-sm text-gray-400 mb-1">Time</label>
+                <label className="block text-sm text-muted mb-1">Time</label>
                 <div className="relative">
-                  <Clock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
+                  <Clock className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" size={16} />
                   <input 
                     type="time" 
                     required
                     value={formData.time}
                     onChange={e => setFormData({...formData, time: e.target.value})}
-                    className="w-full pl-10 pr-4 py-2 bg-dark-800 border border-white/10 rounded-lg focus:outline-none focus:border-gold-500 transition-colors text-white [color-scheme:dark]"
+                    className="w-full pl-10 pr-4 py-2 bg-tertiary border border-divider-strong rounded-lg focus:outline-none focus:border-gold-500 transition-colors text-content [color-scheme:dark]"
                   />
                 </div>
               </div>

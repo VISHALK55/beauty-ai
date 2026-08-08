@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { 
   Image, 
   FileText, 
@@ -16,14 +16,32 @@ const WebsiteContentManager = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
 
+  const fileInputRef = useRef(null);
+
   // Mock Data States
-  const [galleryItems] = useState([
+  const [galleryItems, setGalleryItems] = useState([
     { id: 1, src: '/gallery/gallery_1.jpg', title: 'Bridal HD Makeup' },
     { id: 2, src: '/gallery/gallery_2.jpg', title: 'Airbrush Reception Look' },
     { id: 3, src: '/gallery/gallery_3.jpg', title: 'Party Glam' },
     { id: 4, src: '/gallery/gallery_4.jpg', title: 'Haldi Ceremony' },
     { id: 5, src: '/gallery/gallery_5.jpg', title: 'Hair Treatment' }
   ]);
+
+  const handleUploadPhoto = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const newImage = {
+          id: Date.now(),
+          src: e.target.result,
+          title: 'New Image'
+        };
+        setGalleryItems([newImage, ...galleryItems]);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const [blogPosts] = useState([
     { id: 1, title: 'Bridal Makeup Trends for Bihar Weddings', category: 'BRIDAL GLAM', date: 'Aug 15, 2026' },
@@ -52,17 +70,27 @@ const WebsiteContentManager = () => {
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
         <div>
-          <h2 className="text-xl font-bold text-white mb-1">Gallery Images</h2>
-          <p className="text-sm text-gray-400">Manage the photos displayed on your homepage gallery.</p>
+          <h2 className="text-xl font-bold text-content mb-1">Gallery Images</h2>
+          <p className="text-sm text-muted">Manage the photos displayed on your homepage gallery.</p>
         </div>
-        <button className="flex items-center gap-2 bg-gold-500/20 text-gold-400 border border-gold-500 hover:bg-gold-500 hover:text-dark-950 px-4 py-2 rounded-lg font-bold text-sm transition-colors">
+        <button 
+          onClick={() => fileInputRef.current.click()}
+          className="flex items-center gap-2 bg-accent-light text-accent border border-accent hover:bg-gold-500 hover:text-dark-950 px-4 py-2 rounded-lg font-bold text-sm transition-colors"
+        >
           <Plus size={16} /> Upload New Photo
         </button>
+        <input 
+          type="file" 
+          ref={fileInputRef} 
+          onChange={handleUploadPhoto} 
+          accept="image/*" 
+          className="hidden" 
+        />
       </div>
       
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {galleryItems.map(item => (
-          <div key={item.id} className="relative group bg-dark-800 rounded-xl border border-white/5 overflow-hidden shadow-lg">
+          <div key={item.id} className="relative group bg-tertiary rounded-xl border border-divider overflow-hidden shadow-lg">
             <div className="h-40 w-full overflow-hidden">
               <img src={item.src} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
             </div>
@@ -70,10 +98,14 @@ const WebsiteContentManager = () => {
               <input 
                 type="text" 
                 defaultValue={item.title} 
-                className="w-full bg-dark-900 border border-white/10 rounded px-2 py-1 text-xs text-white focus:border-gold-500 focus:outline-none"
+                className="w-full bg-secondary border border-divider-strong rounded px-2 py-1 text-xs text-content focus:border-gold-500 focus:outline-none"
               />
             </div>
-            <button className="absolute top-2 right-2 bg-red-500/80 text-white p-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500" title="Delete Image">
+            <button 
+              onClick={() => setGalleryItems(galleryItems.filter(g => g.id !== item.id))}
+              className="absolute top-2 right-2 bg-red-500/80 text-content p-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500" 
+              title="Delete Image"
+            >
               <Trash2 size={14} />
             </button>
           </div>
@@ -86,30 +118,30 @@ const WebsiteContentManager = () => {
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
         <div>
-          <h2 className="text-xl font-bold text-white mb-1">Blog Posts</h2>
-          <p className="text-sm text-gray-400">Create and edit articles for your beauty journal.</p>
+          <h2 className="text-xl font-bold text-content mb-1">Blog Posts</h2>
+          <p className="text-sm text-muted">Create and edit articles for your beauty journal.</p>
         </div>
-        <button className="flex items-center gap-2 bg-gold-500/20 text-gold-400 border border-gold-500 hover:bg-gold-500 hover:text-dark-950 px-4 py-2 rounded-lg font-bold text-sm transition-colors">
+        <button className="flex items-center gap-2 bg-accent-light text-accent border border-accent hover:bg-gold-500 hover:text-dark-950 px-4 py-2 rounded-lg font-bold text-sm transition-colors">
           <Plus size={16} /> Create Post
         </button>
       </div>
 
       <div className="space-y-3">
         {blogPosts.map(post => (
-          <div key={post.id} className="flex flex-col sm:flex-row sm:items-center justify-between bg-dark-800 border border-white/5 p-4 rounded-xl hover:border-gold-500/30 transition-colors group gap-4">
+          <div key={post.id} className="flex flex-col sm:flex-row sm:items-center justify-between bg-tertiary border border-divider p-4 rounded-xl hover:border-gold-500/30 transition-colors group gap-4">
             <div>
-              <h3 className="font-bold text-white text-lg">{post.title}</h3>
+              <h3 className="font-bold text-content text-lg">{post.title}</h3>
               <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-1 text-xs">
-                <span className="text-gold-500 uppercase tracking-widest bg-gold-500/10 px-2 py-0.5 rounded">{post.category}</span>
-                <span className="text-gray-500 hidden sm:inline">•</span>
-                <span className="text-gray-400">{post.date}</span>
+                <span className="text-accent uppercase tracking-widest bg-accent-light px-2 py-0.5 rounded">{post.category}</span>
+                <span className="text-muted hidden sm:inline">•</span>
+                <span className="text-muted">{post.date}</span>
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <button className="p-2 text-gray-400 hover:text-white bg-dark-900 rounded-lg border border-white/5 transition-colors">
+              <button className="p-2 text-muted hover:text-white bg-secondary rounded-lg border border-divider transition-colors">
                 <Edit3 size={16} />
               </button>
-              <button className="p-2 text-gray-400 hover:text-red-400 bg-dark-900 rounded-lg border border-white/5 transition-colors">
+              <button className="p-2 text-muted hover:text-red-400 bg-secondary rounded-lg border border-divider transition-colors">
                 <Trash2 size={16} />
               </button>
             </div>
@@ -123,18 +155,18 @@ const WebsiteContentManager = () => {
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
         <div>
-          <h2 className="text-xl font-bold text-white mb-1">Services Menu</h2>
-          <p className="text-sm text-gray-400">Manage pricing and service offerings across your branches.</p>
+          <h2 className="text-xl font-bold text-content mb-1">Services Menu</h2>
+          <p className="text-sm text-muted">Manage pricing and service offerings across your branches.</p>
         </div>
-        <button className="flex items-center gap-2 bg-gold-500/20 text-gold-400 border border-gold-500 hover:bg-gold-500 hover:text-dark-950 px-4 py-2 rounded-lg font-bold text-sm transition-colors">
+        <button className="flex items-center gap-2 bg-accent-light text-accent border border-accent hover:bg-gold-500 hover:text-dark-950 px-4 py-2 rounded-lg font-bold text-sm transition-colors">
           <Plus size={16} /> Add Service
         </button>
       </div>
 
-      <div className="bg-dark-800 border border-white/5 rounded-xl overflow-hidden overflow-x-auto">
+      <div className="bg-tertiary border border-divider rounded-xl overflow-hidden overflow-x-auto">
         <table className="w-full text-left border-collapse whitespace-nowrap">
           <thead>
-            <tr className="bg-dark-900/50 border-b border-white/5 text-gray-400 text-sm">
+            <tr className="bg-dark-900/50 border-b border-divider text-muted text-sm">
               <th className="py-3 px-4 font-medium">Service Name</th>
               <th className="py-3 px-4 font-medium">Category</th>
               <th className="py-3 px-4 font-medium">Price</th>
@@ -143,16 +175,16 @@ const WebsiteContentManager = () => {
           </thead>
           <tbody>
             {services.map(service => (
-              <tr key={service.id} className="border-b border-white/5 hover:bg-white/5 transition-colors group">
-                <td className="py-3 px-4 font-medium text-white">{service.name}</td>
-                <td className="py-3 px-4 text-gray-400">{service.category}</td>
-                <td className="py-3 px-4 text-gold-400 font-medium">{service.price}</td>
+              <tr key={service.id} className="border-b border-divider hover:bg-white/5 transition-colors group">
+                <td className="py-3 px-4 font-medium text-content">{service.name}</td>
+                <td className="py-3 px-4 text-muted">{service.category}</td>
+                <td className="py-3 px-4 text-accent font-medium">{service.price}</td>
                 <td className="py-3 px-4 text-right">
                   <div className="flex items-center justify-end gap-2 opacity-50 sm:opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button className="p-1.5 text-gray-400 hover:text-white rounded transition-colors bg-dark-900 border border-white/5">
+                    <button className="p-1.5 text-muted hover:text-white rounded transition-colors bg-secondary border border-divider">
                       <Edit3 size={14} />
                     </button>
-                    <button className="p-1.5 text-gray-400 hover:text-red-400 rounded transition-colors bg-dark-900 border border-white/5">
+                    <button className="p-1.5 text-muted hover:text-red-400 rounded transition-colors bg-secondary border border-divider">
                       <Trash2 size={14} />
                     </button>
                   </div>
@@ -169,14 +201,14 @@ const WebsiteContentManager = () => {
     <div className="p-4 md:p-8 max-w-7xl mx-auto h-full flex flex-col animate-fade-in overflow-y-auto">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 shrink-0">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">Website Content</h1>
-          <p className="text-gray-400 text-sm md:text-base">Manage the public-facing content for your salon website.</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-content mb-2">Website Content</h1>
+          <p className="text-muted text-sm md:text-base">Manage the public-facing content for your salon website.</p>
         </div>
         
         <button 
           onClick={handleSave}
           disabled={isSaving}
-          className="flex items-center justify-center gap-2 bg-gold-500 hover:bg-gold-400 text-dark-950 px-6 py-2.5 rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(212,175,55,0.3)] disabled:opacity-70 disabled:cursor-not-allowed w-full md:w-auto"
+          className="flex items-center justify-center gap-2 bg-accent hover:bg-gold-400 text-primary px-6 py-2.5 rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(212,175,55,0.3)] disabled:opacity-70 disabled:cursor-not-allowed w-full md:w-auto"
         >
           {isSaving ? <RefreshCw className="animate-spin" size={18} /> : saveSuccess ? <CheckCircle2 size={18} /> : <Save size={18} />}
           {isSaving ? 'Saving Changes...' : saveSuccess ? 'Saved Successfully!' : 'Save All Changes'}
@@ -191,22 +223,22 @@ const WebsiteContentManager = () => {
       )}
 
       {/* Tabs */}
-      <div className="flex space-x-1 bg-dark-800 p-1 rounded-xl w-full max-w-xl mb-8 overflow-x-auto custom-scrollbar shrink-0">
+      <div className="flex space-x-1 bg-tertiary p-1 rounded-xl w-full max-w-xl mb-8 overflow-x-auto custom-scrollbar shrink-0">
         <button
           onClick={() => setActiveTab('gallery')}
-          className={`flex-1 min-w-[100px] flex items-center justify-center gap-2 py-2.5 text-sm font-bold rounded-lg transition-all ${activeTab === 'gallery' ? 'bg-dark-900 text-white shadow-sm border border-white/5' : 'text-gray-400 hover:text-gray-200 hover:bg-white/5'}`}
+          className={`flex-1 min-w-[100px] flex items-center justify-center gap-2 py-2.5 text-sm font-bold rounded-lg transition-all ${activeTab === 'gallery' ? 'bg-secondary text-content shadow-sm border border-divider' : 'text-muted hover:text-gray-200 hover:bg-white/5'}`}
         >
           <Image size={16} /> Gallery
         </button>
         <button
           onClick={() => setActiveTab('blog')}
-          className={`flex-1 min-w-[120px] flex items-center justify-center gap-2 py-2.5 text-sm font-bold rounded-lg transition-all ${activeTab === 'blog' ? 'bg-dark-900 text-white shadow-sm border border-white/5' : 'text-gray-400 hover:text-gray-200 hover:bg-white/5'}`}
+          className={`flex-1 min-w-[120px] flex items-center justify-center gap-2 py-2.5 text-sm font-bold rounded-lg transition-all ${activeTab === 'blog' ? 'bg-secondary text-content shadow-sm border border-divider' : 'text-muted hover:text-gray-200 hover:bg-white/5'}`}
         >
           <FileText size={16} /> Blog Posts
         </button>
         <button
           onClick={() => setActiveTab('services')}
-          className={`flex-1 min-w-[100px] flex items-center justify-center gap-2 py-2.5 text-sm font-bold rounded-lg transition-all ${activeTab === 'services' ? 'bg-dark-900 text-white shadow-sm border border-white/5' : 'text-gray-400 hover:text-gray-200 hover:bg-white/5'}`}
+          className={`flex-1 min-w-[100px] flex items-center justify-center gap-2 py-2.5 text-sm font-bold rounded-lg transition-all ${activeTab === 'services' ? 'bg-secondary text-content shadow-sm border border-divider' : 'text-muted hover:text-gray-200 hover:bg-white/5'}`}
         >
           <Scissors size={16} /> Services
         </button>

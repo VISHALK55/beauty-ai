@@ -3,7 +3,9 @@ package com.beautyai.salon.service;
 import com.beautyai.salon.dto.CreateSalonRequest;
 import com.beautyai.salon.model.Salon;
 import com.beautyai.salon.repository.SalonRepository;
+import com.beautyai.salon.util.S3Service;
 import org.springframework.stereotype.Service;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -11,9 +13,11 @@ import java.util.UUID;
 public class SalonService {
 
     private final SalonRepository salonRepository;
+    private final S3Service s3Service;
 
-    public SalonService(SalonRepository salonRepository) {
+    public SalonService(SalonRepository salonRepository, S3Service s3Service) {
         this.salonRepository = salonRepository;
+        this.s3Service = s3Service;
     }
 
     public Salon createSalon(CreateSalonRequest request) {
@@ -31,11 +35,28 @@ public class SalonService {
         salon.setGoogleMapsLink(request.getGoogleMapsLink());
         salon.setCity(request.getCity());
         salon.setPhone(request.getPhone());
+        salon.setInstagram(request.getInstagram());
         salon.setRating(request.getRating());
         salon.setReviews(request.getReviews());
-        salon.setImage(request.getImage());
         salon.setNeighborhoods(request.getNeighborhoods());
         salon.setAccessPin(request.getAccessPin());
+
+        // Handle Image Uploads via S3
+        String heroUrl = s3Service.uploadBase64Image(request.getHeroImage(), "salons/" + id + "/hero");
+        salon.setHeroImage(heroUrl);
+        // Fallback for older fields
+        salon.setImage(heroUrl != null ? heroUrl : request.getImage());
+
+        List<String> galleryUrls = new ArrayList<>();
+        if (request.getGalleryImages() != null) {
+            for (String base64Img : request.getGalleryImages()) {
+                String s3Url = s3Service.uploadBase64Image(base64Img, "salons/" + id + "/gallery");
+                if (s3Url != null) {
+                    galleryUrls.add(s3Url);
+                }
+            }
+        }
+        salon.setGalleryImages(galleryUrls);
 
         salonRepository.save(salon);
         return salon;

@@ -52,18 +52,18 @@ export default function SuperAdminSettings() {
     return (
         <div className="p-8 max-w-2xl mx-auto h-full overflow-y-auto pb-20">
             <div className="flex items-center gap-3 mb-8">
-                <ShieldCheck size={32} className="text-gold-500" />
+                <ShieldCheck size={32} className="text-accent" />
                 <div>
-                    <h1 className="text-3xl font-serif text-white">Super Admin Settings</h1>
-                    <p className="text-gray-400">Manage your platform security and access credentials.</p>
+                    <h1 className="text-3xl font-serif text-content">Super Admin Settings</h1>
+                    <p className="text-muted">Manage your platform security and access credentials.</p>
                 </div>
             </div>
 
             <div className="glass-panel p-8 rounded-2xl border border-gold-500/20 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-gold-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+                <div className="absolute top-0 right-0 w-64 h-64 bg-accent-light rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
                 
-                <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                    <KeyRound className="text-gold-400" size={20}/>
+                <h2 className="text-xl font-bold text-content mb-6 flex items-center gap-2">
+                    <KeyRound className="text-accent" size={20}/>
                     Change Secure PIN
                 </h2>
 
@@ -85,12 +85,12 @@ export default function SuperAdminSettings() {
 
                 <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
                     <div>
-                        <label className="block text-sm font-bold text-gray-400 mb-1.5 uppercase tracking-wider">Current PIN</label>
+                        <label className="block text-sm font-bold text-muted mb-1.5 uppercase tracking-wider">Current PIN</label>
                         <div className="relative">
-                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-muted" size={18} />
                             <input 
                                 type="password" 
-                                className="w-full bg-dark-900 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white focus:outline-none focus:border-gold-500 transition-colors tracking-widest"
+                                className="w-full bg-secondary border border-divider-strong rounded-xl pl-12 pr-4 py-3 text-content focus:outline-none focus:border-gold-500 transition-colors tracking-widest"
                                 placeholder="••••••"
                                 value={currentPin}
                                 onChange={(e) => setCurrentPin(e.target.value)}
@@ -99,13 +99,13 @@ export default function SuperAdminSettings() {
                         </div>
                     </div>
 
-                    <div className="pt-2 border-t border-white/10">
-                        <label className="block text-sm font-bold text-gray-400 mb-1.5 uppercase tracking-wider">New PIN</label>
+                    <div className="pt-2 border-t border-divider-strong">
+                        <label className="block text-sm font-bold text-muted mb-1.5 uppercase tracking-wider">New PIN</label>
                         <div className="relative">
-                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-muted" size={18} />
                             <input 
                                 type="password" 
-                                className="w-full bg-dark-900 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white focus:outline-none focus:border-gold-500 transition-colors tracking-widest"
+                                className="w-full bg-secondary border border-divider-strong rounded-xl pl-12 pr-4 py-3 text-content focus:outline-none focus:border-gold-500 transition-colors tracking-widest"
                                 placeholder="••••••"
                                 value={newPin}
                                 onChange={(e) => setNewPin(e.target.value)}
@@ -115,12 +115,12 @@ export default function SuperAdminSettings() {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-bold text-gray-400 mb-1.5 uppercase tracking-wider">Confirm New PIN</label>
+                        <label className="block text-sm font-bold text-muted mb-1.5 uppercase tracking-wider">Confirm New PIN</label>
                         <div className="relative">
-                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-muted" size={18} />
                             <input 
                                 type="password" 
-                                className="w-full bg-dark-900 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white focus:outline-none focus:border-gold-500 transition-colors tracking-widest"
+                                className="w-full bg-secondary border border-divider-strong rounded-xl pl-12 pr-4 py-3 text-content focus:outline-none focus:border-gold-500 transition-colors tracking-widest"
                                 placeholder="••••••"
                                 value={confirmPin}
                                 onChange={(e) => setConfirmPin(e.target.value)}
@@ -132,7 +132,7 @@ export default function SuperAdminSettings() {
                     <button 
                         type="submit" 
                         disabled={status === 'loading'}
-                        className={`mt-4 px-6 py-3 bg-gradient-to-r from-gold-600 to-gold-400 hover:from-gold-500 hover:to-gold-300 text-dark-900 font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(212,175,55,0.2)] flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed`}
+                        className={`mt-4 px-6 py-3 bg-gradient-to-r from-gold-600 to-accent-hover hover:from-gold-500 hover:to-gold-300 text-primary font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(212,175,55,0.2)] flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed`}
                     >
                         {status === 'loading' ? (
                             <div className="w-5 h-5 border-2 border-dark-900 border-t-transparent rounded-full animate-spin"></div>

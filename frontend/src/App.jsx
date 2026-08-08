@@ -77,26 +77,29 @@ function App() {
 
         {/* Admin Dashboard Routes */}
         <Route path="/dashboard" element={<Layout />}>
-          <Route index element={<Navigate to="appointments" replace />} />
-          <Route path="appointments" element={<Appointments />} />
-          <Route path="settings" element={<Settings />} />
-          <Route path="ai-premium" element={<AiPremiumPlans />} />
-          <Route path="content" element={<WebsiteContentManager />} />
-          {/* Protected Super Admin Routes */}
           <Route element={<ProtectedRoute />}>
-            <Route path="salons" element={<SalonDirectory />} />
-            <Route path="google-preview" element={<GoogleSearchSimulator />} />
-            <Route path="speed-control" element={<HyperSpeedControlCenter />} />
-            <Route path="ai-receptionist" element={<AiChat />} />
-            <Route path="voice-calls" element={<VoiceCalls />} />
-            <Route path="geo-rank" element={<GeoRank />} />
-            <Route path="onboard-partner" element={<PartnerOnboarding />} />
-            <Route path="super-admin-settings" element={<SuperAdminSettings />} />
-            <Route path="ad-campaigns" element={<div className="p-8 h-full overflow-y-auto"><AdCampaign salonName="All Platform Salons (Super Admin)" salonId="SUPER-ADMIN" /></div>} />
+            <Route index element={<Navigate to="appointments" replace />} />
+            <Route path="appointments" element={<Appointments />} />
+            <Route path="settings" element={<Settings />} />
+            <Route path="ai-premium" element={<AiPremiumPlans />} />
+            <Route path="content" element={<WebsiteContentManager />} />
+            
+            {/* Super Admin Only Routes */}
+            <Route element={<ProtectedRoute requiredRole="SUPER_ADMIN" />}>
+              <Route path="salons" element={<SalonDirectory />} />
+              <Route path="google-preview" element={<GoogleSearchSimulator />} />
+              <Route path="speed-control" element={<HyperSpeedControlCenter />} />
+              <Route path="ai-receptionist" element={<AiChat />} />
+              <Route path="voice-calls" element={<VoiceCalls />} />
+              <Route path="geo-rank" element={<GeoRank />} />
+              <Route path="onboard-partner" element={<PartnerOnboarding />} />
+              <Route path="super-admin-settings" element={<SuperAdminSettings />} />
+              <Route path="ad-campaigns" element={<div className="p-8 h-full overflow-y-auto"><AdCampaign salonName="All Platform Salons (Super Admin)" salonId="SUPER-ADMIN" /></div>} />
+            </Route>
           </Route>
           
           <Route path="*" element={
-            <div className="flex items-center justify-center h-full text-gray-400">
+            <div className="flex items-center justify-center h-full text-muted">
               <p>Page coming soon...</p>
             </div>
           } />
