@@ -79,7 +79,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           </NavLink>
 
           {/* SUPER ADMIN SECTION */}
-          {isAuthenticated && (
+          {isAuthenticated && userRole === 'SUPER_ADMIN' && (
             <>
               <div className="mt-8 mb-2 px-4 flex justify-between items-center">
                 <p className="text-[10px] font-bold text-muted uppercase tracking-wider">Super Admin</p>

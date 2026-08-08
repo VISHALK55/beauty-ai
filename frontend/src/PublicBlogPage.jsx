@@ -5,54 +5,61 @@ import { MapPin, Phone, Clock, Search, Menu, X, Mail, ArrowRight } from 'lucide-
 import { useSalon } from './context/SalonContext';
 // Removed hardcoded salon object
 
-const blogs = [
-  {
-    title: "Bridal Makeup Trends for Bihar Weddings: The Gold & Glow Aesthetic",
-    category: "BRIDAL GLAM",
-    location: "Bodhgaya",
-    snippet: "Discover how Bihari brides are blending traditional red and gold couture with modern soft glam HD airbrush makeup in 2026. Get expert advice...",
-    img: "/gallery/gallery_1.jpg"
-  },
-  {
-    title: "How to Build a Successful Makeup Artist Career in Patna & Gaya",
-    category: "EDUCATION",
-    location: "Gaya",
-    snippet: "A complete step-by-step roadmap to establishing yourself as a highly-paid freelance bridal artist or cosmetologist in the growing Bihar beau...",
-    img: "/gallery/gallery_2.jpg"
-  },
-  {
-    title: "AP Colony Gaya me Bridal Makeup Price kitna hai? Budget & Package Guide",
-    category: "BRIDAL GLAM",
-    location: "AP Colony",
-    snippet: "AP Colony Gaya me bridal makeup price range aur booking detail. Janiye HD aur Airbrush makeup packages cost aur Pihu Makeover Studio Mocharim ...",
-    img: "/gallery/gallery_3.jpg"
-  },
-  {
-    title: "Swarajpuri Road me Hair Smoothing Rebonding ka price kitna hai?",
-    category: "HAIR CARE",
-    location: "Swarajpuri Road",
-    snippet: "Swarajpuri Road Gaya area me permanent hair smoothing aur rebonding ka average price range. Janiye products aur Pihu Makeover Studio Bodhgaya ...",
-    img: "/gallery/gallery_4.jpg"
-  },
-  {
-    title: "Delha area me hard water damage ke liye best Hair Botox treatment",
-    category: "HAIR CARE",
-    location: "Delha",
-    snippet: "Delha Gaya me hard water se damaged aur dry hair ke liye Hair Botox cost. Janiye damage repair aur Pihu Makeover Studio ke chemical-free solut...",
-    img: "/gallery/gallery_5.jpg"
-  },
-  {
-    title: "Bodhgaya Temple Area ke dust aur oily skin ke liye Hydrafacial price",
-    category: "SKIN THERAPY",
-    location: "Bodhgaya Temple Area",
-    snippet: "Mahabodhi Temple area Bodhgaya me cosmetic HydraFacial pricing, cleansing steps aur Pihu Makeover Studio ke skin-care packages....",
-    img: "/gallery/blog_hero.png"
-  }
-];
-
 const PublicBlogPage = () => {
   const { salon } = useSalon();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const getBlogImage = (index, fallback) => {
+    if (salon?.galleryImages && salon.galleryImages.length > 0) {
+      return salon.galleryImages[index % salon.galleryImages.length];
+    }
+    return fallback;
+  };
+
+  const blogs = [
+    {
+      title: "Bridal Makeup Trends for Bihar Weddings: The Gold & Glow Aesthetic",
+      category: "BRIDAL GLAM",
+      location: "Bodhgaya",
+      snippet: "Discover how Bihari brides are blending traditional red and gold couture with modern soft glam HD airbrush makeup in 2026. Get expert advice...",
+      img: getBlogImage(0, "/gallery/gallery_1.jpg")
+    },
+    {
+      title: "How to Build a Successful Makeup Artist Career in Patna & Gaya",
+      category: "EDUCATION",
+      location: "Gaya",
+      snippet: "A complete step-by-step roadmap to establishing yourself as a highly-paid freelance bridal artist or cosmetologist in the growing Bihar beau...",
+      img: getBlogImage(1, "/gallery/gallery_2.jpg")
+    },
+    {
+      title: "AP Colony Gaya me Bridal Makeup Price kitna hai? Budget & Package Guide",
+      category: "BRIDAL GLAM",
+      location: "AP Colony",
+      snippet: "AP Colony Gaya me bridal makeup price range aur booking detail. Janiye HD aur Airbrush makeup packages cost aur Pihu Makeover Studio Mocharim ...",
+      img: getBlogImage(2, "/gallery/gallery_3.jpg")
+    },
+    {
+      title: "Swarajpuri Road me Hair Smoothing Rebonding ka price kitna hai?",
+      category: "HAIR CARE",
+      location: "Swarajpuri Road",
+      snippet: "Swarajpuri Road Gaya area me permanent hair smoothing aur rebonding ka average price range. Janiye products aur Pihu Makeover Studio Bodhgaya ...",
+      img: getBlogImage(3, "/gallery/gallery_4.jpg")
+    },
+    {
+      title: "Delha area me hard water damage ke liye best Hair Botox treatment",
+      category: "HAIR CARE",
+      location: "Delha",
+      snippet: "Delha Gaya me hard water se damaged aur dry hair ke liye Hair Botox cost. Janiye damage repair aur Pihu Makeover Studio ke chemical-free solut...",
+      img: getBlogImage(4, "/gallery/gallery_5.jpg")
+    },
+    {
+      title: "Bodhgaya Temple Area ke dust aur oily skin ke liye Hydrafacial price",
+      category: "SKIN THERAPY",
+      location: "Bodhgaya Temple Area",
+      snippet: "Mahabodhi Temple area Bodhgaya me cosmetic HydraFacial pricing, cleansing steps aur Pihu Makeover Studio ke skin-care packages....",
+      img: getBlogImage(5, "/gallery/blog_hero.png")
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-primary text-content font-sans selection:bg-gold-500/30">
