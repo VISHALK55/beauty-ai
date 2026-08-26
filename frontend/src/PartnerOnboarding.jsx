@@ -107,6 +107,14 @@ export default function PartnerOnboarding() {
                     <label className="text-xs text-muted uppercase font-bold tracking-wider">Secure PIN (Password)</label>
                     <div className="text-3xl font-mono text-content font-bold tracking-[0.2em] bg-black/50 py-2 rounded-lg mt-1 border border-divider">{generatedPin}</div>
                 </div>
+                <div>
+                    <label className="text-xs text-muted uppercase font-bold tracking-wider">Live Website URL</label>
+                    <div className="text-sm font-mono text-accent bg-black/50 py-2 px-3 rounded-lg mt-1 border border-divider truncate">
+                        <a href={`#/s/${generatedId}`} target="_blank" rel="noreferrer" className="hover:underline">
+                            {window.location.origin}/#/s/{generatedId}
+                        </a>
+                    </div>
+                </div>
             </div>
           </div>
 

@@ -90,7 +90,7 @@ const PublicServicesPage = () => {
             </span>
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-serif text-content mb-6">
+          <h1 className="text-5xl md:text-7xl font-serif text-white mb-6">
             Our Luxury <span className="text-accent italic">Services</span>
           </h1>
           
@@ -209,7 +209,7 @@ const PublicServicesPage = () => {
           <div className="bg-[#180709] border border-gold-500/20 rounded-2xl p-6 flex flex-col shadow-xl">
             <div className="flex items-center gap-3 mb-8">
               <span className="text-accent font-serif text-xl italic">01</span>
-              <h3 className="text-xl font-serif text-content font-bold">Bridal Makeup</h3>
+              <h3 className="text-xl font-serif text-white font-bold">Bridal Makeup</h3>
             </div>
             
             <ul className="space-y-6 flex-grow">
@@ -325,7 +325,7 @@ const PublicServicesPage = () => {
           <div className="bg-[#180709] border border-gold-500/20 rounded-2xl p-6 flex flex-col shadow-xl">
             <div className="flex items-center gap-3 mb-8">
               <span className="text-accent font-serif text-xl italic">03</span>
-              <h3 className="text-xl font-serif text-content font-bold leading-tight">Pre-Bridal Packages</h3>
+              <h3 className="text-xl font-serif text-white font-bold leading-tight">Pre-Bridal Packages</h3>
             </div>
             
             <ul className="space-y-8 flex-grow">
@@ -390,7 +390,7 @@ const PublicServicesPage = () => {
           <div className="bg-[#180709] border border-gold-500/20 rounded-2xl p-6 flex flex-col shadow-xl">
             <div className="flex items-center gap-3 mb-8">
               <span className="text-accent font-serif text-xl italic">04</span>
-              <h3 className="text-xl font-serif text-content font-bold leading-tight">Mehandi Art</h3>
+              <h3 className="text-xl font-serif text-white font-bold leading-tight">Mehandi Art</h3>
             </div>
             
             <ul className="space-y-6 flex-grow">

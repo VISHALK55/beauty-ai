@@ -4,8 +4,6 @@ server:
 spring:
   application:
     name: salon-service
-  config:
-    import: "aws-parameterstore:/salon-service/"
 
 aws:
   dynamodb:
@@ -15,6 +13,6 @@ aws:
 
 meta:
   ads:
-    access-token: ${meta.ads.access-token:dummy_token}
-    ad-account-id: ${meta.ads.ad-account-id:dummy_act_id}
+    access-token: dummy_token
+    ad-account-id: dummy_act_id
     api-version: v19.0

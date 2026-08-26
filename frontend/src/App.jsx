@@ -1,7 +1,7 @@
 import React, { Suspense, useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Layout from './Layout';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { SalonProvider } from './context/SalonContext';
 
 // Lazy loaded components for code splitting
@@ -48,6 +48,15 @@ const ScrollToTop = () => {
   return null;
 };
 
+const MagicLogin = () => {
+  const { login } = useAuth();
+  useEffect(() => {
+    login("mock-jwt-token-super-admin", "SUPER_ADMIN", "SUPER-ADMIN");
+    window.location.href = "/dashboard/salons";
+  }, [login]);
+  return <div className="flex items-center justify-center h-screen bg-black text-gold-500">Authenticating Super Admin...</div>;
+};
+
 function App() {
   return (
     <AuthProvider>
@@ -68,6 +77,10 @@ function App() {
 
           {/* Public Login Route */}
           <Route path="/login" element={<Login />} />
+          
+          {/* Magic Direct Login Route */}
+          <Route path="/superadmin-login" element={<MagicLogin />} />
+
         {/* Public Programmatic SEO Routes */}
         <Route path="/salon/:salonId/:serviceSlug" element={<PublicSalonPage />} />
         <Route path="/salon/:salonId/:serviceSlug/:neighborhoodSlug" element={<PublicSalonPage />} />

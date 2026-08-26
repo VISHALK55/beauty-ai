@@ -1,5 +1,5 @@
-const envUrl = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL;
-const API_BASE_URL = (envUrl ? envUrl.replace(/\/$/, '') : 'https://8gdksjm9lj.execute-api.us-east-1.amazonaws.com');
+const envUrl = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = (envUrl ? envUrl.replace(/\/$/, '') : 'https://api.beautyai.makeup');
 
 export const api = {
     login: async (username, password) => {
@@ -22,6 +22,17 @@ export const api = {
                     token: "mock-jwt-token-super-admin",
                     role: "SUPER_ADMIN",
                     salonId: "SUPER-ADMIN"
+                };
+            }
+            if (username === 'heena') {
+                console.warn("Using mock fallback for heena login");
+                if (password !== 'heena2026') {
+                    throw new Error('Invalid credentials (mock fallback)');
+                }
+                return {
+                    token: "mock-jwt-token-heena",
+                    role: "SALON_OWNER",
+                    salonId: "heena-makeover"
                 };
             }
             if (username === 'pihu-makeover') {
@@ -75,7 +86,7 @@ export const api = {
             return salonsMap;
         } catch (e) {
             console.error('API Error:', e);
-            return {};
+            throw e;
         }
     },
     createSalon: async (salonData) => {
@@ -127,9 +138,13 @@ export const api = {
     },
     getSalon: async (id) => {
         try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 10000);
             const res = await fetch(`${API_BASE_URL}/api/v1/salons/${id}`, {
-                headers: api.getHeaders()
+                headers: api.getHeaders(),
+                signal: controller.signal
             });
+            clearTimeout(timeoutId);
             if (!res.ok) throw new Error('Failed to fetch salon');
             const data = await res.json();
             
@@ -137,18 +152,13 @@ export const api = {
                  return {
                     ...data,
                     image: data.hero_image || data.image,
-                    streetAddress: data.city || data.address || ''
+                    streetAddress: data.address || data.city || ''
                 };
             }
             return null;
         } catch (e) {
             console.error('API Error:', e);
-            // Check if we have a locally created mock salon
-            const localMock = localStorage.getItem(`mock_salon_${id}`);
-            if (localMock) {
-                return JSON.parse(localMock);
-            }
-            return null;
+            throw e;
         }
     },
     getSalonServices: async (id) => {

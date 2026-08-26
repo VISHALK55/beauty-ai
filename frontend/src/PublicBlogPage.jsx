@@ -137,7 +137,7 @@ const PublicBlogPage = () => {
           <div className="text-accent font-bold tracking-[0.3em] text-sm md:text-base mb-6 uppercase">
             INSIGHTS & INSPIRATION
           </div>
-          <h1 className="text-5xl md:text-7xl font-serif text-content leading-tight">
+          <h1 className="text-5xl md:text-7xl font-serif text-white leading-tight">
             Beauty & Cosmetology <span className="text-accent italic">Journal</span>
           </h1>
           <div className="w-24 h-px bg-gold-500/50 mx-auto mt-8"></div>
@@ -153,19 +153,19 @@ const PublicBlogPage = () => {
               <input 
                 type="text" 
                 placeholder="Search location or beauty service..." 
-                className="bg-transparent border-none outline-none text-content w-full placeholder-gray-500 text-sm md:text-base"
+                className="bg-transparent border-none outline-none text-white w-full placeholder-gray-500 text-sm md:text-base"
               />
             </div>
             <div className="w-full md:w-64 bg-dark-800/80 border border-divider rounded-2xl flex items-center px-5 py-4 focus-within:border-gold-500/50 transition-colors">
               <MapPin className="text-muted mr-3 shrink-0" size={20} />
-              <select className="bg-transparent border-none outline-none text-content w-full appearance-none cursor-pointer text-sm md:text-base">
+              <select className="bg-transparent border-none outline-none text-white w-full appearance-none cursor-pointer text-sm md:text-base">
                 <option className="bg-secondary">All Locations</option>
                 <option className="bg-secondary">Gaya</option>
                 <option className="bg-secondary">Bodhgaya</option>
               </select>
             </div>
             <div className="w-full md:w-56 bg-dark-800/80 border border-divider rounded-2xl flex items-center px-5 py-4 focus-within:border-gold-500/50 transition-colors">
-              <select className="bg-transparent border-none outline-none text-content w-full appearance-none cursor-pointer text-sm md:text-base">
+              <select className="bg-transparent border-none outline-none text-white w-full appearance-none cursor-pointer text-sm md:text-base">
                 <option className="bg-secondary">All Categories</option>
                 <option className="bg-secondary">Bridal Glam</option>
                 <option className="bg-secondary">Hair Care</option>

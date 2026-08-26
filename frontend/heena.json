@@ -1,0 +1,39 @@
+{
+    "id":  {
+               "S":  "heena-makeover"
+           },
+    "type":  {
+                 "S":  "SALON"
+             },
+    "SK":  {
+               "S":  "PROFILE"
+           },
+    "city":  {
+                 "S":  "Gaya, Bihar 824231"
+             },
+    "PK":  {
+               "S":  "SALON#heena-makeover"
+           },
+    "theme":  {
+                  "S":  "light"
+              },
+    "owner":  {
+                  "S":  "heena"
+              },
+    "name":  {
+                 "S":  "Heena Makeover"
+             },
+    "address":  {
+                    "S":  "Near Gandhi Maidan, Gaya"
+                },
+    "heroImage":  {
+                       "S":  "/gallery/heena makeover/owner.jpg"
+                   },
+
+    "phone":  {
+                  "S":  "+919708081187"
+              },
+    "email":  {
+                  "S":  "contact@heenamakeover.com"
+              }
+}

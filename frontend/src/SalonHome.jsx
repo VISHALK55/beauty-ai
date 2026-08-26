@@ -145,7 +145,7 @@ const SalonHome = () => {
           
           {/* Left Column: Text */}
           <div className="relative z-20">
-            <div className="inline-block px-3 py-1 bg-accent-light text-accent border border-accent-light rounded-full text-xs font-bold uppercase tracking-widest mb-6">
+            <div className="inline-block px-4 py-1.5 bg-dark-950 text-gold-500 border border-gold-500/30 rounded-full text-xs font-bold uppercase tracking-widest mb-6 shadow-lg">
               <Sparkles size={14} className="inline mr-2" />
               Top Salon in {salon.city?.split(',')[0]}
             </div>
@@ -202,10 +202,10 @@ const SalonHome = () => {
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
-            { title: "Bridal Makeup", img: "/services/bridal_makeup.png", link: "/salon/pihu-makeover/bridal-makeup" },
-            { title: "Haircut Style", img: "/services/haircut_style.png", link: "/salon/pihu-makeover/haircut-styling" },
-            { title: "Skin Care Services", img: "/services/skin_care.png", link: "/salon/pihu-makeover/facial-skincare" },
-            { title: "Nail Art Services", img: "/services/nail_art.png", link: "/salon/pihu-makeover/nails" },
+            { title: "Bridal Makeup", img: "/services/bridal_makeup.png", link: `/salon/${salon.id}/bridal-makeup` },
+            { title: "Haircut Style", img: "/services/haircut_style.png", link: `/salon/${salon.id}/haircut-styling` },
+            { title: "Skin Care Services", img: "/services/skin_care.png", link: `/salon/${salon.id}/facial-skincare` },
+            { title: "Nail Art Services", img: "/services/nail_art.png", link: `/salon/${salon.id}/nails` },
           ].map((srv, idx) => (
             <div onClick={() => openBooking(srv.title)} key={idx} className="group block relative rounded-2xl overflow-hidden cursor-pointer shadow-[0_10px_30px_rgba(0,0,0,0.5)] bg-secondary border border-divider hover:border-gold-500/50 transition-all duration-300 transform hover:-translate-y-2">
               <div className="h-72 overflow-hidden">
@@ -306,7 +306,7 @@ const SalonHome = () => {
           </div>
 
           <div>
-            <h4 className="text-content font-bold uppercase tracking-widest text-sm mb-6">Best Services</h4>
+            <h4 className="text-white font-bold uppercase tracking-widest text-sm mb-6">Best Services</h4>
             <ul className="space-y-3 text-muted text-sm">
               <li><span onClick={() => openBooking('Haircut Style')} className="hover:text-gold-500 transition-colors cursor-pointer">Haircut Style</span></li>
               <li><span onClick={() => openBooking('Bridal Makeup')} className="hover:text-gold-500 transition-colors cursor-pointer">Bridal Makeup</span></li>
@@ -316,7 +316,7 @@ const SalonHome = () => {
           </div>
 
           <div>
-            <h4 className="text-content font-bold uppercase tracking-widest text-sm mb-6">Contact Us</h4>
+            <h4 className="text-white font-bold uppercase tracking-widest text-sm mb-6">Contact Us</h4>
             <ul className="space-y-4 text-muted text-sm">
               <li className="flex items-start gap-3">
                 <MapPin className="text-accent shrink-0 mt-0.5" size={16} />
@@ -334,13 +334,13 @@ const SalonHome = () => {
           </div>
 
           <div>
-            <h4 className="text-content font-bold uppercase tracking-widest text-sm mb-6">Newsletter</h4>
+            <h4 className="text-white font-bold uppercase tracking-widest text-sm mb-6">Newsletter</h4>
             <p className="text-muted text-sm mb-4">Subscribe to get the latest beauty updates and news.</p>
             <div className="flex flex-col gap-3">
               <input 
                 type="email" 
                 placeholder="Enter your email" 
-                className="bg-secondary border border-divider-strong rounded px-4 py-3 text-sm text-content focus:outline-none focus:border-gold-500 w-full"
+                className="bg-transparent border border-divider-strong rounded px-4 py-3 text-sm text-white focus:outline-none focus:border-gold-500 w-full"
               />
               <button className="bg-accent hover:bg-gold-600 text-primary font-bold uppercase tracking-widest text-sm px-4 py-3 rounded transition-colors w-full">
                 Subscribe

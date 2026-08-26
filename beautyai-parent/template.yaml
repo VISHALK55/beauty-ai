@@ -20,6 +20,7 @@ Resources:
   BeautyAiMediaBucket:
     Type: AWS::S3::Bucket
     Properties:
+      BucketName: "beautyai-media-bucket-2026-prod"
       CorsConfiguration:
         CorsRules:
           - AllowedHeaders: ['*']
@@ -91,10 +92,10 @@ Resources:
         - DynamoDBCrudPolicy:
             TableName: 'BeautyAiTable'
         - S3CrudPolicy:
-            BucketName: !Ref BeautyAiMediaBucket
+            BucketName: "beautyai-media-bucket-2026-prod"
       Environment:
         Variables:
-          MEDIA_BUCKET: !Ref BeautyAiMediaBucket
+          MEDIA_BUCKET: "beautyai-media-bucket-2026-prod"
       Events:
         ApiRoot:
           Type: HttpApi
@@ -125,16 +126,16 @@ Resources:
       Handler: com.beautyai.salon.ImageEnhancementHandler::handleRequest
       Policies:
         - S3CrudPolicy:
-            BucketName: !Ref BeautyAiMediaBucket
+            BucketName: "beautyai-media-bucket-2026-prod"
       Environment:
         Variables:
-          MEDIA_BUCKET: !Ref BeautyAiMediaBucket
-      Events:
-        ImageUpload:
-          Type: S3
-          Properties:
-            Bucket: !Ref BeautyAiMediaBucket
-            Events: s3:ObjectCreated:*
+          MEDIA_BUCKET: "beautyai-media-bucket-2026-prod"
+#      Events:
+#        ImageUpload:
+#          Type: S3
+#          Properties:
+#            Bucket: BeautyAiMediaBucket
+#            Events: s3:ObjectCreated:*
 
   BookingFunction:
     Type: AWS::Serverless::Function
@@ -300,3 +301,6 @@ Outputs:
   ShortUrl:
     Description: "Short redirect URL"
     Value: !Sub "https://${BeautyAiHttpApi}.execute-api.${AWS::Region}.amazonaws.com/go"
+
+
+

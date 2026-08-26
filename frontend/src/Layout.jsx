@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Menu, Zap, ArrowLeft } from 'lucide-react';
+import { Outlet, useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
-import { Menu, Zap } from 'lucide-react';
 
 const Layout = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen bg-secondary animate-fade-in text-content overflow-x-hidden">
@@ -38,8 +39,20 @@ const Layout = () => {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 min-h-[calc(100vh-65px)] lg:h-screen lg:overflow-y-auto w-full">
-        <Outlet />
+      <main className="flex-1 min-h-[calc(100vh-65px)] lg:h-screen lg:overflow-y-auto w-full flex flex-col">
+        {/* Global Back Button */}
+        <div className="w-full px-4 sm:px-6 md:px-10 pt-6 pb-0 flex items-center justify-start shrink-0">
+          <button 
+            onClick={() => navigate(-1)} 
+            className="flex items-center gap-2 text-muted hover:text-accent transition-colors text-sm font-medium bg-secondary/50 px-3 py-1.5 rounded-lg border border-divider-strong hover:border-gold-500/30"
+          >
+            <ArrowLeft size={16} />
+            <span>Go Back</span>
+          </button>
+        </div>
+        <div className="flex-1">
+          <Outlet />
+        </div>
       </main>
     </div>
   );

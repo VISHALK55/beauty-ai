@@ -11,6 +11,8 @@ import java.util.List;
 import com.beautyai.salon.model.SalonServiceItem;
 import com.beautyai.salon.model.Appointment;
 import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional;
+import software.amazon.awssdk.enhanced.dynamodb.Expression;
+import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 @Repository
 public class SalonRepository {
@@ -39,7 +41,11 @@ public class SalonRepository {
     }
 
     public List<Salon> findAll() {
-        return salonTable.scan().items().stream().toList();
+        Expression filterExpression = Expression.builder()
+                .expression("sk = :skVal")
+                .putExpressionValue(":skVal", AttributeValue.builder().s("METADATA").build())
+                .build();
+        return salonTable.scan(r -> r.filterExpression(filterExpression)).items().stream().toList();
     }
 
     public void saveService(SalonServiceItem service) {

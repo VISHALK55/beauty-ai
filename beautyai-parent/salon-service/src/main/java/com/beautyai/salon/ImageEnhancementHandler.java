@@ -15,7 +15,7 @@ public class ImageEnhancementHandler implements RequestHandler<S3Event, String> 
 
     @Override
     public String handleRequest(S3Event s3Event, Context context) {
-        context.getLogger().log("Received S3 Event: " + s3Event.toJson());
+        context.getLogger().log("Received S3 Event with " + s3Event.getRecords().size() + " records");
         
         // Loop through the records to process uploaded files
         s3Event.getRecords().forEach(record -> {

@@ -183,7 +183,7 @@ const Academy = () => {
             <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-accent mb-4">
               <Clock size={14} /> 1 Month • Basic Course
             </div>
-            <h3 className="text-2xl font-serif text-content mb-4 leading-tight uppercase">Basic Makeup<br/>Course</h3>
+            <h3 className="text-2xl font-serif text-white mb-4 leading-tight uppercase">Basic Makeup<br/>Course</h3>
             <p className="text-muted text-sm leading-relaxed mb-8">
               Ideal for personal grooming and beginners. Master basic makeup bases, professional hair setting (hairdo), and elegant draping layouts.
             </p>
@@ -232,7 +232,7 @@ const Academy = () => {
             <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-accent mb-4 mt-2">
               <Clock size={14} /> 2 Months • Advance Course
             </div>
-            <h3 className="text-2xl font-serif text-content mb-4 leading-tight uppercase">Advance Makeup<br/>Course</h3>
+            <h3 className="text-2xl font-serif text-white mb-4 leading-tight uppercase">Advance Makeup<br/>Course</h3>
             <p className="text-muted text-sm leading-relaxed mb-8">
               Advanced styling bridging basic to royal bridal makeup. Learn graphic liners, prosthetic FX, vitiligo correction, and regional bride aesthetics.
             </p>
@@ -281,7 +281,7 @@ const Academy = () => {
             <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-accent mb-4 mt-2">
               <Clock size={14} /> 15 Days • Master Class
             </div>
-            <h3 className="text-2xl font-serif text-content mb-4 leading-tight uppercase">Master Class in<br/>Bridal Artistry</h3>
+            <h3 className="text-2xl font-serif text-white mb-4 leading-tight uppercase">Master Class in<br/>Bridal Artistry</h3>
             <p className="text-muted text-sm leading-relaxed mb-8">
               Super-specialized classes for professional makeup artists. Master airbrush techniques, heavy draping, and regional wedding styles.
             </p>
@@ -326,7 +326,7 @@ const Academy = () => {
             <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-accent mb-4 mt-2">
               <Clock size={14} /> 6 Months • Diploma
             </div>
-            <h3 className="text-2xl font-serif text-content mb-4 leading-tight uppercase">Cosmetology Diploma<br/>(COSMO COURSE)</h3>
+            <h3 className="text-2xl font-serif text-white mb-4 leading-tight uppercase">Cosmetology Diploma<br/>(COSMO COURSE)</h3>
             <p className="text-muted text-sm leading-relaxed mb-8">
               The ultimate all-in-one cosmetology career package covering professional makeup, advanced skin care, chemical hair treatments, and nail artistry.
             </p>

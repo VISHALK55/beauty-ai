@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'https://8gdksjm9lj.execute-api.us-east-1.amazonaws.com/api/v1';
-const API_URL = 'https://8gdksjm9lj.execute-api.us-east-1.amazonaws.com';
+const API_BASE_URL = 'https://api.beautyai.makeup/api/v1';
+const API_URL = 'https://api.beautyai.makeup';
 const DEFAULT_SALON_ID = 'salon-pihu-makeover';
 
 export const getSalonId = async () => {

@@ -58,20 +58,19 @@ const PublicSalonPage = React.memo(function PublicSalonPage() {
         console.log("API failed, using fallback data for preview");
       }
       
-      // Override API data with Pihu Makeover info
       sData = {
-        ...(sData || {}),
-        id: salonId,
-        name: "Pihu Makeover",
-        city: "Gaya, Bihar 824231",
-        streetAddress: "Sujata Bypass Road, Near Govt. Middle School Rajapur, Bodhgaya",
-        rating: 4.8,
-        reviews: 120,
-        phone: "+91 9113715558",
-        email: "pihumakeover@gmail.com",
-        instagram: "https://www.instagram.com/pihu_makeover22?igsh=ODZqc3U0M2JsY3pt",
-        image: sData?.image || "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&q=80&w=1000"
-      };
+          ...(sData || {}),
+          id: salonId,
+          name: sData?.name || salonId.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+          city: sData?.city || "Gaya, Bihar 824231",
+          streetAddress: sData?.streetAddress || "Sujata Bypass Road, Near Govt. Middle School Rajapur, Bodhgaya",
+          rating: sData?.rating || 4.8,
+          reviews: sData?.reviews || 120,
+          phone: sData?.phone || "+91 9113715558",
+          email: sData?.email || "hello@" + salonId + ".com",
+          instagram: sData?.instagram || "https://www.instagram.com/" + salonId,
+          image: sData?.image || "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&q=80&w=1000"
+        };
 
       const srvData = fetchServiceData(serviceSlug || 'hair-cut');
       setSalon(sData);
