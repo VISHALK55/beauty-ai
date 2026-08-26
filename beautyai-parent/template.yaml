@@ -270,6 +270,8 @@ Resources:
             let location = 'http://beauty-ai-customer-41482.s3-website-us-east-1.amazonaws.com';
             if (path.includes('admin')) {
                 location = 'http://beauty-ai-admin-46074.s3-website-us-east-1.amazonaws.com';
+            } else if (path.includes('pihu')) {
+                location = 'http://beauty-ai-pihu-frontend-9988.s3-website-us-east-1.amazonaws.com/s/pihu-makeover';
             }
             return {
                 statusCode: 301,
@@ -291,6 +293,13 @@ Resources:
           Properties:
             ApiId: !Ref BeautyAiHttpApi
             Path: /admin
+            Method: GET
+            PayloadFormatVersion: '2.0'
+        PihuRoot:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref BeautyAiHttpApi
+            Path: /pihu
             Method: GET
             PayloadFormatVersion: '2.0'
 
