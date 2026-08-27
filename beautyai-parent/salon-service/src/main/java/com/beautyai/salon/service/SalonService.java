@@ -40,6 +40,18 @@ public class SalonService {
         salon.setReviews(request.getReviews());
         salon.setNeighborhoods(request.getNeighborhoods());
         salon.setAccessPin(request.getAccessPin());
+        salon.setGeoRankEnabled(true); // Enabled by default as per zero-touch onboarding
+        
+        // Zero-Touch Onboarding: Auto-Discover Google Maps Link
+        if (request.getGoogleMapsLink() == null || request.getGoogleMapsLink().trim().isEmpty()) {
+            // Mocking a Google Places API call
+            String autoDiscoveredLink = "https://maps.google.com/?q=" + 
+                request.getName().replace(" ", "+") + "+" + request.getCity().replace(" ", "+");
+            salon.setGoogleMapsLink(autoDiscoveredLink);
+            System.out.println("Auto-discovered Google Maps Link for " + request.getName() + ": " + autoDiscoveredLink);
+        } else {
+            salon.setGoogleMapsLink(request.getGoogleMapsLink());
+        }
 
         // Handle Image Uploads via S3
         String heroUrl = s3Service.uploadBase64Image(request.getHeroImage(), "salons/" + id + "/hero");
@@ -58,6 +70,21 @@ public class SalonService {
         }
         salon.setGalleryImages(galleryUrls);
 
+        salonRepository.save(salon);
+        return salon;
+    }
+
+    public Salon updateGeoRankSettings(String id, com.beautyai.salon.dto.GeoRankUpdateDto dto) {
+        Salon salon = getSalon(id);
+        if (salon == null) {
+            throw new RuntimeException("Salon not found");
+        }
+        if (dto.getGeoRankEnabled() != null) {
+            salon.setGeoRankEnabled(dto.getGeoRankEnabled());
+        }
+        if (dto.getGoogleMapsLink() != null) {
+            salon.setGoogleMapsLink(dto.getGoogleMapsLink());
+        }
         salonRepository.save(salon);
         return salon;
     }

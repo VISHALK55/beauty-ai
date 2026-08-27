@@ -37,6 +37,8 @@ export default function GeoRank() {
   const [salon, setSalon] = useState(null);
   const [mapsUrl, setMapsUrl] = useState("");
 
+  const [isSaving, setIsSaving] = useState(false);
+
   useEffect(() => {
     async function loadData() {
       try {
@@ -44,6 +46,7 @@ export default function GeoRank() {
         if (data) {
           setSalon(data);
           setMapsUrl(data.googleMapsLink || "https://maps.google.com/?cid=123456789");
+          setIsEnabled(data.geoRankEnabled !== false); // default true
         } else {
           setSalon({ name: "Error Loading Data", city: "Unknown" });
         }
@@ -54,6 +57,20 @@ export default function GeoRank() {
     }
     loadData();
   }, []);
+
+  const handleSave = async (newEnabled) => {
+    setIsSaving(true);
+    const toggleValue = newEnabled !== undefined ? newEnabled : isEnabled;
+    if (newEnabled !== undefined) setIsEnabled(newEnabled);
+    try {
+      await api.updateGeoRankSettings('pihu-makeover', toggleValue, mapsUrl);
+      alert('Geo Rank settings updated successfully!');
+    } catch (err) {
+      alert('Failed to update settings.');
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   if (!salon) return <div className="p-10 text-accent">Loading Geo Rank Engine...</div>;
 
@@ -82,7 +99,7 @@ export default function GeoRank() {
             {/* Custom Toggle Switch */}
             <div 
               className={`w-16 h-8 rounded-full flex items-center p-1 cursor-pointer transition-colors duration-300 ${isEnabled ? 'bg-blue-500' : 'bg-tertiary'}`}
-              onClick={() => setIsEnabled(!isEnabled)}
+              onClick={() => handleSave(!isEnabled)}
             >
               <div className={`w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300 ${isEnabled ? 'translate-x-8' : 'translate-x-0'}`}></div>
             </div>
@@ -101,8 +118,12 @@ export default function GeoRank() {
                     className="w-full pl-12 pr-4 py-3 bg-dark-900/80 border border-divider-strong rounded-xl focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-content font-mono text-sm"
                   />
                 </div>
-                <button className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-content font-medium rounded-xl transition-colors shadow-[0_0_20px_rgba(37,99,235,0.2)]">
-                  Save Link
+                <button 
+                  onClick={() => handleSave()}
+                  disabled={isSaving}
+                  className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-content font-medium rounded-xl transition-colors shadow-[0_0_20px_rgba(37,99,235,0.2)] disabled:opacity-50"
+                >
+                  {isSaving ? 'Saving...' : 'Save Link'}
                 </button>
               </div>
             </div>

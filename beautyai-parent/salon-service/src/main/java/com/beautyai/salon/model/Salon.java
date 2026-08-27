@@ -32,6 +32,7 @@ public class Salon {
     private String aiSystemPrompt;
     private String googleMapsLink;
     private String accessPin;
+    private Boolean geoRankEnabled;
 
     @DynamoDbPartitionKey
     @software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbAttribute("PK")
@@ -103,4 +104,7 @@ public class Salon {
 
     public String getAccessPin() { return accessPin; }
     public void setAccessPin(String accessPin) { this.accessPin = accessPin; }
+
+    public Boolean getGeoRankEnabled() { return geoRankEnabled; }
+    public void setGeoRankEnabled(Boolean geoRankEnabled) { this.geoRankEnabled = geoRankEnabled; }
 }

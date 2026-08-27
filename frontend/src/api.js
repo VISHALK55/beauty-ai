@@ -163,6 +163,23 @@ export const api = {
             throw e;
         }
     },
+    updateGeoRankSettings: async (id, geoRankEnabled, googleMapsLink) => {
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/v1/salons/${id}/geo-rank`, {
+                method: 'PUT',
+                headers: {
+                    ...api.getHeaders(),
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ geoRankEnabled, googleMapsLink })
+            });
+            if (!res.ok) throw new Error('Failed to update Geo Rank settings');
+            return await res.json();
+        } catch (e) {
+            console.error('API Error:', e);
+            throw e;
+        }
+    },
     getSalonServices: async (id) => {
         try {
             const res = await fetch(`${API_BASE_URL}/api/v1/salons/${id}/services`, {

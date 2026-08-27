@@ -62,4 +62,16 @@ public class SalonController {
     public ResponseEntity<List<com.beautyai.salon.model.Appointment>> getAppointments(@PathVariable String id) {
         return ResponseEntity.ok(salonService.getAppointments(id));
     }
+
+    @PutMapping("/{id}/geo-rank")
+    public ResponseEntity<Salon> updateGeoRankSettings(
+            @PathVariable String id, 
+            @RequestBody com.beautyai.salon.dto.GeoRankUpdateDto request) {
+        try {
+            Salon updated = salonService.updateGeoRankSettings(id, request);
+            return ResponseEntity.ok(updated);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

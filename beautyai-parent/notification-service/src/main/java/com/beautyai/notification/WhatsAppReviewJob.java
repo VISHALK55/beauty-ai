@@ -17,16 +17,19 @@ public class WhatsAppReviewJob {
     @Scheduled(fixedRate = 60000) // Runs every minute for demonstration
     public void processPendingReviewRequests() {
         // Step 1: Query Database for Appointments that finished exactly 2 hours ago.
-        // For demonstration, we simulate fetching an appointment for "Pihu Makeover Saloon".
+        // For demonstration, we simulate fetching an appointment for "Pihu Makeover".
         String customerPhone = "+919876543210";
         String customerName = "Aarti";
-        String salonName = "Pihu Makeover Saloon";
-        String salonLocation = "Bodhgaya";
-        String googleMapsLink = "https://maps.google.com/?cid=987654321";
+        String salonName = "Pihu Makeover";
+        String salonLocation = "Bodh Gaya";
+        
+        // Simulating Zero-Touch Auto-Discovered Link and settings check
+        boolean geoRankEnabled = true; // Would fetch from Salon table
+        String googleMapsLink = "https://maps.google.com/?q=Pihu+Makeover+Bodh+Gaya"; 
         
         boolean hasPendingRequest = checkForPendingRequests();
         
-        if (hasPendingRequest) {
+        if (hasPendingRequest && geoRankEnabled) {
             // Step 2: Construct the exact localized message
             String message = String.format(
                 "Hi %s! Thank you for visiting %s (%s) today. " +
