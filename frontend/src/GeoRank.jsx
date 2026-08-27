@@ -39,9 +39,18 @@ export default function GeoRank() {
 
   useEffect(() => {
     async function loadData() {
-      const data = await api.getSalon('pihu-makeover-beauty-salon');
-      setSalon(data);
-      if (data) setMapsUrl(data.googleMapsLink || "https://maps.google.com/?cid=123456789");
+      try {
+        const data = await api.getSalon('pihu-makeover');
+        if (data) {
+          setSalon(data);
+          setMapsUrl(data.googleMapsLink || "https://maps.google.com/?cid=123456789");
+        } else {
+          setSalon({ name: "Error Loading Data", city: "Unknown" });
+        }
+      } catch (err) {
+        console.error("GeoRank load error:", err);
+        setSalon({ name: "Error Loading Data", city: "Unknown" });
+      }
     }
     loadData();
   }, []);

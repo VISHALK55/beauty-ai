@@ -64,9 +64,10 @@ export const api = {
             const salonsMap = {};
             if (data && Array.isArray(data)) {
                 data.forEach(salon => {
+                    if (salon.sk && salon.sk !== 'METADATA') return;
                     salonsMap[salon.id] = {
                         ...salon,
-                        image: salon.hero_image,
+                        image: salon.image || salon.heroImage || salon.hero_image,
                         streetAddress: salon.address || salon.city || ''
                     };
                 });
@@ -75,9 +76,10 @@ export const api = {
                 const arr = data.salons || (Object.values(data));
                 if (Array.isArray(arr)) {
                     arr.forEach(salon => {
+                        if (salon.sk && salon.sk !== 'METADATA') return;
                         salonsMap[salon.id] = {
                             ...salon,
-                            image: salon.hero_image,
+                            image: salon.image || salon.heroImage || salon.hero_image,
                             streetAddress: salon.address || salon.city || ''
                         };
                     });
