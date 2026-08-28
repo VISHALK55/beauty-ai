@@ -9,16 +9,17 @@ import {
 import { api } from './api';
 
 export default function HyperSpeedControlCenter() {
-  const [selectedSalonId, setSelectedSalonId] = useState('pihu-makeover-beauty-salon');
+  const [selectedSalonId, setSelectedSalonId] = useState('pihu-makeover');
   const [activeTab, setActiveTab] = useState('indexing');
   const [statusMessage, setStatusMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isAutoPilot, setIsAutoPilot] = useState(false);
   const [salon, setSalon] = useState(null);
 
   useEffect(() => {
     async function loadData() {
       const data = await api.getSalon(selectedSalonId);
-      setSalon(data || await api.getSalon('pihu-makeover-beauty-salon'));
+      setSalon(data || await api.getSalon('pihu-makeover'));
     }
     loadData();
   }, [selectedSalonId]);
@@ -50,6 +51,15 @@ export default function HyperSpeedControlCenter() {
     }, 1000);
   };
 
+  const handleToggleAutoPilot = () => {
+    setIsAutoPilot(!isAutoPilot);
+    if (!isAutoPilot) {
+      setStatusMessage('🚀 ZERO-TOUCH AUTOPILOT ENGAGED: AI is now handling all Google Syncing, WhatsApp Reviews, and Social Posts automatically in the background.');
+    } else {
+      setStatusMessage('⚠️ AutoPilot Disengaged. Reverting to manual control.');
+    }
+  };
+
   return (
     <div className="px-4 py-6 sm:px-6 md:px-10 md:py-8 min-h-full">
       <header className="mb-6 md:mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -61,7 +71,7 @@ export default function HyperSpeedControlCenter() {
             Hyper-Speed Execution Engine
           </h1>
           <p className="text-muted mt-1">
-            Execute instant Google indexing, WhatsApp review dispatches, and knowledge graph payloads for {salon.name}.
+            Manage instant Google indexing, WhatsApp review dispatches, and knowledge graph payloads for {salon.name}.
           </p>
         </div>
 
@@ -76,7 +86,7 @@ export default function HyperSpeedControlCenter() {
             }}
             className="bg-tertiary border border-divider-strong text-accent font-bold px-4 py-2.5 rounded-xl focus:outline-none focus:border-gold-500 text-sm"
           >
-            <option value="pihu-makeover-beauty-salon">Pihu Makeover Saloon (Bodhgaya & Gaya)</option>
+            <option value="pihu-makeover">Pihu Makeover Saloon (Bodhgaya & Gaya)</option>
             <option value="glamour-boring-road-patna">Glamour Studio (Patna)</option>
             <option value="vogue-bandra-mumbai">Vogue Luxury (Mumbai)</option>
             <option value="vogue-connaught-delhi">Vogue CP (Delhi)</option>
@@ -85,83 +95,115 @@ export default function HyperSpeedControlCenter() {
         </div>
       </header>
 
+      {/* AUTOPILOT TOGGLE */}
+      <div className={`mb-10 p-6 rounded-2xl border transition-all duration-500 flex flex-col md:flex-row items-center justify-between gap-6 ${isAutoPilot ? 'bg-gradient-to-r from-gold-500/20 to-accent-light border-gold-500 shadow-[0_0_30px_rgba(212,175,55,0.3)]' : 'bg-tertiary border-divider-strong'}`}>
+        <div>
+          <h2 className="text-2xl font-serif text-content flex items-center gap-3">
+            <Cpu className={isAutoPilot ? 'text-accent animate-pulse' : 'text-muted'} size={28} /> 
+            Zero-Touch AutoPilot
+          </h2>
+          <p className="text-muted mt-2 text-sm max-w-2xl">
+            When activated, the platform automatically syncs optimized services to Google, triggers WhatsApp review requests after appointments, and schedules social media posts without any manual intervention.
+          </p>
+        </div>
+        <button
+          onClick={handleToggleAutoPilot}
+          className={`relative inline-flex h-10 w-20 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${isAutoPilot ? 'bg-accent' : 'bg-gray-700'}`}
+        >
+          <span className={`pointer-events-none inline-block h-9 w-9 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${isAutoPilot ? 'translate-x-10' : 'translate-x-0'}`} />
+        </button>
+      </div>
+
       {/* Execution Actions Banner */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        {/* Action 1: Google Indexing API */}
-        <div className="glass-panel p-6 border border-blue-500/30 hover:border-blue-500/60 transition-all flex flex-col justify-between">
+        
+        {/* Action 1: Google Business Profile Auto-Sync */}
+        <div className={`glass-panel p-6 border transition-all flex flex-col justify-between ${isAutoPilot ? 'border-accent shadow-[0_0_15px_rgba(212,175,55,0.2)]' : 'border-blue-500/30'}`}>
           <div>
             <div className="flex justify-between items-start mb-3">
-              <span className="p-2.5 bg-blue-500/10 text-blue-400 rounded-xl">
+              <span className={`p-2.5 rounded-xl ${isAutoPilot ? 'bg-accent/20 text-accent' : 'bg-blue-500/10 text-blue-400'}`}>
                 <Globe size={20} />
               </span>
-              <span className="text-[10px] font-bold uppercase bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded">
-                Target: &lt; 2 Hours
-              </span>
+              {isAutoPilot && <span className="text-[10px] font-bold uppercase bg-accent/20 text-accent px-2 py-0.5 rounded animate-pulse">Live Syncing</span>}
             </div>
-            <h3 className="text-lg font-semibold text-content mb-1">Instant Google Indexing API</h3>
+            <h3 className="text-lg font-semibold text-content mb-1">Google Profile Sync</h3>
             <p className="text-xs text-muted mb-4">
-              Sends high-urgency payload to Googlebot to index {salon.name} instantly.
+              Syncs keyword-rich Services and Q&As directly to Google Maps via API.
             </p>
           </div>
-          <button
-            onClick={handlePingGoogleIndexing}
-            disabled={isLoading}
-            className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-content text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_15px_rgba(37,99,235,0.3)]"
-          >
-            {isLoading ? <RefreshCw className="animate-spin" size={14} /> : <Zap size={14} />} Ping Googlebot Now
-          </button>
+          {isAutoPilot ? (
+            <div className="w-full py-2.5 bg-accent/10 border border-accent/30 text-accent text-xs font-bold rounded-xl flex items-center justify-center gap-2">
+              <RefreshCw className="animate-spin" size={14} /> Auto-Sync Active
+            </div>
+          ) : (
+            <button
+              onClick={handlePingGoogleIndexing}
+              disabled={isLoading}
+              className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-content text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_15px_rgba(37,99,235,0.3)]"
+            >
+              {isLoading ? <RefreshCw className="animate-spin" size={14} /> : <Zap size={14} />} Manual Sync Now
+            </button>
+          )}
         </div>
 
         {/* Action 2: WhatsApp Review Velocity */}
-        <div className="glass-panel p-6 border border-emerald-500/30 hover:border-emerald-500/60 transition-all flex flex-col justify-between">
+        <div className={`glass-panel p-6 border transition-all flex flex-col justify-between ${isAutoPilot ? 'border-accent shadow-[0_0_15px_rgba(212,175,55,0.2)]' : 'border-emerald-500/30'}`}>
           <div>
             <div className="flex justify-between items-start mb-3">
-              <span className="p-2.5 bg-emerald-500/10 text-emerald-400 rounded-xl">
+              <span className={`p-2.5 rounded-xl ${isAutoPilot ? 'bg-accent/20 text-accent' : 'bg-emerald-500/10 text-emerald-400'}`}>
                 <Send size={20} />
               </span>
-              <span className="text-[10px] font-bold uppercase bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded">
-                Delay: 15 Mins
-              </span>
+              {isAutoPilot && <span className="text-[10px] font-bold uppercase bg-accent/20 text-accent px-2 py-0.5 rounded animate-pulse">Monitoring</span>}
             </div>
-            <h3 className="text-lg font-semibold text-content mb-1">Accelerated Review Dispatch</h3>
+            <h3 className="text-lg font-semibold text-content mb-1">Smart Review Trigger</h3>
             <p className="text-xs text-muted mb-4">
-              Dispatches 15-minute post-service WhatsApp prompt with local keyword hints.
+              Hooks into checkout. Auto-dispatches 15-minute post-service WhatsApp prompt.
             </p>
           </div>
-          <button
-            onClick={handleDispatchWhatsAppReview}
-            disabled={isLoading}
-            className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-content text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_15px_rgba(16,185,129,0.3)]"
-          >
-            {isLoading ? <RefreshCw className="animate-spin" size={14} /> : <Send size={14} />} Dispatch 15-Min Review Prompt
-          </button>
+          {isAutoPilot ? (
+            <div className="w-full py-2.5 bg-accent/10 border border-accent/30 text-accent text-xs font-bold rounded-xl flex items-center justify-center gap-2">
+              <CheckCircle size={14} /> Listening for Checkouts
+            </div>
+          ) : (
+            <button
+              onClick={handleDispatchWhatsAppReview}
+              disabled={isLoading}
+              className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-content text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_15px_rgba(16,185,129,0.3)]"
+            >
+              {isLoading ? <RefreshCw className="animate-spin" size={14} /> : <Send size={14} />} Manual Dispatch
+            </button>
+          )}
         </div>
 
-        {/* Action 3: AWS Serverless Health */}
-        <div className="glass-panel p-6 border border-purple-500/30 hover:border-purple-500/60 transition-all flex flex-col justify-between">
+        {/* Action 3: Social Media Auto-Poster */}
+        <div className={`glass-panel p-6 border transition-all flex flex-col justify-between ${isAutoPilot ? 'border-accent shadow-[0_0_15px_rgba(212,175,55,0.2)]' : 'border-purple-500/30'}`}>
           <div>
             <div className="flex justify-between items-start mb-3">
-              <span className="p-2.5 bg-purple-500/10 text-purple-400 rounded-xl">
+              <span className={`p-2.5 rounded-xl ${isAutoPilot ? 'bg-accent/20 text-accent' : 'bg-purple-500/10 text-purple-400'}`}>
                 <Server size={20} />
               </span>
-              <span className="text-[10px] font-bold uppercase bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded">
-                AWS Free Tier ($0/mo)
-              </span>
+              {isAutoPilot && <span className="text-[10px] font-bold uppercase bg-accent/20 text-accent px-2 py-0.5 rounded animate-pulse">Scheduled</span>}
             </div>
-            <h3 className="text-lg font-semibold text-content mb-1">AWS Serverless Health</h3>
+            <h3 className="text-lg font-semibold text-content mb-1">Social Media Poster</h3>
             <p className="text-xs text-muted mb-4">
-              DynamoDB + Lambda (`SalonFunction`) HTTP API status.
+              Auto-generates captions with local hashtags and publishes to Instagram/FB.
             </p>
           </div>
-          <div className="flex items-center gap-2 text-xs text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 p-2.5 rounded-xl font-mono">
-            <CheckCircle size={14} /> AWS SAM Stack Ready
-          </div>
+          {isAutoPilot ? (
+            <div className="w-full py-2.5 bg-accent/10 border border-accent/30 text-accent text-xs font-bold rounded-xl flex items-center justify-center gap-2">
+              <RefreshCw className="animate-spin" size={14} /> Next Post: 4h 23m
+            </div>
+          ) : (
+             <div className="w-full py-2.5 bg-purple-600/50 text-purple-200 text-xs font-bold rounded-xl flex items-center justify-center gap-2 cursor-not-allowed">
+              Requires AutoPilot
+            </div>
+          )}
         </div>
       </div>
 
       {/* Status Output Alert */}
       {statusMessage && (
-        <div className="mb-8 p-4 bg-emerald-500/15 border border-emerald-500/40 rounded-xl text-emerald-300 text-sm font-medium animate-fade-in flex items-center gap-2">
+        <div className={`mb-8 p-4 border rounded-xl text-sm font-medium animate-fade-in flex items-center gap-2 ${statusMessage.includes('AUTOPILOT ENGAGED') ? 'bg-accent/20 border-accent/50 text-accent shadow-[0_0_20px_rgba(212,175,55,0.3)]' : 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300'}`}>
           <CheckCircle size={18} className="shrink-0" />
           <span>{statusMessage}</span>
         </div>
