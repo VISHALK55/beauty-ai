@@ -2,6 +2,26 @@ const envUrl = import.meta.env.VITE_API_BASE_URL;
 const API_BASE_URL = (envUrl ? envUrl.replace(/\/$/, '') : 'https://api.beautyai.makeup');
 
 export const api = {
+    sendOtp: async (phone) => {
+        // Mock OTP sending
+        return new Promise(resolve => setTimeout(resolve, 1000));
+    },
+    verifyOtp: async (phone, otp) => {
+        // Mock OTP verification
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                if (otp === '123456') {
+                    resolve({
+                        token: "mock-jwt-token-owner",
+                        role: "SALON_OWNER",
+                        salonId: "pihu-makeover"
+                    });
+                } else {
+                    reject(new Error('Invalid OTP'));
+                }
+            }, 1000);
+        });
+    },
     login: async (username, password) => {
         try {
             const res = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
