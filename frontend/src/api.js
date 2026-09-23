@@ -319,6 +319,18 @@ export const api = {
             throw e;
         }
     },
+    getAdAnalytics: async (salonIds) => {
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/v1/salons/ads/analytics?salonIds=${encodeURIComponent(salonIds)}`, {
+                headers: api.getHeaders()
+            });
+            if (!res.ok) throw new Error('Failed to fetch analytics');
+            return await res.json();
+        } catch (e) {
+            console.error('API Error:', e);
+            throw e;
+        }
+    },
     getGallery: async (salonId) => {
         try {
             const res = await fetch(`${API_BASE_URL}/api/v1/salons/${salonId}/gallery`, {

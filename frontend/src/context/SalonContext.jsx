@@ -4,8 +4,9 @@ import { api } from '../api';
 
 const SalonContext = createContext();
 
-export const SalonProvider = () => {
-    const { salonId } = useParams();
+export const SalonProvider = ({ defaultSalonId, children }) => {
+    const params = useParams();
+    const salonId = defaultSalonId || params.salonId;
     const [salon, setSalon] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -16,7 +17,12 @@ export const SalonProvider = () => {
         const fetchSalon = async () => {
             setLoading(true);
             try {
-                let sData = await api.getSalon(salonId);
+                let sData = null;
+                
+                // Force hardcoded data for pihu-makeover as per user preference
+                if (salonId !== 'pihu-makeover') {
+                    sData = await api.getSalon(salonId);
+                }
                 
                 // Fallback mechanism if API fails or returns null for local dev/preview
                 if (!sData) {
@@ -93,7 +99,7 @@ export const SalonProvider = () => {
 
     return (
         <SalonContext.Provider value={{ salon, loading, error }}>
-            <Outlet />
+            {children || <Outlet />}
         </SalonContext.Provider>
     );
 };

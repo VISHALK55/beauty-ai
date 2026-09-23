@@ -20,8 +20,9 @@ export default function SmartReview() {
   const [feedback, setFeedback] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
-  // Replace this with the actual Google Review Link from the QR code!
-  const GOOGLE_REVIEW_LINK = "https://g.page/r/pihu-makeover/review";
+  // The default link will search for Pihu Makeover Bodhgaya on Google Maps
+  // In a fully developed SaaS, this would be fetched from the salon object (e.g. salon.googleReviewLink)
+  const GOOGLE_REVIEW_LINK = salon?.googleReviewLink || "https://www.google.com/maps/search/?api=1&query=Pihu+Makeover+Bodh+Gaya";
 
   const handleRatingClick = (rate) => {
     setRating(rate);

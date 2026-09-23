@@ -59,6 +59,48 @@ const Services = () => {
           </div>
         ))}
       </div>
+
+      {/* Competitor Takedown: Comparison Matrix */}
+      <div style={{ marginTop: '7rem', marginBottom: '3rem' }}>
+        <h2 className="section-title text-center" style={{ fontSize: '2.5rem', marginBottom: '3rem' }}>
+          Why Choose <span className="text-gold">Pihu Makeover?</span>
+        </h2>
+        
+        <div style={{ 
+          background: 'rgba(0,0,0,0.4)', 
+          border: '1px solid rgba(212,175,55,0.3)', 
+          borderRadius: '12px', 
+          overflow: 'hidden' 
+        }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+            <thead>
+              <tr style={{ background: 'rgba(212,175,55,0.1)' }}>
+                <th style={{ padding: '1.5rem', borderBottom: '1px solid rgba(212,175,55,0.3)' }}>Feature</th>
+                <th style={{ padding: '1.5rem', borderBottom: '1px solid rgba(212,175,55,0.3)', color: 'var(--color-primary)', fontSize: '1.2rem' }}>Pihu Makeover</th>
+                <th style={{ padding: '1.5rem', borderBottom: '1px solid rgba(212,175,55,0.3)', color: 'var(--color-text-muted)' }}>Standard Family Salons</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { feature: 'Experience & Leadership', pihu: '15+ Years Expert (Bindu Sharma)', standard: 'Rotating General Staff' },
+                { feature: 'Products Used', pihu: '100% International Premium Brands (MAC, Huda)', standard: 'Generic / Bulk Products' },
+                { feature: 'Specialization', pihu: 'High-Definition (HD) & Airbrush Bridal', standard: 'Basic Threading & Haircuts' },
+                { feature: 'Atmosphere', pihu: 'Exclusive, Serene & Luxurious', standard: 'Crowded, Noisy Waiting Areas' }
+              ].map((row, idx) => (
+                <tr key={idx} style={{ background: idx % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)' }}>
+                  <td style={{ padding: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)', fontWeight: 'bold' }}>{row.feature}</td>
+                  <td style={{ padding: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'var(--color-text)' }}>
+                    <span style={{ color: '#4ade80', marginRight: '8px' }}>✓</span> {row.pihu}
+                  </td>
+                  <td style={{ padding: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'var(--color-text-muted)' }}>
+                    <span style={{ color: '#f87171', marginRight: '8px' }}>✕</span> {row.standard}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 };

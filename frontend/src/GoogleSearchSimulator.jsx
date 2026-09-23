@@ -1,29 +1,70 @@
 import React, { useState } from 'react';
-import { Search, MapPin, Star, Phone, Globe, ExternalLink, CheckCircle2, ShieldCheck, Sparkles, Zap, Clock, ArrowRight } from 'lucide-react';
+import { Search, MapPin, Star, Phone, Globe, ExternalLink, CheckCircle2, ShieldCheck, Sparkles, Zap, Clock, ArrowRight, ToggleLeft, ToggleRight, Code } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { calculateAcceleratedTimeline } from './HyperSpeedSeoAlgorithm';
 
 export default function GoogleSearchSimulator() {
   const [query, setQuery] = useState('best beauty parlour in bodhgaya');
   const [activeTab, setActiveTab] = useState('all');
+  const [isAfterAI, setIsAfterAI] = useState(true);
   const timeline = calculateAcceleratedTimeline();
+
+  // Dynamic Routing Logic based on Query
+  const getDynamicContent = () => {
+    const lowerQuery = query.toLowerCase();
+    if (lowerQuery.includes('bridal') || lowerQuery.includes('wedding')) {
+      return {
+        url: 'beautyai.app › salon › pihu-makeover-beauty-salon › bridal-makeup',
+        title: 'Bridal HD Makeup in Bodhgaya | Pihu Makeover Saloon',
+        desc: 'Book Bridal HD Makeup at Pihu Makeover Saloon near Mahabodhi Temple in Bodhgaya. Rejuvenating hair spa, HD bridal makeup, and facial treatments.',
+        link: '/salon/pihu-makeover-beauty-salon/bridal-makeup/bodhgaya'
+      };
+    } else if (lowerQuery.includes('academy') || lowerQuery.includes('course') || lowerQuery.includes('learn')) {
+      return {
+        url: 'beautyai.app › salon › pihu-makeover-beauty-salon › beauty-academy',
+        title: 'Professional Beauty Academy Course Bodhgaya | Pihu',
+        desc: 'Join the top-rated Beauty Academy in Bodhgaya. Master Bridal Makeup, Hair Styling, and Cosmetology with 15+ years expert Bindu Sharma. 100% Placement assistance.',
+        link: '/salon/pihu-makeover-beauty-salon/beauty-academy-bodhgaya'
+      };
+    } else {
+      return {
+        url: 'beautyai.app › salon › pihu-makeover-beauty-salon',
+        title: 'Pihu Makeover Saloon | Best Beauty Parlour in Bodhgaya',
+        desc: 'Top-rated beauty salon in Bodhgaya offering premium Bridal Makeup, Hair Spa, and Skin Aesthetics. Expert stylists, international products, serene atmosphere.',
+        link: '/salon/pihu-makeover-beauty-salon/bodhgaya'
+      };
+    }
+  };
+
+  const dynamicContent = getDynamicContent();
 
   return (
     <div className="px-4 py-6 sm:px-6 md:px-10 md:py-8 min-h-full">
-      <header className="mb-6 md:mb-8">
-        <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
-          <Sparkles size={14} /> Real-Time Google SERP Simulator
+      <header className="mb-6 md:mb-8 flex flex-col md:flex-row md:justify-between md:items-end gap-4">
+        <div>
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
+            <Sparkles size={14} /> Real-Time Google SERP Simulator
+          </div>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif tracking-tight">
+            How Customers See Pihu Makeover
+          </h1>
+          <p className="text-muted mt-2 text-sm sm:text-base md:text-lg">
+            Simulate real customer searches and see the impact of BeautyAI SEO.
+          </p>
         </div>
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif tracking-tight">
-          How Customers See Pihu Makeover on Google
-        </h1>
-        <p className="text-muted mt-2 text-sm sm:text-base md:text-lg">
-          Simulate real customer searches on Google Mobile & Desktop for Bodhgaya & Gaya.
-        </p>
+
+        {/* Before / After Toggle */}
+        <div className="flex items-center gap-3 bg-gray-900 border border-gray-700 rounded-full p-2 w-max">
+          <span className={`text-sm font-semibold px-3 py-1 rounded-full ${!isAfterAI ? 'bg-red-500/20 text-red-400' : 'text-gray-500'}`}>Before BeautyAI</span>
+          <button onClick={() => setIsAfterAI(!isAfterAI)} className="text-gray-400 hover:text-white transition-colors">
+            {isAfterAI ? <ToggleRight size={32} className="text-green-500" /> : <ToggleLeft size={32} />}
+          </button>
+          <span className={`text-sm font-semibold px-3 py-1 rounded-full ${isAfterAI ? 'bg-green-500/20 text-green-400' : 'text-gray-500'}`}>After BeautyAI</span>
+        </div>
       </header>
 
       {/* Simulated Google Search Bar */}
-      <div className="bg-white text-gray-900 rounded-2xl p-4 sm:p-6 shadow-2xl max-w-4xl mx-auto mb-8 md:mb-10 border border-gray-200">
+      <div className="bg-white text-gray-900 rounded-2xl p-4 sm:p-6 shadow-2xl max-w-4xl mx-auto mb-8 md:mb-10 border border-gray-200 transition-all duration-500 relative">
         <div className="flex items-center gap-3 bg-gray-100 px-5 py-3.5 rounded-full border border-gray-300 shadow-inner">
           <svg className="w-5 h-5 text-muted" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -49,43 +90,59 @@ export default function GoogleSearchSimulator() {
         </div>
 
         {/* ---------------------------------------------------- */}
-        {/* GOOGLE MAPS 3-PACK SECTION (THE TOP PACK) */}
+        {/* GOOGLE MAPS 3-PACK SECTION */}
         {/* ---------------------------------------------------- */}
         <div className="mt-6 border border-gray-200 rounded-xl overflow-hidden shadow-sm bg-gray-50">
           <div className="bg-blue-50 px-5 py-3 border-b border-blue-100 flex justify-between items-center">
             <span className="text-xs font-bold uppercase tracking-wider text-blue-700 flex items-center gap-1.5">
-              <MapPin size={14} /> Google Local Pack (Rank #1 in Bodhgaya & Gaya)
+              <MapPin size={14} /> Google Local Pack
             </span>
-            <span className="text-xs text-muted font-mono">Bodhgaya & Gaya Region</span>
+            <span className="text-xs text-muted font-mono">Bodhgaya Region</span>
           </div>
 
+          {!isAfterAI && (
+            <div className="p-4 bg-white border-b border-gray-200 opacity-90 text-sm">
+              <div className="flex justify-between items-center mb-2">
+                <div>
+                  <p className="font-bold text-gray-900 hover:text-blue-600 cursor-pointer text-base">Nature's Salon</p>
+                  <p className="text-gray-600 mt-1">3.8 ★ (42 reviews) • Main Road, Bodhgaya</p>
+                </div>
+                <span className="text-gray-500 font-medium">Rank #1</span>
+              </div>
+            </div>
+          )}
+
           {/* Map Pack Result Card - Pihu Makeover */}
-          <div className="p-4 sm:p-5 bg-white border-b border-gray-200 hover:bg-blue-50/40 transition-colors">
+          <div className={`p-4 sm:p-5 bg-white border-b border-gray-200 transition-colors ${isAfterAI ? 'hover:bg-blue-50/40' : 'opacity-80'}`}>
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
               <div className="flex-1">
                 <div className="flex flex-wrap items-center gap-2">
                   <h3 className="text-base sm:text-lg font-bold text-gray-900 hover:text-blue-600 cursor-pointer">
                     Pihu Makeover Saloon
                   </h3>
-                  <span className="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
-                    <ShieldCheck size={10} /> Google Verified
-                  </span>
+                  {isAfterAI && (
+                    <span className="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                      <ShieldCheck size={10} /> Google Verified
+                    </span>
+                  )}
                 </div>
                 <div className="flex flex-wrap items-center gap-1.5 mt-1 text-xs sm:text-sm">
-                  <span className="font-bold text-amber-600">4.9</span>
+                  <span className="font-bold text-amber-600">{isAfterAI ? '4.9' : '4.2'}</span>
                   <div className="flex text-amber-400">
                     {'★'.repeat(5)}
                   </div>
-                  <span className="text-muted font-medium">(520 reviews)</span>
+                  <span className="text-muted font-medium">({isAfterAI ? '520' : '15'} reviews)</span>
                   <span className="text-muted">•</span>
                   <span className="text-gray-600">Beauty salon</span>
                 </div>
                 <p className="text-xs text-muted mt-1 leading-normal">
                   Main Road, Near Mahabodhi Temple, Bodhgaya & Gaya, Bihar • Open ⋅ Closes 9 PM
                 </p>
-                <p className="text-xs text-emerald-700 font-medium mt-1.5 flex items-center gap-1">
-                  <CheckCircle2 size={12} className="shrink-0" /> WhatsApp Booking & AI Voice Confirmation Available
-                </p>
+                {isAfterAI && (
+                  <p className="text-xs text-emerald-700 font-medium mt-1.5 flex items-center gap-1">
+                    <CheckCircle2 size={12} className="shrink-0" /> WhatsApp Booking & AI Voice Confirmation Available
+                  </p>
+                )}
               </div>
 
               <div className="flex sm:flex-col gap-2 shrink-0 pt-1 sm:pt-0 border-t sm:border-t-0 border-gray-100">
@@ -96,24 +153,20 @@ export default function GoogleSearchSimulator() {
                   <Phone size={13} /> Call
                 </a>
                 <Link
-                  to="/salon/pihu-makeover-beauty-salon/bridal-makeup/bodhgaya"
+                  to={dynamicContent.link}
                   target="_blank"
-                  className="flex-1 sm:flex-none px-4 py-2 bg-blue-600 text-content rounded-full text-xs font-semibold hover:bg-blue-700 flex items-center gap-1.5 justify-center shadow-sm"
+                  className="flex-1 sm:flex-none px-4 py-2 bg-blue-600 text-white rounded-full text-xs font-semibold hover:bg-blue-700 flex items-center gap-1.5 justify-center shadow-sm"
                 >
                   <Globe size={13} /> Website
                 </Link>
               </div>
             </div>
-          </div>
-
-          {/* Competitor Result 2 (Lower Rank) */}
-          <div className="p-4 bg-gray-50/60 opacity-60 border-b border-gray-200 text-xs">
-            <div className="flex justify-between items-center">
-              <div>
-                <p className="font-semibold text-gray-700">Radiance Beauty Care</p>
-                <p className="text-muted">4.7 ★ (145 reviews) • Temple Street, Bodhgaya</p>
-              </div>
-              <span className="text-muted">Rank #2</span>
+            
+            {/* Rank Indicator */}
+            <div className="mt-4 pt-3 border-t border-dashed border-gray-200 flex justify-end">
+               <span className={`text-sm font-bold ${isAfterAI ? 'text-green-600' : 'text-gray-500'}`}>
+                 Rank {isAfterAI ? '#1' : '#4'}
+               </span>
             </div>
           </div>
         </div>
@@ -123,35 +176,72 @@ export default function GoogleSearchSimulator() {
           <span className="text-xs text-muted uppercase tracking-widest font-bold">Organic Search Result #1</span>
           
           <div className="mt-2">
-            <div className="flex items-center gap-2 text-xs text-gray-600 mb-1">
-              <span className="w-4 h-4 rounded-full bg-accent text-primary font-bold flex items-center justify-center text-[10px]">P</span>
-              <span>beautyai.app › salon › pihu-makeover-beauty-salon › bridal-makeup</span>
-            </div>
+            {!isAfterAI ? (
+               <div className="mb-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                 <div className="flex items-center gap-2 text-xs text-gray-600 mb-1">
+                   <span>justdial.com › Bodhgaya › Beauty-Parlours</span>
+                 </div>
+                 <span className="text-xl font-semibold text-blue-700 hover:underline block leading-snug cursor-pointer">
+                   Top 10 Beauty Parlours in Bodhgaya - Justdial
+                 </span>
+                 <p className="text-sm text-gray-600 mt-1 leading-relaxed">
+                   Find Best Beauty Parlours in Bodhgaya... (Generic Directory Listing taking top spot).
+                 </p>
+               </div>
+            ) : null}
 
-            <Link
-              to="/salon/pihu-makeover-beauty-salon/bridal-makeup/bodhgaya"
-              target="_blank"
-              className="text-xl font-semibold text-blue-700 hover:underline block leading-snug"
-            >
-              Bridal HD Makeup in Bodhgaya | Pihu Makeover Saloon
-            </Link>
+            <div className={!isAfterAI ? "opacity-60" : ""}>
+              <div className="flex items-center gap-2 text-xs text-gray-600 mb-1">
+                <span className="w-4 h-4 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-[10px]">P</span>
+                <span>{dynamicContent.url}</span>
+              </div>
 
-            <p className="text-sm text-gray-600 mt-1 leading-relaxed">
-              Book Bridal HD Makeup at Pihu Makeover Saloon near Mahabodhi Temple in Bodhgaya. Rejuvenating hair spa, HD bridal makeup, and facial treatments. Rated <strong className="text-gray-900">4.9 ★ (215 Google Reviews)</strong>. 24/7 Instant AI Booking Available.
-            </p>
+              <Link
+                to={dynamicContent.link}
+                target="_blank"
+                className="text-xl font-semibold text-blue-700 hover:underline block leading-snug"
+              >
+                {dynamicContent.title}
+              </Link>
 
-            <div className="mt-3 flex items-center gap-3 text-xs text-blue-600 font-medium">
-              <Link to="/salon/pihu-makeover-beauty-salon/bridal-makeup/bodhgaya" target="_blank" className="hover:underline flex items-center gap-1">
-                Book Appointment Online <ExternalLink size={12} />
-              </Link>
-              <span className="text-muted">•</span>
-              <Link to="/salon/pihu-makeover-beauty-salon/hair-spa/sujata-bypass" target="_blank" className="hover:underline">
-                Hair Spa Packages
-              </Link>
-              <span className="text-muted">•</span>
-              <Link to="/salon/pihu-makeover-beauty-salon/facial/kalchakra-maidan" target="_blank" className="hover:underline">
-                Sujata Bypass Branch
-              </Link>
+              <p className="text-sm text-gray-600 mt-1 leading-relaxed">
+                {dynamicContent.desc} {isAfterAI && <span className="font-semibold text-gray-900"> Rated 4.9 ★ (215 Google Reviews). 24/7 Instant AI Booking Available.</span>}
+              </p>
+
+              {isAfterAI && (
+                <>
+                  <div className="mt-3 flex items-center gap-3 text-xs text-blue-600 font-medium">
+                    <Link to={dynamicContent.link} target="_blank" className="hover:underline flex items-center gap-1">
+                      Book Appointment Online <ExternalLink size={12} />
+                    </Link>
+                    <span className="text-muted">•</span>
+                    <Link to="/salon/pihu-makeover-beauty-salon/hair-spa/sujata-bypass" target="_blank" className="hover:underline">
+                      Packages
+                    </Link>
+                    <span className="text-muted">•</span>
+                    <Link to="/salon/pihu-makeover-beauty-salon/facial/kalchakra-maidan" target="_blank" className="hover:underline">
+                      Branches
+                    </Link>
+                  </div>
+
+                  {/* Schema Snippet Simulation */}
+                  <div className="mt-4 p-3 bg-indigo-50 border border-indigo-100 rounded-lg">
+                    <div className="flex items-center gap-2 mb-2 text-indigo-700 text-xs font-bold uppercase tracking-wider">
+                      <Code size={14} /> Rich Snippet Active (Schema Markup)
+                    </div>
+                    <div className="space-y-2">
+                      <details className="text-sm text-gray-700 bg-white border border-gray-200 rounded p-2 cursor-pointer hover:bg-gray-50">
+                        <summary className="font-semibold outline-none text-blue-700">What brands do you use for Bridal Makeup?</summary>
+                        <p className="mt-2 text-gray-600 text-xs pl-4">We exclusively use premium international brands like MAC, Huda Beauty, and Kryolan for HD and Airbrush bridal makeup.</p>
+                      </details>
+                      <details className="text-sm text-gray-700 bg-white border border-gray-200 rounded p-2 cursor-pointer hover:bg-gray-50">
+                        <summary className="font-semibold outline-none text-blue-700">Do you offer a Beauty Academy course?</summary>
+                        <p className="mt-2 text-gray-600 text-xs pl-4">Yes, we offer professional cosmetology and bridal makeup courses with 100% placement assistance in Bodhgaya.</p>
+                      </details>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -160,7 +250,7 @@ export default function GoogleSearchSimulator() {
       {/* ---------------------------------------------------- */}
       {/* HIGH-LEVEL ACCELERATION ALGORITHM DASHBOARD */}
       {/* ---------------------------------------------------- */}
-      <div className="max-w-4xl mx-auto glass-panel p-8 border border-accent-light rounded-2xl relative overflow-hidden">
+      <div className="max-w-4xl mx-auto glass-panel p-8 border border-accent-light rounded-2xl relative overflow-hidden mt-12">
         <div className="flex justify-between items-center mb-6">
           <div>
             <h2 className="text-2xl font-serif flex items-center gap-2 text-content">

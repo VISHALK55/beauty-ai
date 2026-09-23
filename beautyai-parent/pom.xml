@@ -22,14 +22,7 @@
     </properties>
 
     <modules>
-        <module>auth-service</module>
-        <module>salon-service</module>
-        <module>booking-service</module>
-        <module>ai-service</module>
-        <module>notification-service</module>
-        <module>payment-service</module>
-        <module>analytics-service</module>
-        <module>common-library</module>
+        <module>beautyai-monolith</module>
     </modules>
 
     <dependencies>

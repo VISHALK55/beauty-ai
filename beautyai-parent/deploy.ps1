@@ -6,11 +6,11 @@ $mavenUrl = "https://archive.apache.org/dist/maven/maven-3/3.9.6/binaries/apache
 $mavenZip = "$env:TEMP\apache-maven.zip"
 $mavenDir = "$env:TEMP\maven"
 
-if (-not (Test-Path $mavenDir)) {
+    Write-Host "Downloading Maven..."
     Invoke-WebRequest -Uri $mavenUrl -OutFile $mavenZip
     Write-Host "Extracting Maven..."
+    if (Test-Path $mavenDir) { Remove-Item -Recurse -Force $mavenDir }
     Expand-Archive -Path $mavenZip -DestinationPath $mavenDir -Force
-}
 
 $mavenBin = "$mavenDir\apache-maven-3.9.6\bin"
 Write-Host "Adding Maven to PATH for this session: $mavenBin"

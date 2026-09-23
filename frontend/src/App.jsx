@@ -17,6 +17,7 @@ const GoogleSearchSimulator = React.lazy(() => import('./GoogleSearchSimulator')
 const HyperSpeedControlCenter = React.lazy(() => import('./HyperSpeedControlCenter'));
 const Appointments = React.lazy(() => import('./Appointments'));
 const SmartReview = React.lazy(() => import('./SmartReview'));
+const ReviewManager = React.lazy(() => import('./ReviewManager'));
 const AdCampaign = React.lazy(() => import('./AdCampaignLauncher'));
 const Login = React.lazy(() => import('./Login'));
 const ProtectedRoute = React.lazy(() => import('./ProtectedRoute'));
@@ -24,6 +25,7 @@ const SuperAdminSettings = React.lazy(() => import('./SuperAdminSettings'));
 const Settings = React.lazy(() => import('./Settings'));
 const AiPremiumPlans = React.lazy(() => import('./AiPremiumPlans'));
 const WebsiteContentManager = React.lazy(() => import('./WebsiteContentManager'));
+const CompetitorIntelligence = React.lazy(() => import('./CompetitorIntelligence'));
 const SalonHome = React.lazy(() => import('./SalonHome'));
 const Academy = React.lazy(() => import('./Academy'));
 const PublicServicesPage = React.lazy(() => import('./PublicServicesPage'));
@@ -57,6 +59,18 @@ const MagicLogin = () => {
   return <div className="flex items-center justify-center h-screen bg-black text-gold-500">Authenticating Super Admin...</div>;
 };
 
+const RootRoute = () => {
+  const hostname = window.location.hostname;
+  if (hostname.includes('pihu')) {
+    return (
+      <SalonProvider defaultSalonId="pihu-makeover">
+        <SalonHome />
+      </SalonProvider>
+    );
+  }
+  return <B2BLandingPage />;
+};
+
 function App() {
   return (
     <AuthProvider>
@@ -72,8 +86,8 @@ function App() {
             <Route path="contact" element={<PublicContactPage />} />
           </Route>
           
-          {/* B2B SaaS Landing Page */}
-          <Route path="/" element={<B2BLandingPage />} />
+          {/* Main Entry Point (B2B SaaS or Custom Domain) */}
+          <Route path="/" element={<RootRoute />} />
 
           {/* Public Login Route */}
           <Route path="/login" element={<Login />} />
@@ -96,18 +110,21 @@ function App() {
             <Route path="settings" element={<Settings />} />
             <Route path="ai-premium" element={<AiPremiumPlans />} />
             <Route path="content" element={<WebsiteContentManager />} />
+            <Route path="reviews" element={<ReviewManager />} />
+            <Route path="georank" element={<GeoRank />} />
+            <Route path="competitor-intelligence" element={<CompetitorIntelligence />} />
+            <Route path="speed-control" element={<HyperSpeedControlCenter />} />
+            <Route path="ad-campaigns" element={<div className="p-8 h-full overflow-y-auto"><AdCampaign /></div>} />
             
             {/* Super Admin Only Routes */}
             <Route element={<ProtectedRoute requiredRole="SUPER_ADMIN" />}>
               <Route path="salons" element={<SalonDirectory />} />
               <Route path="google-preview" element={<GoogleSearchSimulator />} />
-              <Route path="speed-control" element={<HyperSpeedControlCenter />} />
               <Route path="ai-receptionist" element={<AiChat />} />
               <Route path="voice-calls" element={<VoiceCalls />} />
               <Route path="geo-rank" element={<GeoRank />} />
               <Route path="onboard-partner" element={<PartnerOnboarding />} />
               <Route path="super-admin-settings" element={<SuperAdminSettings />} />
-              <Route path="ad-campaigns" element={<div className="p-8 h-full overflow-y-auto"><AdCampaign salonName="All Platform Salons (Super Admin)" salonId="SUPER-ADMIN" /></div>} />
             </Route>
           </Route>
           

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, Clock, User, Phone, CheckCircle2, MessageSquare, Search, Filter, Plus, ShieldCheck, Loader } from 'lucide-react';
 import BookingModal from './BookingModal';
+import SmartReviewTriggerModal from './SmartReviewTriggerModal';
 import { api } from './api';
 import { useAuth } from './context/AuthContext';
 
@@ -11,6 +12,14 @@ export default function Appointments() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
+  
+  const [reviewTriggerAppointment, setReviewTriggerAppointment] = useState(null);
+
+  const handleMarkCompleted = (appointment) => {
+    // In a real app, you would make an API call to update the status in the backend here
+    // e.g. await api.updateAppointmentStatus(appointment.id, 'Completed');
+    setReviewTriggerAppointment(appointment);
+  };
 
   const fetchBookings = async () => {
     setLoading(true);
@@ -51,9 +60,9 @@ export default function Appointments() {
 
         <button 
           onClick={() => setIsModalOpen(true)}
-          className="btn-primary flex items-center gap-2 text-xs sm:text-sm px-5 py-3 cursor-pointer shadow-[0_0_20px_rgba(212,175,55,0.3)]"
+          className="btn-primary flex items-center gap-2 text-xs sm:text-sm px-5 py-3 cursor-pointer shadow-[0_0_20px_rgba(212,175,55,0.3)] transition-transform hover:scale-105"
         >
-          <Plus size={18} /> New Manual Booking
+          <Plus size={18} /> Walk-In / Quick Add
         </button>
       </header>
 
@@ -151,14 +160,12 @@ export default function Appointments() {
               >
                 <Phone size={14} /> Call Client
               </a>
-              <a
-                href={`https://wa.me/${b.phone.replace(/[^0-9]/g, '')}`}
-                target="_blank"
-                rel="noreferrer"
+              <button
+                onClick={() => handleMarkCompleted(b)}
                 className="px-3.5 py-2 bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/30 text-emerald-300 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors"
               >
-                <MessageSquare size={14} /> WhatsApp
-              </a>
+                <CheckCircle2 size={14} /> Mark Completed
+              </button>
             </div>
           </div>
           ))
@@ -174,7 +181,15 @@ export default function Appointments() {
         onClose={() => setIsModalOpen(false)} 
         onBookingCreated={handleBookingCreated}
         salonId={salonId === 'SUPER-ADMIN' ? 'pihu-makeover' : salonId}
-        salonName="Salon Name" // Could fetch actual name from context if available
+        salonName="Salon Name" 
+      />
+
+      <SmartReviewTriggerModal
+        isOpen={!!reviewTriggerAppointment}
+        onClose={() => setReviewTriggerAppointment(null)}
+        appointment={reviewTriggerAppointment}
+        salonId={salonId === 'SUPER-ADMIN' ? 'pihu-makeover' : salonId}
+        salonName="Pihu Makeover"
       />
     </div>
   );

@@ -1,0 +1,10 @@
+{
+    "PK": {"S": "AD#pihu-campaign-1"},
+    "SK": {"S": "PROFILE"},
+    "campaignId": {"S": "pihu-campaign-1"},
+    "salonIds": {"S": "pihu-makeover"},
+    "status": {"S": "LIVE"},
+    "dailyBudget": {"N": "500"},
+    "durationDays": {"N": "1"},
+    "createdAt": {"N": "1789843320000"}
+}

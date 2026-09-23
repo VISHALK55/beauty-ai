@@ -2,7 +2,7 @@ $ErrorActionPreference = 'Stop'
 $env:AWS_PAGER = ""
 # Define bucket names (Must be globally unique)
 $customerBucket = "beauty-ai-customer-41482"
-$adminBucket = "beauty-ai-admin-46074"
+$adminBucket = "admin.beautyai.makeup"
 
 Write-Host "Building Customer Frontend..."
 cd c:\Users\welcome\.gemini\antigravity-ide\scratch\beauty-ai\customer-frontend

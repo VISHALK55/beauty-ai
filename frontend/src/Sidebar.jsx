@@ -74,6 +74,21 @@ const Sidebar = ({ isOpen, onClose }) => {
           <NavLink to="/dashboard/content" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
             <Image size={18}/> Website Content
           </NavLink>
+          <NavLink to="/dashboard/reviews" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+            <MessageSquare size={18}/> Review Auto-Responder
+          </NavLink>
+          <NavLink to="/dashboard/georank" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+            <MapPin size={18}/> Bodhgaya GeoRank
+          </NavLink>
+          <NavLink to="/dashboard/competitor-intelligence" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+            <Search size={18}/> Competitor Intel
+          </NavLink>
+          <NavLink to="/dashboard/ad-campaigns" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+            <Store size={18}/> Ad Campaign Manager
+          </NavLink>
+          <NavLink to="/dashboard/speed-control" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+            <Zap size={18}/> Hyper-Speed Engine
+          </NavLink>
           <NavLink to="/dashboard/settings" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
             <Settings size={18}/> Settings
           </NavLink>
@@ -93,14 +108,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                   <Users size={18} className={userRole === 'SUPER_ADMIN' ? "text-green-400" : "text-muted"} /> Onboard Partner
                   {userRole !== 'SUPER_ADMIN' && <Lock size={14} className="ml-auto text-muted" />}
                 </NavLink>
-                <NavLink to="/dashboard/ad-campaigns" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-                  <Store size={18}/> Ad Campaign Manager
-                  {userRole !== 'SUPER_ADMIN' && <Lock size={14} className="ml-auto text-muted" />}
-                </NavLink>
-                <NavLink to="/dashboard/speed-control" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-                  <Zap size={18}/> Hyper-Speed Engine
-                  {userRole !== 'SUPER_ADMIN' && <Lock size={14} className="ml-auto text-muted" />}
-                </NavLink>
+
                 <NavLink to="/dashboard/geo-rank" onClick={onClose} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
                   <MapPin size={18}/> Geo Rank AI
                   {userRole !== 'SUPER_ADMIN' && <Lock size={14} className="ml-auto text-muted" />}

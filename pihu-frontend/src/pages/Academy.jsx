@@ -1,8 +1,13 @@
 import React from 'react';
+import SEO from '../components/SEO';
 
 const Academy = () => {
   return (
     <div className="section container text-center">
+      <SEO 
+        title="Beauty Academy & Cosmetology Institute in Bodhgaya" 
+        description="Join Pihu Makeover Academy in Bodhgaya. Learn professional bridal makeup, skin aesthetics, and salon management from expert Bindu Sharma." 
+      />
       <div className="section-tag" style={{ margin: '0 auto 1.5rem auto' }}>
         <span style={{ marginRight: '8px' }}>🎓</span>
         EMPOWERING ARTISTRY

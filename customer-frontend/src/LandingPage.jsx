@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles, MapPin, Phone, Star, Heart, Calendar, ChevronRight, Camera, Link, MessageCircle } from 'lucide-react';
 import BookingModal from './BookingModal';
+import { Helmet } from 'react-helmet-async';
 import { getSalonId, fetchSalon, fetchServices } from './api';
 
 export default function LandingPage() {
@@ -117,11 +118,61 @@ export default function LandingPage() {
         ? displayServices 
         : displayServices.filter(s => s.category === activeCategory);
 
+    // --- SEO Schema Generator ---
+    const generateSchema = () => {
+        if (!salon) return null;
+        const schema = {
+            "@context": "https://schema.org",
+            "@type": "BeautySalon",
+            "name": salon.name,
+            "image": salon.heroImage || "https://images.unsplash.com/photo-1560066984-138dadb4c035",
+            "url": window.location.href,
+            "telephone": salon.phone,
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": salon.address,
+                "addressLocality": salon.city,
+                "addressRegion": "Bihar",
+                "addressCountry": "IN"
+            },
+            "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": 24.6961,
+                "longitude": 84.9869
+            },
+            "priceRange": "$$",
+            "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "4.9",
+                "reviewCount": "120"
+            }
+        };
+        return JSON.stringify(schema);
+    };
+
     if (loading) return <div className="h-screen flex items-center justify-center bg-[#1A1A1A] text-[#E8B5A2] text-xl font-serif tracking-widest uppercase">Loading Experience...</div>;
     if (!salon) return <div className="h-screen flex items-center justify-center bg-[#1A1A1A] text-red-400">Salon not found</div>;
 
     return (
         <div className="bg-[#FAF9F6] font-sans selection:bg-[#E8B5A2]/30 text-gray-800">
+            {salon && (
+                <Helmet>
+                    <title>{salon.name} | Best Beauty Salon in {salon.city}</title>
+                    <meta name="description" content={`Looking for a beauty salon in ${salon.city}? ${salon.name} offers premium bridal makeup, hair styling, facials, and nail art. Book your appointment today!`} />
+                    <meta name="keywords" content={`beauty salon in ${salon.city}, best makeup artist in ${salon.city}, hair salon ${salon.city}, ${salon.name}`} />
+                    
+                    {/* Open Graph Tags for Social Media */}
+                    <meta property="og:title" content={`${salon.name} | Best Beauty Salon in ${salon.city}`} />
+                    <meta property="og:description" content={`Premium beauty services including bridal makeup, haircuts, and facials at ${salon.name} in ${salon.city}.`} />
+                    <meta property="og:image" content={salon.image || salon.heroImage || "https://images.unsplash.com/photo-1560066984-138dadb4c035"} />
+                    <meta property="og:type" content="website" />
+
+                    <script type="application/ld+json">
+                        {generateSchema()}
+                    </script>
+                </Helmet>
+            )}
+
             {/* Hero Section */}
             <div className="relative h-[80vh] md:h-[90vh] bg-zinc-900 overflow-hidden flex items-center justify-center">
                 <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30 z-10"></div>

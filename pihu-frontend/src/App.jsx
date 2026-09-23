@@ -7,6 +7,9 @@ import Services from './pages/Services';
 import Academy from './pages/Academy';
 import Gallery from './pages/Gallery';
 import Blog from './pages/Blog';
+import BridalMakeupBodhgaya from './pages/BridalMakeupBodhgaya';
+import AcademyBodhgaya from './pages/AcademyBodhgaya';
+import ReviewIntercept from './pages/ReviewIntercept';
 
 // Utility for scrolling to top on route change
 function ScrollToTop() {
@@ -28,6 +31,12 @@ function App() {
         <Route path="/academy" element={<Academy />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/blog" element={<Blog />} />
+        {/* Local SEO Landing Pages */}
+        <Route path="/bridal-makeup-bodhgaya" element={<BridalMakeupBodhgaya />} />
+        <Route path="/beauty-academy-bodhgaya" element={<AcademyBodhgaya />} />
+        
+        {/* Smart Review Intercept */}
+        <Route path="/review" element={<ReviewIntercept />} />
       </Routes>
       <Footer />
     </Router>

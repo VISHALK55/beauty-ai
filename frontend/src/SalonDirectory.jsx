@@ -165,7 +165,7 @@ export default function SalonDirectory() {
                   </p>
 
                   <div className="flex flex-wrap gap-2 mb-4">
-                    {salon.neighborhoods.map((hood, idx) => (
+                    {(salon.neighborhoods || []).map((hood, idx) => (
                       <span key={idx} className="text-xs bg-white/5 border border-divider-strong text-muted px-2 py-1 rounded-md">
                         {hood}
                       </span>

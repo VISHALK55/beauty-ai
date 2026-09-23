@@ -1,39 +1,59 @@
-$ErrorActionPreference = 'Stop'
+$BucketName = "beautyai.makeup"
 
-$bucketName = "beauty-ai-frontend-2026-prod-$(Get-Random -Minimum 1000 -Maximum 9999)"
-Write-Host "Bucket: $bucketName"
-
-Write-Host "Building frontend..."
-npm run build
-
-Write-Host "Creating S3 bucket..."
-aws s3 mb s3://$bucketName --region us-east-1
-
-Write-Host "Enabling static website hosting..."
-aws s3 website s3://$bucketName --index-document index.html --error-document index.html
-
-Write-Host "Removing Public Access Block..."
-aws s3api put-public-access-block --bucket $bucketName --public-access-block-configuration BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false
-
-Write-Host "Adding bucket policy..."
-$policy = @"
+Write-Host "Configuring S3 Bucket for Static Website Hosting..."
+$WebsiteConfig = @"
 {
-    `"Version`": `"2012-10-17`",
-    `"Statement`": [
+    "IndexDocument": {
+        "Suffix": "index.html"
+    },
+    "ErrorDocument": {
+        "Key": "index.html"
+    },
+    "RoutingRules": [
         {
-            `"Sid`": `"PublicReadGetObject`",
-            `"Effect`": `"Allow`",
-            `"Principal`": `"*`",
-            `"Action`": `"s3:GetObject`",
-            `"Resource`": `"arn:aws:s3:::$bucketName/*`"
+            "Condition": {
+                "KeyPrefixEquals": "pihu"
+            },
+            "Redirect": {
+                "ReplaceKeyPrefixWith": "s/pihu-makeover",
+                "HttpRedirectCode": "301"
+            }
         }
     ]
 }
 "@
-Set-Content -Path policy.json -Value $policy
-aws s3api put-bucket-policy --bucket $bucketName --policy file://policy.json
+Set-Content -Path "website.json" -Value $WebsiteConfig
+aws s3api put-bucket-website --bucket $BucketName --website-configuration file://website.json
+Remove-Item -Path "website.json"
 
-Write-Host "Syncing files..."
-aws s3 sync dist/ s3://$bucketName
+Write-Host "Disabling Public Access Block..."
+aws s3api delete-public-access-block --bucket $BucketName
 
-Write-Host "Done! URL is: http://$bucketName.s3-website-us-east-1.amazonaws.com"
+Write-Host "Applying Public Read Policy..."
+$Policy = @"
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "PublicReadGetObject",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::$BucketName/*"
+        }
+    ]
+}
+"@
+Set-Content -Path "policy.json" -Value $Policy
+aws s3api put-bucket-policy --bucket $BucketName --policy file://policy.json
+Remove-Item -Path "policy.json"
+
+Write-Host "Building React App..."
+npm run build
+
+Write-Host "Uploading to S3..."
+aws s3 sync dist s3://$BucketName/ --delete
+
+Write-Host "Deployment Complete!"
+$Endpoint = "http://$BucketName.s3-website-us-east-1.amazonaws.com"
+Write-Host "Your website is now hosted at: $Endpoint"
