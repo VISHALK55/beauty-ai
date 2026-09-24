@@ -1,4 +1,5 @@
-const API_BASE_URL = 'https://0vhta6exz6.execute-api.us-east-1.amazonaws.com';
+const envUrl = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = (envUrl ? envUrl.replace(/\/$/, '') : 'https://api.beautyai.makeup');
 
 export const api = {
     sendOtp: async (phone) => {
