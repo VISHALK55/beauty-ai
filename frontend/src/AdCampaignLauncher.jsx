@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Megaphone, Target, DollarSign, Calendar, CheckCircle2, Play, Upload, Settings } from 'lucide-react';
 import { api } from './api';
 
+const envUrl = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = (envUrl ? envUrl.replace(/\/$/, '') : 'https://0vhta6exz6.execute-api.us-east-1.amazonaws.com');
+
 export default function AdCampaignLauncher({ salonName, salonId }) {
   const [metaStatus, setMetaStatus] = useState('NOT_CONNECTED'); // NOT_CONNECTED, ASSET_SELECTION, READY, DRAFTING, DRAFTED, PUBLISHED
   const [campaignId, setCampaignId] = useState(null);
@@ -38,7 +41,7 @@ export default function AdCampaignLauncher({ salonName, salonId }) {
     // Check if coming back from OAuth
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('meta_connect') === 'success') {
-      setMetaStatus('ASSET_SELECTION');
+      setMetaStatus('META_CONNECTED');
       fetchAssets();
     } else {
       fetchStatus();
@@ -47,7 +50,7 @@ export default function AdCampaignLauncher({ salonName, salonId }) {
 
   const fetchStatus = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/meta/status?businessId=${salonId}`);
+      const response = await fetch(`${API_BASE_URL}/api/v1/meta/status?businessId=${salonId}`);
       const data = await response.json();
       if (data.status) {
         setMetaStatus(data.status);
@@ -59,7 +62,7 @@ export default function AdCampaignLauncher({ salonName, salonId }) {
 
   const fetchAssets = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/meta/assets?businessId=${salonId}`);
+      const response = await fetch(`${API_BASE_URL}/api/v1/meta/assets?businessId=${salonId}`);
       const data = await response.json();
       setDiscoveredAssets(data);
       if (data.adAccounts && data.adAccounts.data && data.adAccounts.data.length > 0) {
@@ -78,7 +81,7 @@ export default function AdCampaignLauncher({ salonName, salonId }) {
 
   const handleSaveAssets = async () => {
     try {
-      await fetch('http://localhost:8080/api/v1/meta/select-assets', {
+      await fetch(`${API_BASE_URL}/api/v1/meta/select-assets`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -96,7 +99,7 @@ export default function AdCampaignLauncher({ salonName, salonId }) {
 
   const handleConnectMeta = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/meta/connect?businessId=${salonId}`);
+      const response = await fetch(`${API_BASE_URL}/api/v1/meta/connect?businessId=${salonId}`);
       const data = await response.json();
       window.location.href = data.url;
     } catch (error) {
@@ -147,7 +150,7 @@ export default function AdCampaignLauncher({ salonName, salonId }) {
         callToAction
       };
       
-      const response = await fetch('http://localhost:8080/api/v1/meta/campaigns', {
+      const response = await fetch(`${API_BASE_URL}/api/v1/meta/campaigns`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -170,7 +173,7 @@ export default function AdCampaignLauncher({ salonName, salonId }) {
 
   const handlePublish = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/meta/campaigns/${campaignId}/publish`, {
+      const response = await fetch(`${API_BASE_URL}/api/v1/meta/campaigns/${campaignId}/publish`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ salonId })

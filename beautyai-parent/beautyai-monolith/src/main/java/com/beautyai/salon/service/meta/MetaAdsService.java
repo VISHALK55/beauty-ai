@@ -131,6 +131,23 @@ public class MetaAdsService {
 
     public void selectAssets(String businessId, String adAccountId, String pageId, String instagramUserId) {
         MetaConnection conn = getConnection(businessId);
+        String token = encryptionUtil.decrypt(conn.getEncryptedAccessToken());
+        
+        if (instagramUserId == null || instagramUserId.isEmpty() || "[ None Selected ]".equals(instagramUserId)) {
+            try {
+                Map<String, Object> pageIg = metaApiClient.getInstagramAccounts(pageId, token);
+                if (pageIg != null && pageIg.containsKey("instagram_business_account")) {
+                    Map<String, Object> igAccount = (Map<String, Object>) pageIg.get("instagram_business_account");
+                    if (igAccount != null && igAccount.containsKey("id")) {
+                        instagramUserId = (String) igAccount.get("id");
+                        System.out.println("Auto-fetched IG Account from Page: " + instagramUserId);
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Could not auto-fetch IG account for page: " + e.getMessage());
+            }
+        }
+        
         conn.setAdAccountId(adAccountId);
         conn.setPageId(pageId);
         conn.setInstagramUserId(instagramUserId);
