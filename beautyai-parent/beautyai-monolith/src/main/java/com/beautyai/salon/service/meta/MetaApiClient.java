@@ -97,23 +97,33 @@ public class MetaApiClient {
                               long dailyBudgetPaise, double lat, double lng, int radiusKm, int ageMin, int ageMax, String gender, long endTimeUnix) {
         String url = getBaseUrl() + "/" + adAccountId + "/adsets";
 
-        String targetingJson = "{" +
-                "\"geo_locations\": {" +
-                "  \"custom_locations\": [{" +
-                "    \"latitude\": " + lat + "," +
-                "    \"longitude\": " + lng + "," +
-                "    \"radius\": " + radiusKm + "," +
-                "    \"distance_unit\": \"kilometer\"" +
-                "  }]" +
-                "}," +
-                "\"age_min\": " + ageMin + "," +
-                "\"age_max\": " + ageMax + "," +
-                "\"publisher_platforms\": [\"instagram\"]"; // Enforce IG as requested
+        java.util.Map<String, Object> targeting = new java.util.HashMap<>();
+        targeting.put("geo_locations", Map.of(
+            "custom_locations", java.util.List.of(
+                Map.of(
+                    "latitude", lat,
+                    "longitude", lng,
+                    "radius", radiusKm,
+                    "distance_unit", "kilometer"
+                )
+            )
+        ));
+        targeting.put("age_min", ageMin);
+        targeting.put("age_max", ageMax);
+        targeting.put("publisher_platforms", java.util.List.of("instagram"));
         
-        if ("WOMEN".equalsIgnoreCase(gender)) targetingJson += ",\"genders\": [2]";
-        else if ("MEN".equalsIgnoreCase(gender)) targetingJson += ",\"genders\": [1]";
-        
-        targetingJson += "}";
+        if ("WOMEN".equalsIgnoreCase(gender)) {
+            targeting.put("genders", java.util.List.of(2));
+        } else if ("MEN".equalsIgnoreCase(gender)) {
+            targeting.put("genders", java.util.List.of(1));
+        }
+
+        String targetingJson;
+        try {
+            targetingJson = objectMapper.writeValueAsString(targeting);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to serialize targeting JSON", e);
+        }
 
         java.util.Map<String, String> body = new java.util.HashMap<>();
         body.put("name", name);
@@ -153,19 +163,27 @@ public class MetaApiClient {
                                  String imageHash, String linkUrl, String headline, String primaryText, String cta) {
         String url = getBaseUrl() + "/" + adAccountId + "/adcreatives";
         
-        String linkDataJson = "{" +
-                "\"image_hash\": \"" + imageHash + "\"," +
-                "\"link\": \"" + linkUrl + "\"," +
-                "\"name\": \"" + headline.replace("\"", "\\\"") + "\"," +
-                "\"message\": \"" + primaryText.replace("\"", "\\\"") + "\"," +
-                "\"call_to_action\": {\"type\": \"" + cta + "\"}" +
-                "}";
-                
-        String objectStorySpecJson = "{" +
-                "\"page_id\": \"" + pageId + "\"," +
-                (instagramUserId != null ? "\"instagram_user_id\": \"" + instagramUserId + "\"," : "") +
-                "\"link_data\": " + linkDataJson +
-                "}";
+        Map<String, Object> linkData = Map.of(
+            "image_hash", imageHash,
+            "link", linkUrl,
+            "name", headline,
+            "message", primaryText,
+            "call_to_action", Map.of("type", cta)
+        );
+        
+        java.util.Map<String, Object> objectStorySpec = new java.util.HashMap<>();
+        objectStorySpec.put("page_id", pageId);
+        if (instagramUserId != null && !instagramUserId.isEmpty()) {
+            objectStorySpec.put("instagram_user_id", instagramUserId);
+        }
+        objectStorySpec.put("link_data", linkData);
+
+        String objectStorySpecJson;
+        try {
+            objectStorySpecJson = objectMapper.writeValueAsString(objectStorySpec);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to serialize object_story_spec JSON", e);
+        }
 
         Map<String, String> body = Map.of(
                 "name", "Creative for " + headline,
@@ -179,10 +197,17 @@ public class MetaApiClient {
 
     public String createAd(String adAccountId, String accessToken, String adSetId, String creativeId, String name) {
         String url = getBaseUrl() + "/" + adAccountId + "/ads";
+        String creativeJson;
+        try {
+            creativeJson = objectMapper.writeValueAsString(Map.of("creative_id", creativeId));
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to serialize creative JSON", e);
+        }
+
         Map<String, String> body = Map.of(
                 "name", name,
                 "adset_id", adSetId,
-                "creative", "{\"creative_id\": \"" + creativeId + "\"}",
+                "creative", creativeJson,
                 "status", "PAUSED", // PAUSED until explicitly published
                 "access_token", accessToken
         );
