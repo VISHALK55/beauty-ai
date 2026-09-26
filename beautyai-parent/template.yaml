@@ -19,7 +19,7 @@ Globals:
         META_APP_ID: '{{resolve:secretsmanager:MetaAppCredentials:SecretString:AppId}}'
         META_APP_SECRET: '{{resolve:secretsmanager:MetaAppCredentials:SecretString:AppSecret}}'
         META_REDIRECT_URI: '{{resolve:secretsmanager:MetaAppCredentials:SecretString:RedirectUri}}'
-        META_CONFIG_ID: '{{resolve:secretsmanager:MetaAppCredentials:SecretString:ConfigId}}'
+        META_CONFIG_ID: '1670872041422547'
         META_ENCRYPTION_SECRET: '{{resolve:secretsmanager:MetaAppCredentials:SecretString:EncryptionSecret}}'
         META_API_VERSION: 'v22.0'
 

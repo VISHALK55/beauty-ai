@@ -47,10 +47,6 @@ public class SitemapController {
         // Step 3: Programmatically generate URLs for the SEO Engine
         for (Salon salon : allSalons) {
             String salonId = salon.getId();
-            // Skip Super Admin record from Sitemap
-            if ("SUPER_ADMIN".equals(salonId)) {
-                continue;
-            }
             boolean isFlagship = "pihu-makeover".equals(salonId);
             for (String service : services) {
                 // Add the base service page

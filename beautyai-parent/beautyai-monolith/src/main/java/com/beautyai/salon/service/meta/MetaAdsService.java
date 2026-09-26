@@ -133,7 +133,7 @@ public class MetaAdsService {
         MetaConnection conn = getConnection(businessId);
         String token = encryptionUtil.decrypt(conn.getEncryptedAccessToken());
         
-        if (instagramUserId == null || instagramUserId.isEmpty() || "[ None Selected ]".equals(instagramUserId)) {
+        if (pageId != null && !pageId.trim().isEmpty() && (instagramUserId == null || instagramUserId.isEmpty() || "[ None Selected ]".equals(instagramUserId))) {
             try {
                 Map<String, Object> pageIg = metaApiClient.getInstagramAccounts(pageId, token);
                 if (pageIg != null && pageIg.containsKey("instagram_business_account")) {
@@ -148,9 +148,9 @@ public class MetaAdsService {
             }
         }
         
-        conn.setAdAccountId(adAccountId);
-        conn.setPageId(pageId);
-        conn.setInstagramUserId(instagramUserId);
+        conn.setAdAccountId(adAccountId != null && (adAccountId.trim().isEmpty() || "[ None Selected ]".equals(adAccountId)) ? null : adAccountId);
+        conn.setPageId(pageId != null && (pageId.trim().isEmpty() || "[ None Selected ]".equals(pageId)) ? null : pageId);
+        conn.setInstagramUserId(instagramUserId != null && (instagramUserId.trim().isEmpty() || "[ None Selected ]".equals(instagramUserId)) ? null : instagramUserId);
         conn.setUpdatedAt(System.currentTimeMillis());
         connectionTable.updateItem(conn);
     }

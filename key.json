@@ -1,4 +1,1 @@
-{
-  "PK": {"S": "SALON#pihu-makeover"},
-  "SK": {"S": "PROFILE"}
-}
+{"PK": {"S": "SALON#pihu-makeover"}, "SK": {"S": "META_CONN"}}

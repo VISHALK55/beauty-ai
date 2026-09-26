@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.http.HttpStatus;
+import java.net.URI;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -51,13 +53,16 @@ public class MetaOAuthController {
     }
 
     @GetMapping("/callback")
-    public RedirectView handleCallback(@RequestParam("code") String code, @RequestParam("state") String state) {
+    public ResponseEntity<Void> handleCallback(@RequestParam("code") String code, @RequestParam("state") String state) {
         try {
             metaAdsService.handleOAuthCallback(state, code);
-            // Redirect back to frontend settings page with success
-            return new RedirectView("https://beautyai.app/settings/meta?meta_connect=success");
+            return ResponseEntity.status(HttpStatus.FOUND)
+                    .location(URI.create("https://frontend-amber-pi-96.vercel.app/dashboard/ad-campaigns?meta_connect=success"))
+                    .build();
         } catch (Exception e) {
-            return new RedirectView("https://beautyai.app/settings/meta?meta_connect=error");
+            return ResponseEntity.status(HttpStatus.FOUND)
+                    .location(URI.create("https://frontend-amber-pi-96.vercel.app/dashboard/ad-campaigns?meta_connect=error"))
+                    .build();
         }
     }
     
