@@ -133,6 +133,7 @@ export default function AdCampaignLauncher({ salonName, salonId }) {
       setMetaStatus('CREATING');
       const payload = {
         salonId,
+        businessId: salonId,
         name: campaignName,
         objective,
         dailyBudget: parseFloat(dailyBudget),
