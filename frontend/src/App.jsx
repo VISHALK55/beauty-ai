@@ -9,6 +9,17 @@ const PublicServicesPage = React.lazy(() => import('./PublicServicesPage'));
 const PublicBlogPage = React.lazy(() => import('./PublicBlogPage'));
 const PublicContactPage = React.lazy(() => import('./PublicContactPage'));
 const B2BLandingPage = React.lazy(() => import('./B2BLandingPage'));
+const AdCampaignLauncher = React.lazy(() => import('./AdCampaignLauncher'));
+import { useParams } from 'react-router-dom';
+
+const AdsManagerWrapper = () => {
+  const { salonId } = useParams();
+  return (
+    <div className="min-h-screen bg-dark-950 p-8 text-white">
+      <AdCampaignLauncher salonId={salonId} salonName={salonId} />
+    </div>
+  );
+};
 
 // Fallback Loading UI
 const LoadingFallback = () => (
@@ -67,6 +78,9 @@ function App() {
         
         {/* Smart Review Scanner Route */}
         <Route path="/review/:salonId" element={<SmartReview />} />
+        
+        {/* Ads Manager Route */}
+        <Route path="/ads-manager/:salonId" element={<AdsManagerWrapper />} />
 
         </Routes>
       </Suspense>

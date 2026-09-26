@@ -102,5 +102,31 @@ export const api = {
             console.error('API Error:', e);
             return [];
         }
+    },
+
+    getUploadUrl: async (fileName, contentType) => {
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/v1/upload-url?fileName=${encodeURIComponent(fileName)}&contentType=${encodeURIComponent(contentType)}`);
+            if (!res.ok) throw new Error('Failed to get upload URL');
+            return await res.json();
+        } catch (e) {
+            console.error('API Error:', e);
+            throw e;
+        }
+    },
+
+    uploadFileToS3: async (presignedUrl, file, contentType) => {
+        try {
+            const res = await fetch(presignedUrl, {
+                method: 'PUT',
+                headers: { 'Content-Type': contentType },
+                body: file
+            });
+            if (!res.ok) throw new Error('Failed to upload file to S3');
+            return true;
+        } catch (e) {
+            console.error('S3 Upload Error:', e);
+            throw e;
+        }
     }
 }
