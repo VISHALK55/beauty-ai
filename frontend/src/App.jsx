@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect } from 'react';
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation, useParams } from 'react-router-dom';
 import { SalonProvider } from './context/SalonContext';
 const PublicSalonPage = React.lazy(() => import('./PublicSalonPage'));
 const SmartReview = React.lazy(() => import('./SmartReview'));
@@ -10,7 +10,6 @@ const PublicBlogPage = React.lazy(() => import('./PublicBlogPage'));
 const PublicContactPage = React.lazy(() => import('./PublicContactPage'));
 const B2BLandingPage = React.lazy(() => import('./B2BLandingPage'));
 const AdCampaignLauncher = React.lazy(() => import('./AdCampaignLauncher'));
-import { useParams } from 'react-router-dom';
 
 const AdsManagerWrapper = () => {
   const { salonId } = useParams();
