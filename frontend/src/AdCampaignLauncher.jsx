@@ -14,6 +14,7 @@ export default function AdCampaignLauncher({ salonName, salonId }) {
   const [selectedAdAccount, setSelectedAdAccount] = useState('');
   const [selectedPage, setSelectedPage] = useState('');
   const [selectedInstagram, setSelectedInstagram] = useState('');
+  const [inputInstagramUrl, setInputInstagramUrl] = useState('');
   
   // Campaign Form State
   const [campaignName, setCampaignName] = useState('Pihu Makeover - Bridal Makeup');
@@ -41,7 +42,7 @@ export default function AdCampaignLauncher({ salonName, salonId }) {
     // Check if coming back from OAuth
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('meta_connect') === 'success') {
-      setMetaStatus('META_CONNECTED');
+      setMetaStatus('ASSET_SELECTION');
       fetchAssets();
     } else {
       fetchStatus();
@@ -98,8 +99,22 @@ export default function AdCampaignLauncher({ salonName, salonId }) {
   };
 
   const handleConnectMeta = async () => {
+    let username = '';
+    if (inputInstagramUrl) {
+      try {
+        // Extract username from URL
+        const url = new URL(inputInstagramUrl);
+        username = url.pathname.split('/').filter(Boolean)[0] || '';
+        // Remove trailing query params/hashes if they didn't use URL parser properly
+        username = username.split('?')[0].split('#')[0];
+      } catch (e) {
+        // If not a valid URL, maybe they just typed the username
+        username = inputInstagramUrl.replace('@', '');
+      }
+    }
+
     try {
-      const response = await fetch(`${API_BASE_URL}/api/v1/meta/connect?businessId=${salonId}`);
+      const response = await fetch(`${API_BASE_URL}/api/v1/meta/connect?businessId=${salonId}&targetInstagramUsername=${encodeURIComponent(username)}`);
       const data = await response.json();
       window.location.href = data.url;
     } catch (error) {
@@ -200,108 +215,63 @@ export default function AdCampaignLauncher({ salonName, salonId }) {
         <div className="text-center mb-8">
           <Megaphone size={48} className="text-accent mx-auto mb-4" />
           <h2 className="text-2xl font-serif text-content mb-2">
-            {isMetaConn ? 'Meta Ads account connected' : 'Real Meta Ads Integration'}
+            Run Instagram Ad
           </h2>
-          {isPageReq && <h3 className="text-xl text-red-400 font-bold mb-2">Facebook Page required</h3>}
-          {isIgReq && <h3 className="text-xl text-red-400 font-bold mb-2">Instagram Professional Account required</h3>}
           
-          <p className="text-muted text-sm mb-6 max-w-md mx-auto">
-            {isMetaConn 
-              ? "To create Instagram ads through BeautyAI, connect your business's Facebook Page to your Instagram Professional account and give BeautyAI the required Meta permissions." 
-              : "Connect your Facebook and Instagram accounts to launch real targeted ad campaigns directly from your dashboard."}
-          </p>
+          {isPageReq && (
+            <div className="bg-red-900/20 border border-red-500/50 p-4 rounded-xl mt-4 mb-6">
+              <h3 className="text-lg text-red-400 font-bold mb-1">One Meta setup step is required</h3>
+              <p className="text-red-300 text-sm mb-3">Meta requires a connected Facebook Page for this advertising method.</p>
+              <a href="https://business.facebook.com/settings" target="_blank" rel="noreferrer" className="inline-block px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg text-sm font-bold">
+                Connect/Create Page
+              </a>
+            </div>
+          )}
+          {isIgReq && <h3 className="text-lg text-red-400 font-bold mt-4 mb-6">Instagram Professional Account missing or not linked properly.</h3>}
           
-          {!isMetaConn && (
-            <button
-              onClick={handleConnectMeta}
-              className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-sm transition-all"
-            >
-              Connect Meta Account
-            </button>
+          {!isMetaConn ? (
+            <div className="mt-8 text-left max-w-sm mx-auto">
+              <label className="block text-sm font-bold text-content mb-2">Enter your Instagram profile URL</label>
+              <input 
+                type="text" 
+                placeholder="https://www.instagram.com/pihu_makeover22/" 
+                value={inputInstagramUrl}
+                onChange={e => setInputInstagramUrl(e.target.value)}
+                className="w-full bg-dark-950 border border-divider p-3 rounded-lg text-sm text-content outline-none mb-4" 
+              />
+              <button
+                onClick={handleConnectMeta}
+                disabled={!inputInstagramUrl}
+                className="w-full py-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-bold rounded-xl text-sm transition-all flex justify-center items-center gap-2"
+              >
+                Connect your Instagram account to continue
+              </button>
+              <p className="text-xs text-muted mt-3 text-center">You will log into Meta securely. BeautyAI never sees your password.</p>
+            </div>
+          ) : (
+            <div className="mt-6 text-center">
+               <button
+                onClick={handleConnectMeta}
+                className="px-8 py-3 bg-dark-800 hover:bg-dark-700 text-white font-bold rounded-xl text-sm transition-all border border-divider"
+              >
+                Check Again / Reconnect
+              </button>
+            </div>
           )}
         </div>
-
-        {isMetaConn && (
-          <div className="bg-dark-950 p-6 rounded-xl border border-divider">
-            <h4 className="font-bold text-content mb-4 uppercase text-xs tracking-wider">Connection Status</h4>
-            <div className="space-y-3">
-              <div className="flex items-center gap-3">
-                <CheckCircle2 size={18} className="text-green-500" />
-                <span className="text-sm text-content">Meta account connected</span>
-              </div>
-              <div className="flex items-center gap-3">
-                {metaStatus !== 'META_CONNECTED' ? <CheckCircle2 size={18} className="text-green-500" /> : <div className="w-[18px] h-[18px] rounded-full border-2 border-muted" />}
-                <span className="text-sm text-content">Ad Account connected</span>
-              </div>
-              <div className="flex items-center gap-3">
-                {(metaStatus === 'INSTAGRAM_REQUIRED' || metaStatus === 'READY_FOR_INSTAGRAM_ADS') ? <CheckCircle2 size={18} className="text-green-500" /> : <div className="w-[18px] h-[18px] rounded-full border-2 border-muted" />}
-                <span className="text-sm text-content">Facebook Page connected</span>
-              </div>
-              <div className="flex items-center gap-3">
-                {metaStatus === 'READY_FOR_INSTAGRAM_ADS' ? <CheckCircle2 size={18} className="text-green-500" /> : <div className="w-[18px] h-[18px] rounded-full border-2 border-muted" />}
-                <span className="text-sm text-content">Instagram Professional Account connected</span>
-              </div>
-              <div className="flex items-center gap-3 pt-3 border-t border-divider">
-                {metaStatus === 'READY_FOR_INSTAGRAM_ADS' ? <CheckCircle2 size={18} className="text-green-500" /> : <div className="w-[18px] h-[18px] rounded-full border-2 border-muted" />}
-                <span className="text-sm font-bold text-content">Ready for Instagram advertising</span>
-              </div>
-            </div>
-            <button
-              onClick={handleConnectMeta}
-              className="mt-6 w-full py-2 bg-dark-800 hover:bg-dark-700 text-white font-bold rounded-xl text-sm transition-all border border-divider"
-            >
-              Reconnect to Meta
-            </button>
-          </div>
-        )}
       </div>
     );
   }
 
   if (metaStatus === 'ASSET_SELECTION') {
+    // If it falls back to ASSET_SELECTION, it means auto-discovery wasn't completely successful 
+    // or we are still checking. We auto-transition back to fetchStatus which handles READY_FOR_INSTAGRAM_ADS
     return (
-      <div className="glass-panel p-6 border border-accent-light rounded-2xl bg-dark-900">
-        <h2 className="text-xl font-serif text-content mb-4 flex items-center gap-2"><CheckCircle2 className="text-green-500" /> Meta Connected!</h2>
-        <p className="text-muted text-sm mb-6">Please select the assets you want to link to this salon.</p>
-        
-        <div className="space-y-4 mb-6">
-          <div>
-            <label className="block text-xs font-bold text-muted uppercase mb-1">Ad Account</label>
-            <select 
-              value={selectedAdAccount} onChange={e => setSelectedAdAccount(e.target.value)}
-              className="w-full bg-dark-950 border border-divider p-3 rounded-lg text-sm text-content outline-none">
-              {discoveredAssets?.adAccounts?.data?.map(acc => (
-                <option key={acc.account_id} value={acc.account_id}>{acc.name} ({acc.account_id})</option>
-              )) || <option value="">No Ad Accounts Found</option>}
-            </select>
-          </div>
-          <div>
-            <label className="block text-xs font-bold text-muted uppercase mb-1">Facebook Page</label>
-            <select 
-              value={selectedPage} onChange={e => setSelectedPage(e.target.value)}
-              className="w-full bg-dark-950 border border-divider p-3 rounded-lg text-sm text-content outline-none">
-              {discoveredAssets?.pages?.data?.map(page => (
-                <option key={page.id} value={page.id}>{page.name}</option>
-              )) || <option value="">No Pages Found</option>}
-            </select>
-          </div>
-          <div>
-            <label className="block text-xs font-bold text-muted uppercase mb-1">Instagram Professional Account</label>
-            <select 
-              value={selectedInstagram} onChange={e => setSelectedInstagram(e.target.value)}
-              className="w-full bg-dark-950 border border-divider p-3 rounded-lg text-sm text-content outline-none">
-              {discoveredAssets?.connectedInstagramAccounts?.data?.length === 0 ? (
-                 <option value="">No Instagram Accounts Found - Please link to your Facebook Page in Meta</option>
-              ) : discoveredAssets?.connectedInstagramAccounts?.data?.map(ig => (
-                 <option key={ig.id} value={ig.id}>{ig.username || ig.id}</option>
-              )) || <option value="">[ None Selected ]</option>}
-            </select>
-          </div>
-        </div>
-
-        <button onClick={handleSaveAssets} className="px-6 py-3 bg-accent text-primary font-bold rounded-xl text-sm w-full">
-          SAVE ASSETS
-        </button>
+      <div className="glass-panel p-6 border border-accent-light rounded-2xl bg-dark-900 text-center">
+         <div className="w-12 h-12 border-4 border-accent border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+         <h2 className="text-xl font-serif text-content mb-4">Discovering Assets...</h2>
+         <p className="text-muted text-sm">Please wait while BeautyAI analyzes your Meta account.</p>
+         <button onClick={fetchStatus} className="mt-4 px-6 py-2 bg-dark-800 text-white rounded-lg text-sm">Continue</button>
       </div>
     );
   }
